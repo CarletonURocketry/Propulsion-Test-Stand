@@ -5,10 +5,12 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.dates as mdates
 # Serial
-import serial
+from pySerialTransfer import pySerialTransfer as txfer
 # Other
+import time
 from datetime import datetime, timedelta
 from random import randint
+
 
 
 class Plot(tk.Frame):
@@ -17,7 +19,7 @@ class Plot(tk.Frame):
         super().__init__(parent)
 
         # matplotlib figure
-        self.figure = Figure(figsize=(12, 4), dpi=100)
+        self.figure = Figure(figsize=(8, 3), dpi=100)
 
         self.ax = self.figure.add_subplot(111)
         # Format the x-axis to show the time
@@ -125,16 +127,46 @@ class App(tk.Tk):
         self.row = 0
 
         # Figure
-        self.plot = Plot(self, nb_points=60)
+        self.plot = Plot(self, nb_points=600)
         self.plot.grid(row=self.nextRow(), column=0)
+        
+        #Load Label and Readout
+        self.L1_Readout = tk.Label(self, text='Load', font=("Arial", 10))
+        self.L1_Readout.grid(row=2, column=1)
+        self.L1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.L1_Readout.grid(row=3, column=1)        
 
-        # Pressure Label
-        self.pressureReadout = tk.Label(self, text='Pressure', font=("Arial", 10))
-        self.pressureReadout.grid(row=self.nextRow(), column=0)
+        #Pressure 1 Label and Readout
+        self.P1_Readout = tk.Label(self, text='Pressure 1', font=("Arial", 10))
+        self.P1_Readout.grid(row=4, column=1)
+        self.P1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.P1_Readout.grid(row=5, column=1)
+        
+        #Pressure 2 Label and Readout
+        self.P2_Readout = tk.Label(self, text='Pressure 2', font=("Arial", 10))
+        self.P2_Readout.grid(row=6, column=1)
+        self.P2_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.P2_Readout.grid(row=7, column=1)
+        
+        #Pressure 3 Label and Readout
+        self.P3_Readout = tk.Label(self, text='Pressure 3', font=("Arial", 10))
+        self.P3_Readout.grid(row=8, column=1)
+        self.P3_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.P3_Readout.grid(row=9, column=1)
+        
+        #Pressure 4 Label and Readout
+        self.P4_Readout = tk.Label(self, text='Pressure 4', font=("Arial", 10))
+        self.P4_Readout.grid(row=10, column=1)
+        self.P4_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.P4_Readout.grid(row=11, column=1)
+        
+        #Temperature 1 Label and Readout
+        self.T1_Readout = tk.Label(self, text='Temperature 1', font=("Arial", 10))
+        self.T1_Readout.grid(row=12, column=1)
+        self.T1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
+        self.T1_Readout.grid(row=13, column=1)        
+        
 
-        # Pressure Readout
-        self.pressureReadout = tk.Label(self, text='Initalizing...', font=("Arial", 25))
-        self.pressureReadout.grid(row=self.nextRow(), column=0)
 
         # Armed Check
         self.armed_state_var = tk.BooleanVar()
@@ -143,16 +175,16 @@ class App(tk.Tk):
         self.armed_checkbutton.grid(row=self.nextRow(), column=0)
 
         # Solenoid Toggles
-        self.solenoid1_toggle = LabeledToggle(self, text="Fire", callback=self.sendCommand, command="1", armed_state_var=self.armed_state_var)
+        self.solenoid1_toggle = LabeledToggle(self, text="Fire", callback=self.sendCommand, command="0", armed_state_var=self.armed_state_var)
         self.solenoid1_toggle.grid(row=self.nextRow(), column=0)
 
-        self.solenoid2_toggle = LabeledToggle(self, text="Fill", callback=self.sendCommand, command="2", armed_state_var=self.armed_state_var)
+        self.solenoid2_toggle = LabeledToggle(self, text="Fill", callback=self.sendCommand, command="1", armed_state_var=self.armed_state_var)
         self.solenoid2_toggle.grid(row=self.nextRow(), column=0)
 
-        self.solenoid3_toggle = LabeledToggle(self, text="Vent", callback=self.sendCommand, command="3", armed_state_var=self.armed_state_var)
+        self.solenoid3_toggle = LabeledToggle(self, text="Vent", callback=self.sendCommand, command="2", armed_state_var=self.armed_state_var)
         self.solenoid3_toggle.grid(row=self.nextRow(), column=0)
 
-        self.solenoid4_toggle = LabeledToggle(self, text="Power", callback=self.sendCommand, command="4", armed_state_var=self.armed_state_var)
+        self.solenoid4_toggle = LabeledToggle(self, text="Power", callback=self.sendCommand, command="3", armed_state_var=self.armed_state_var)
         self.solenoid4_toggle.grid(row=self.nextRow(), column=0)
 
     def close(self):
@@ -166,37 +198,41 @@ class App(tk.Tk):
         row = self.row
         self.row += 1
         return row
-
-    def connectToArduino(self, com, baud):
-        try:
-            self.arduino = serial.Serial(com, baud, timeout=1)
-        except Exception as e:
-            print(f"Error Connecting to Arduino:\n{e}")
-            self.pressureReadout.config(text=f'No Connection')
-
-    def parseArduinoData(self, dataString):
-        value = int(dataString)
-        return value
-        
+    
     def sendCommand(self, command):
         # Commands encoded as 2 digit numbers: 1-4 for solenoid number, and 0-1 for off/on
-        self.arduino.write(command.encode('utf-8'))
-        
-
+        control_list[-int(command[0])-1] = int(command[1]) 
+        control_int = int(str(control_list).strip("[ ]").replace(", ",""),2)
+        try:
+            send_size = 0
+            send_size = link.tx_obj(control_int, send_size)
+            link.send(send_size)
+        except:
+            import traceback
+            traceback.print_exc()
+               
+            link.close()    
+            
     # The main code loop that runs in the background of the window (Every "frequency" milliseconds)
     def loop(self, frequency):
-        # Get Data from Arduino
         try:
-            if (not (self.arduino.in_waiting == 0)):
-                line = self.arduino.readline()   # read a byte
-                dataString = line.decode()  # convert the byte string to a unicode string
+            #Check for received data
+            recvData()                
+        
 
-                time = datetime.now()
-                value = parseArduinoData(dataString)
-
-                self.plot.update(time, value)
-                self.pressureReadout.config(text=f'{value}')
-                self.logger.write(f"{time},{value}")
+            time = datetime.now()
+            self.plot.update(time, data.P1)
+            
+            #Update Printouts
+            self.L1_Readout.config(text=f'{data.L1}')
+            self.P1_Readout.config(text=f'{data.P1}')
+            self.P2_Readout.config(text=f'{data.P2}')
+            self.P3_Readout.config(text=f'{data.P3}')
+            self.P4_Readout.config(text=f'{data.P4}')
+            self.T1_Readout.config(text=f'{data.T1}')
+            
+            
+            #self.logger.write(f"{time},{value}")
         except Exception as e:
             print(f"Error Parsing Arduino data:\n{e}")
             
@@ -205,8 +241,79 @@ class App(tk.Tk):
         self.after(frequency, self.loop, frequency)
 
 
+def recvData():    
+    if link.available():
+        recSize = 0
+        
+        testdata.millisSince = link.rx_obj(obj_type='i', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['i']   
+        
+        testdata.L1 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.P1 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.P2 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.P3 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.P4 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.T1 = link.rx_obj(obj_type='f', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+        
+        testdata.Safe = link.rx_obj(obj_type='b', start_pos=recSize)
+        recSize += txfer.STRUCT_FORMAT_LENGTHS['b']
+        
+        
+    
+    elif link.status < 0:
+        if link.status == txfer.CRC_ERROR:
+            print('ERROR: CRC_ERROR')
+        elif link.status == txfer.PAYLOAD_ERROR:
+            print('ERROR: PAYLOAD_ERROR')
+        elif link.status == txfer.STOP_BYTE_ERROR:
+            print('ERROR: STOP_BYTE_ERROR')
+        else:
+            print('ERROR: {}'.format(link.status))    
+
 if __name__ == "__main__":
+    #Initialize Serial Link
+    try:
+        link = txfer.SerialTransfer("COM3")
+        link.open()
+        time.sleep(2)
+        
+    except:
+        import traceback
+        traceback.print_exc()
+        
+        try:
+            link.close()
+        except:
+            pass
+        
+    class testdata(object):
+        millisSince = 0;
+        L1 = 0.0 #Loadcell
+        P1 = 0.0 #Don't know
+        P2 = 0.0 #Tank Pressure Bottom
+        P3 = 0.0 #Tank Pressure Top
+        P4 = 0.0 #Don't know
+        T1 = 0.0 #Tank Temperature
+        Safety = False
+    
+    control_int = 0
+    
+    control_list = [0] * 13
+    
+       
+    #
+    
     app = App()
-    app.connectToArduino("COM5", 9600)
     app.loop(10)
     app.mainloop()

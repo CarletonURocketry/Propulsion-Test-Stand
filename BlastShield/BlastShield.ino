@@ -2,26 +2,30 @@
 
 
 SerialTransfer testStand;
+SerialTransfer computer;
 
 struct STRUCT1 {
   float millisSince = 0;
-  float loadcell;
-  float tankPres;
-  float tankTemp;
-  float tankFill;
-} data;
+  float L1; //Loadcell
+  float P1; //Don't know
+  float P2; //Tank Pressure Bottom
+  float P3; //Tank Pressure Top
+  float P4; //Don't know
+  float T1; //Tank Temperature
+  bool Safety;
+} data; //29 bytes
 
-struct STRUCT2 {
-  bool fire = false;
-  bool fill = false;
-  bool vent = false;
-  bool power = false;
-} control;
+int control_int;
 
-char errorCode[6];
 
+unsigned long currentMicros;
+unsigned long currentMillis;
 unsigned long previousMillis = 0;
-const long interval = 100;
+const int interval = 100;
+int intervalData = 0;
+float dataRate = 0;
+int delta = 0;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -29,50 +33,66 @@ void setup() {
   Serial1.begin(115200);
 
   pinMode(8, INPUT_PULLUP);
-
+  computer.begin(Serial);
   testStand.begin(Serial1);
 }
 
 void loop() {
   //Buffer Variables
-  uint16_t txSize = 0;
-  uint16_t rxSize = 0;
-
+  uint16_t txSize_t = 0;
+  uint16_t rxSize_t = 0;
+   uint16_t txSize_c = 0;
+  uint16_t rxSize_c = 0;
+  
+  //Recieve from teststand
   if (testStand.available()) {
     //Fill Recive Buffer
-    rxSize = testStand.rxObj(data, rxSize);
+    rxSize_t = testStand.rxObj(data, rxSize_t);
+    intervalData += rxSize_t;
     printdata();
-    
   }
-
+  //Recieve Control Input from Computer and Send to Teststand
+  if (computer.available()) {
+    //Fill Recive Buffer
+    rxSize_c = computer.rxObj(control_int, rxSize_c);
+    //Fill TestStand Transmit Buffer
+    txSize_t = testStand.txObj(control_int, txSize_t);
+    //Send to Teststand
+    testStand.sendData(txSize_t);
+  }
+  
   if (digitalRead(8) == HIGH) {
-    control.fire = false;
+    //control.CV1 = false;
   }
-  else control.fire = true;
+  //else control.CV1 = true;
 
-  //Fill Transmit Buffer
-  txSize = testStand.txObj(control, txSize);
-
-  unsigned long currentMillis = millis();
+  currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
     // save the last time you blinked the LED
     previousMillis = currentMillis;
-    //Fill Transmit Buffer
-    testStand.sendData(txSize);
-    //Serial.println(digitalRead(8));
+
+    //Rx Datarate
+    dataRate = intervalData/(float(interval)/1000);
+    intervalData = 0;
+    //Fill Computer Transmit Buffer
+    txSize_c = computer.txObj(data, txSize_c);
+    computer.sendData(txSize_c);
+  
+    
 
   }
 }
 
 void printdata() {
-  Serial.print(data.millisSince);
-  Serial.print(",");
-  Serial.print(data.loadcell);
-  Serial.print(",");
-  Serial.print(data.tankPres);
-  Serial.print(",");
-  Serial.print(data.tankTemp);
-  Serial.print(",");
-  Serial.println(data.tankFill);
+  //Serial.print(data.millisSince);
+  //Serial.print(",");
+  //Serial.println(data.L1);
+  //Serial.print(",");
+  //Serial.print(dataRate);
+  //Serial.print(",");
+  //Serial.println();
+  //currentMicros = micros();
+  //delta = micros() - currentMicros;
+  //Serial.println(delta);
 }
