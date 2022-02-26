@@ -19,7 +19,7 @@ class Plot(tk.Frame):
         super().__init__(parent)
 
         # matplotlib figure
-        self.figure = Figure(figsize=(8, 3), dpi=100)
+        self.figure = Figure(figsize=(12, 4), dpi=100)
 
         self.ax = self.figure.add_subplot(111)
         # Format the x-axis to show the time
@@ -129,44 +129,14 @@ class App(tk.Tk):
         # Figure
         self.plot = Plot(self, nb_points=600)
         self.plot.grid(row=self.nextRow(), column=0)
-        
-        #Load Label and Readout
-        self.L1_Readout = tk.Label(self, text='Load', font=("Arial", 10))
-        self.L1_Readout.grid(row=2, column=1)
-        self.L1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.L1_Readout.grid(row=3, column=1)        
 
-        #Pressure 1 Label and Readout
-        self.P1_Readout = tk.Label(self, text='Pressure 1', font=("Arial", 10))
-        self.P1_Readout.grid(row=4, column=1)
-        self.P1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.P1_Readout.grid(row=5, column=1)
-        
-        #Pressure 2 Label and Readout
-        self.P2_Readout = tk.Label(self, text='Pressure 2', font=("Arial", 10))
-        self.P2_Readout.grid(row=6, column=1)
-        self.P2_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.P2_Readout.grid(row=7, column=1)
-        
-        #Pressure 3 Label and Readout
-        self.P3_Readout = tk.Label(self, text='Pressure 3', font=("Arial", 10))
-        self.P3_Readout.grid(row=8, column=1)
-        self.P3_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.P3_Readout.grid(row=9, column=1)
-        
-        #Pressure 4 Label and Readout
-        self.P4_Readout = tk.Label(self, text='Pressure 4', font=("Arial", 10))
-        self.P4_Readout.grid(row=10, column=1)
-        self.P4_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.P4_Readout.grid(row=11, column=1)
-        
-        #Temperature 1 Label and Readout
-        self.T1_Readout = tk.Label(self, text='Temperature 1', font=("Arial", 10))
-        self.T1_Readout.grid(row=12, column=1)
-        self.T1_Readout = tk.Label(self, text='Initalizing...', font=("Arial", 12))
-        self.T1_Readout.grid(row=13, column=1)        
-        
+        # Pressure Label
+        self.pressureReadout = tk.Label(self, text='Pressure', font=("Arial", 10))
+        self.pressureReadout.grid(row=self.nextRow(), column=0)
 
+        # Pressure Readout
+        self.pressureReadout = tk.Label(self, text='Initalizing...', font=("Arial", 25))
+        self.pressureReadout.grid(row=self.nextRow(), column=0)
 
         # Armed Check
         self.armed_state_var = tk.BooleanVar()
@@ -221,18 +191,10 @@ class App(tk.Tk):
         
 
             time = datetime.now()
-            self.plot.update(time, data.P1)
-            
-            #Update Printouts
-            self.L1_Readout.config(text=f'{data.L1}')
-            self.P1_Readout.config(text=f'{data.P1}')
-            self.P2_Readout.config(text=f'{data.P2}')
-            self.P3_Readout.config(text=f'{data.P3}')
-            self.P4_Readout.config(text=f'{data.P4}')
-            self.T1_Readout.config(text=f'{data.T1}')
-            
-            
-            #self.logger.write(f"{time},{value}")
+            value = testdata.L1
+            self.plot.update(time, value)
+            self.pressureReadout.config(text=f'{value}')
+            self.logger.write(f"{time},{value}")
         except Exception as e:
             print(f"Error Parsing Arduino data:\n{e}")
             
