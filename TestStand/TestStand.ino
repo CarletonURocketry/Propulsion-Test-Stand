@@ -213,7 +213,7 @@ void testStandControls() {
     digitalWrite(33, HIGH)
   } else {
     digitalWrite(33, LOW)
-  }
+  }//
 }
 
 void readSensors() {
