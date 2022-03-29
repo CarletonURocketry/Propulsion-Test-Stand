@@ -495,7 +495,6 @@ class App(tk.Tk):
         self.solenoidPower_toggle = LabeledToggle(self.buttonsFrame, text="Power", callback=self.arduino.sendCommand, command="03", armed_state_var=self.armed_state_var)
         self.solenoidPower_toggle.grid(row=4, column=0, pady=5, padx=20)
 
-
         self.solenoid5_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 5", callback=self.arduino.sendCommand, command="04", armed_state_var=self.armed_state_var)
         self.solenoid5_toggle.grid(row=5, column=0, pady=5, padx=20)
 
