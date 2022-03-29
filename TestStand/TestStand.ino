@@ -130,90 +130,89 @@ void testStandControls() {
 
   //Fire valve control and time since Start
   // This should be tested to see if its still working as intented
-  if ((control_int & 1) & (control_int & ~previousState )) { //Fire valve opens
-    fireServo.write(90);
+  if ((control_int & 1)) { //Fire valve opens
+    
+    fireServo.writeMicroseconds(1000);
     previousState = (control_int & 1);
 
-  } else if (control_int & ~previousState) { //fire valve closes
-    fireServo.write(180);
+  } else {
+    fireServo.writeMicroseconds(2250  );
     previousState = (control_int & 1);
-
-  } else if (control_int & 1) { //fire valve is open
   }
 
   //Relay controls
   //D22 XV-1 (2)
   if (control_int & 2) {
-    digitalWrite(22, HIGH)
+    digitalWrite(22, HIGH);
   } else {
-    digitalWrite(22, LOW)
+    digitalWrite(22, LOW);
   }
   //D23 XV-2 (4)
   if (control_int & 4) {
-    digitalWrite(23, HIGH)
+    digitalWrite(23, HIGH);
   } else {
-    digitalWrite(23, LOW)
+    digitalWrite(23, LOW);
   }
   //D24 XV-3 (8)
   if (control_int & 8) {
-    digitalWrite(24, HIGH)
+    digitalWrite(24, HIGH);
   } else {
-    digitalWrite(24, LOW)
+    digitalWrite(24, LOW);
   }
   //D25 XV-4 (16)
   if (control_int & 16) {
-    digitalWrite(25, HIGH)
+    digitalWrite(25, HIGH);
   } else {
-    digitalWrite(25, LOW)
+    digitalWrite(25, LOW);
   }
   //D26 XV-5 (32)
   if (control_int & 32) {
-    digitalWrite(26, HIGH)
+    digitalWrite(26, HIGH);
   } else {
-    digitalWrite(26, LOW)
+    digitalWrite(26, LOW);
   }
   //D27 XV-6 (64)
   if (control_int & 64) {
-    digitalWrite(27, HIGH)
+    digitalWrite(27, HIGH);
   } else {
-    digitalWrite(27, LOW)
+    digitalWrite(27, LOW);
   }
   //D28 XV-7 (128)
   if (control_int & 128) {
-    digitalWrite(28, HIGH)
+    digitalWrite(28, HIGH);
   } else {
-    digitalWrite(28, LOW)
+    digitalWrite(28, LOW);
   }
   //D29 XV-8 (256)
   if (control_int & 256) {
-    digitalWrite(29, HIGH)
+    digitalWrite(29, HIGH);
   } else {
-    digitalWrite(29, LOW)
+    digitalWrite(29, LOW);
   }
   //D30 XV-9 (512)
   if (control_int & 512) {
-    digitalWrite(30, HIGH)
+    digitalWrite(30, HIGH);
   } else {
-    digitalWrite(30, LOW)
+    digitalWrite(30, LOW);
   }
   //D31 XV-10 (1024)
   if (control_int & 1024) {
-    digitalWrite(31, HIGH)
+    digitalWrite(31, HIGH);
   } else {
-    digitalWrite(31, LOW)
+    digitalWrite(31, LOW);
   }
   //D32 XV-11 (2048)
   if (control_int & 2048) {
-    digitalWrite(32, HIGH)
+    digitalWrite(32, HIGH);
   } else {
-    digitalWrite(32, LOW)
+    digitalWrite(32, LOW);
   }
   //D33 Power Relay (4096)
   if (control_int & 4096) {
-    digitalWrite(33, HIGH)
+    digitalWrite(33, HIGH);
   } else {
-    digitalWrite(33, LOW)
-  }//
+    digitalWrite(33, LOW);
+   }
 }
 
 void readSensors() {
