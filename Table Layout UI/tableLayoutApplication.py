@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 # Matplotlib
-from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.dates as mdates
 # Serial
@@ -21,15 +21,17 @@ def getNextRow(frame):
     frame.row += 1
     return row
 
+
+
+# TODO: Refactor
 class PressurePlot(tk.Frame):
-    def __init__(self, parent):  
-        # nb_points: number of points for the graph
+    def __init__(self, parent, x_data):  
         super().__init__(parent)
 
         # matplotlib figure
-        self.figure = Figure(figsize=(8.5, 3.5), dpi=100)
-
+        self.figure = plt.Figure(figsize=(8.5, 3.5), dpi=100)
         self.ax = self.figure.add_subplot(111)
+
         # Label Axes
         self.ax.set_xlabel('Time (hh:mm:ss)')
         self.ax.set_ylabel('Pressure (PSI)') 
@@ -39,8 +41,8 @@ class PressurePlot(tk.Frame):
         self.ax.xaxis.set_major_formatter(myFmt)
 
         # Set initial x and y data (Null Data)
-        self.x_data = []
-        self.y_data = [[],[],[],[]] #[[0 for i in range(nb_points)] for i in range(0,4)]
+        self.x_data = x_data
+        self.y_data = np.zeros((4,0))
         #print(self.y_data)
 
         # Create the plots
@@ -48,10 +50,6 @@ class PressurePlot(tk.Frame):
         self.pressure2Plot, = self.ax.plot(self.x_data, self.y_data[1], label='Pressure2', color="yellow")
         self.pressure3Plot, = self.ax.plot(self.x_data, self.y_data[2], label='Pressure3', color="purple")
         self.pressure4Plot, = self.ax.plot(self.x_data, self.y_data[3], label='Pressure4', color="green")
-        
-        # Set default axis limits
-        #self.ax.set_ylim(0, 100)
-        #self.ax.set_xlim(self.x_data[0], self.x_data[-1])
 
         # Add Legend
         self.ax.legend()
@@ -61,10 +59,9 @@ class PressurePlot(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.figure, self)
         self.canvas.get_tk_widget().pack()
 
-    def update(self, time, P1, P2, P3, P4):
-        # append new data point to the x and y data
-        self.x_data.append(time)
-        #print(f"{P1},{P2},{P3},{P4}")
+    def update(self, x_data, P1, P2, P3, P4):
+
+        self.x_data = x_data
         self.y_data = np.append(self.y_data, [[P1],[P2],[P3],[P4]], axis=1)
 
 
@@ -72,8 +69,7 @@ class PressurePlot(tk.Frame):
         #self.x_data = self.x_data[1:]
         #self.y_data = np.delete(self.y_data, (0), axis=1)
 
-        #print(self.y_data)
-        #  update plot data
+        #  Update plot data
         self.pressure1Plot.set_xdata(self.x_data)
         self.pressure2Plot.set_xdata(self.x_data)
         self.pressure3Plot.set_xdata(self.x_data)
@@ -85,29 +81,27 @@ class PressurePlot(tk.Frame):
 
         self.canvas.draw_idle()  # redraw plot
 
+        #self.canvas.draw()
+        #self.canvas.flush_events()
+
 class TemperaturePlot(tk.Frame):
-    def __init__(self, parent):
-        # nb_points: number of points for the graph
+    def __init__(self, parent, x_data):
         super().__init__(parent)
 
         # matplotlib figure
-        self.figure = Figure(figsize=(8.5, 3.5), dpi=100)
-
+        self.figure = plt.Figure(figsize=(8.5, 3.5), dpi=100)
         self.ax = self.figure.add_subplot(111)
+
         # Format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
         self.ax.xaxis.set_major_formatter(myFmt)
 
         # Set initial x and y data (Null Data)
-        self.x_data = []
-        self.y_data = []
+        self.x_data = x_data
+        self.y_data = np.zeros(0)
 
         # Create the plot
         self.plot = self.ax.plot(self.x_data, self.y_data, label='Temperature', color="orange")[0]
-        
-        # Set default axis limits
-        #self.ax.set_ylim(0, 100)
-        #self.ax.set_xlim(self.x_data[0], self.x_data[-1])
         
         # Label Axes
         self.ax.set_xlabel('Time (hh:mm:ss)')
@@ -118,10 +112,10 @@ class TemperaturePlot(tk.Frame):
         self.canvas = FigureCanvasTkAgg(self.figure, self)
         self.canvas.get_tk_widget().pack()
 
-    def update(self, x_value, y_value):
+    def update(self, x_data, temperature):
         # append new data point to the x and y data
-        self.x_data.append(x_value)
-        self.y_data.append(y_value)
+        self.x_data = x_data
+        self.y_data = np.append(self.y_data, temperature)
 
         # remove oldest data point
         #self.x_data = self.x_data[1:]
@@ -130,16 +124,16 @@ class TemperaturePlot(tk.Frame):
         #  update plot data
         self.plot.set_xdata(self.x_data)
         self.plot.set_ydata(self.y_data)
-        #self.ax.set_xlim(self.x_data[0], self.x_data[-1])
-        #self.ax.set_ylim(min(self.y_data)-5, max(self.y_data)+5)
+
         self.canvas.draw_idle()  # redraw plot
 
+
 class ScaleSlider(tk.Frame):
-    def __init__(self, parent, callback):
+    def __init__(self, parent, callback, x_data):
         super().__init__(parent)
         self.callback = callback
 
-        self.values = []
+        self.values = x_data
 
         self.sliderAtMax = True
         self.sliderAtMin = True
@@ -185,7 +179,7 @@ class ScaleSlider(tk.Frame):
         if (self.maxValue <= self.minValue + 1):
             self.maxValue = self.minValue + 1
             self.sliderMax.set(self.maxValue)
-        if (self.maxValue == len(self.values)-1):
+        if (self.maxValue == self.values.size - 1):
             self.sliderAtMax = True
         else:
             self.sliderAtMax = False
@@ -193,13 +187,13 @@ class ScaleSlider(tk.Frame):
         self.maxValueLabel.configure(text=f"{self.values[self.maxValue]}"[10:-4])
         self.callback(self.minValue, self.maxValue)
 
-    def update(self, time):
-        self.values.append(time)
-        maxIndex = len(self.values) - 1
+    def update(self, x_data):
+        self.values = x_data
+        maxIndex = self.values.size - 1
         self.sliderMin.configure(to=maxIndex)
         self.sliderMax.configure(to=maxIndex)
         if self.sliderAtMax:
-            self.maxValue = len(self.values) - 1
+            self.maxValue = self.values.size - 1
             self.sliderMax.set(self.maxValue)
             if not self.sliderAtMin:
                 self.minValue = self.minValue + 1
@@ -211,37 +205,43 @@ class PlotSet(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.pressurePlot = PressurePlot(self)
+        self.x_data = np.zeros(0)
+
+        self.pressurePlot = PressurePlot(self, self.x_data)
         self.pressurePlot.grid(row=getNextRow(self), column=0)
 
-        self.slider = ScaleSlider(self, self.updatePlotLimits)
+        self.slider = ScaleSlider(self, self.updatePlotLimits, self.x_data)
         self.slider.grid(row=getNextRow(self), column=0)
 
-        self.temperaturePlot = TemperaturePlot(self)
+        self.temperaturePlot = TemperaturePlot(self, self.x_data)
         self.temperaturePlot.grid(row=getNextRow(self), column=0)
 
-    # def setLimits(self, x_min_index, x_max_index):
-    #     self.ax.set_xlim(self.x_data[x_min_index], self.x_data[x_max_index])
-    #     self.ax.set_ylim(min(self.y_data[x_min_index:x_max_index])-5, max(self.y_data[x_min_index:x_max_index])+5)
-    #     self.canvas.draw_idle()  # redraw plot
-
     def update(self, time, data):
-            self.slider.update(time)
-            
-            self.pressurePlot.update(time, data.P1, data.P2, data.P3, data.P4)
-            self.temperaturePlot.update(time, data.T1)
+        self.x_data = np.append(self.x_data, time)
 
-            # Update Limits
-            if self.slider.sliderAtMax:
-                self.updatePlotLimits(self.slider.minValue, self.slider.maxValue)
+        self.slider.update(self.x_data)
+        
+        self.pressurePlot.update(self.x_data, data.P1, data.P2, data.P3, data.P4)
+        self.temperaturePlot.update(self.x_data, data.T1)
+
+        # Update Limits
+        if self.slider.sliderAtMax:
+            self.updatePlotLimits(self.slider.minValue, self.slider.maxValue)
 
     def updatePlotLimits(self, minIndex, maxIndex):
-        self.pressurePlot.ax.set_xlim(self.pressurePlot.x_data[minIndex], self.pressurePlot.x_data[maxIndex])
+
         maxYValue = np.max(np.array(self.pressurePlot.y_data)[:, minIndex:maxIndex+1])
+
+        self.pressurePlot.ax.set_xlim(self.pressurePlot.x_data[minIndex], self.pressurePlot.x_data[maxIndex])
         self.pressurePlot.ax.set_ylim(np.min(np.array(self.pressurePlot.y_data)[:, minIndex:maxIndex+1])-maxYValue*0.1, maxYValue*1.10)
-        #print(f"{minIndex}:{maxIndex}")
         self.temperaturePlot.ax.set_xlim(self.temperaturePlot.x_data[minIndex], self.temperaturePlot.x_data[maxIndex])
         self.temperaturePlot.ax.set_ylim(np.min(self.temperaturePlot.y_data[minIndex:maxIndex+1])-5, np.max(self.temperaturePlot.y_data[minIndex:maxIndex+1])+5)
+
+
+
+
+
+# Good Code
 
 class LabeledToggle(tk.Frame):
     def __init__(self, parent, text, callback, command, armed_state_var):
@@ -277,139 +277,6 @@ class LabeledToggle(tk.Frame):
 
                 self.callback(self.command+"1")
 
-class Logger():
-    def __init__(self):
-        pass
-
-    def open(self):
-        dataFilesPath = "dataFiles"
-        if not os.path.isdir(dataFilesPath):
-            os.makedirs(dataFilesPath)
-        date = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.file = open(f"{dataFilesPath}/data_{date}.txt", "w")
-        self.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
-
-    def write(self, message):
-        self.file.write(message)
-
-    def close(self):
-        self.file.close()
-
-class Data():
-        millisSince = 0;
-        L1 = 0.0 #Loadcell
-        P1 = 0.0 #Don't know
-        P2 = 0.0 #Tank Pressure Bottom
-        P3 = 0.0 #Tank Pressure Top
-        P4 = 0.0 #Don't know
-        T1 = 0.0 #Tank Temperature
-        Safety = False
-
-class Arduino():
-    def __init__(self, serialPort):
-        #Initialize Serial Link
-        try:
-            self.link = txfer.SerialTransfer(serialPort)
-            self.link.open()
-            time.sleep(2)
-            
-        except Exception:
-            import traceback
-            traceback.print_exc()
-            
-            try:
-                self.link.close()
-            except Exception:
-                pass
-
-        self.control_int = 0
-        self.control_list = [0] * 13
-        self.data = Data()
-    
-    def close(self):
-        try:
-            self.link.close()
-        except Exception:
-            pass
-
-    def recvData(self):   
-        if self.link.available():
-            recSize = 0
-            
-            self.data.millisSince = self.link.rx_obj(obj_type='i', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['i']   
-            
-            self.data.L1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.P1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.P2 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.P3 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.P4 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.T1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
-            
-            self.data.Safe = self.link.rx_obj(obj_type='b', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['b']
-        elif self.link.status < 0:
-            if self.link.status == txfer.CRC_ERROR:
-                print('ERROR: CRC_ERROR')
-            elif self.link.status == txfer.PAYLOAD_ERROR:
-                print('ERROR: PAYLOAD_ERROR')
-            elif self.link.status == txfer.STOP_BYTE_ERROR:
-                print('ERROR: STOP_BYTE_ERROR')
-            else:
-                print('ERROR: {}'.format(self.link.status))
-    
-    def sendCommand(self, command):
-        print(command)
-        # Commands encoded as 2 digit numbers: 1-4 for solenoid number, and 0-1 for off/on
-        self.control_list[-int(command[0]+command[1])-1] = int(command[2])
-        self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2)
-        try:
-            send_size = 0
-            send_size = self.link.tx_obj(self.control_int, send_size)
-            self.link.send(send_size)
-        except:
-            import traceback
-            traceback.print_exc()
-               
-            self.link.close()    
-    
-class ArduinoSim():
-    def __init__(self):
-        self.data = Data()
-        self.data.P1 = 100
-        self.data.P2 = 200
-        self.data.P3 = 1000
-        self.data.P4 = 700
-        self.data.T1 = 25
-
-    
-    def close(self):
-        print(f"Sim close()") 
-        pass
-
-    def recvData(self): 
-        self.data.millisSince = self.data.millisSince + 10
-        self.data.L1 = self.data.L1 + (random.random() * 2 - 1)*100
-        self.data.P1 = self.data.P1 + (random.random() * 2 - 1)*10
-        self.data.P2 = self.data.P2 + (random.random() * 2 - 1)*10
-        self.data.P3 = self.data.P3 + (random.random() * 2 - 1)*10
-        self.data.P4 = self.data.P4 + (random.random() * 2 - 1)*10
-        self.data.T1 = self.data.T1 + (random.random() * 2 - 1)*1
-        self.data.Safe = False
-    
-    def sendCommand(self, command):
-        print(f"Sim send command: {command}") 
 
 class App(tk.Tk):
     def __init__(self, arduino):
@@ -439,7 +306,6 @@ class App(tk.Tk):
         self.rightFrame = tk.Frame(self)
         self.rightFrame.grid(row=0, column=1)
         self.grid_columnconfigure(1, weight=1)
-
 
         # Readouts Frame
         self.readoutsFrame = tk.Frame(self.rightFrame)
@@ -556,12 +422,147 @@ class App(tk.Tk):
 
         # Run Loop again after "frequency" milliseconds
         self.after(frequency, self.loop, frequency)
+
+
+class Logger():
+    def __init__(self):
+        pass
+
+    def open(self):
+        dataFilesPath = "dataFiles"
+        if not os.path.isdir(dataFilesPath):
+            os.makedirs(dataFilesPath)
+        date = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.file = open(f"{dataFilesPath}/data_{date}.txt", "w")
+        self.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
+
+    def write(self, message):
+        self.file.write(message)
+
+    def close(self):
+        self.file.close()
+
+class Data():
+        millisSince = 0
+        L1 = 0.0 #Loadcell
+        P1 = 0.0 #Don't know
+        P2 = 0.0 #Tank Pressure Bottom
+        P3 = 0.0 #Tank Pressure Top
+        P4 = 0.0 #Don't know
+        T1 = 0.0 #Tank Temperature
+        Safety = False
+
+class Arduino():
+    def __init__(self, serialPort):
+        #Initialize Serial Link
+        try:
+            self.link = txfer.SerialTransfer(serialPort)
+            self.link.open()
+            time.sleep(2)
+            
+        except Exception:
+            import traceback
+            traceback.print_exc()
+            
+            try:
+                self.link.close()
+            except Exception:
+                pass
+
+        self.control_int = 0
+        self.control_list = [0] * 13
+        self.data = Data()
+    
+    def close(self):
+        try:
+            self.link.close()
+        except Exception:
+            pass
+
+    def recvData(self):   
+        if self.link.available():
+            recSize = 0
+            
+            self.data.millisSince = self.link.rx_obj(obj_type='i', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['i']   
+            
+            self.data.L1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.P1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.P2 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.P3 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.P4 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.T1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            
+            self.data.Safe = self.link.rx_obj(obj_type='b', start_pos=recSize)
+            recSize += txfer.STRUCT_FORMAT_LENGTHS['b']
+        elif self.link.status < 0:
+            if self.link.status == txfer.CRC_ERROR:
+                print('ERROR: CRC_ERROR')
+            elif self.link.status == txfer.PAYLOAD_ERROR:
+                print('ERROR: PAYLOAD_ERROR')
+            elif self.link.status == txfer.STOP_BYTE_ERROR:
+                print('ERROR: STOP_BYTE_ERROR')
+            else:
+                print('ERROR: {}'.format(self.link.status))
+    
+    def sendCommand(self, command):
+        print(command)
+        # Commands encoded as 2 digit numbers: 1-4 for solenoid number, and 0-1 for off/on
+        self.control_list[-int(command[0]+command[1])-1] = int(command[2])
+        self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2)
+        try:
+            send_size = 0
+            send_size = self.link.tx_obj(self.control_int, send_size)
+            self.link.send(send_size)
+        except:
+            import traceback
+            traceback.print_exc()
+               
+            self.link.close()    
+    
+class ArduinoSim():
+    def __init__(self):
+        self.data = Data()
+        self.data.P1 = 100
+        self.data.P2 = 200
+        self.data.P3 = 1000
+        self.data.P4 = 700
+        self.data.T1 = 25
+
+    
+    def close(self):
+        print(f"Sim close()") 
+        pass
+
+    def recvData(self): 
+        self.data.millisSince = self.data.millisSince + 10
+        self.data.L1 = self.data.L1 + (random.random() * 2 - 1)*100
+        self.data.P1 = self.data.P1 + (random.random() * 2 - 1)*10
+        self.data.P2 = self.data.P2 + (random.random() * 2 - 1)*10
+        self.data.P3 = self.data.P3 + (random.random() * 2 - 1)*10
+        self.data.P4 = self.data.P4 + (random.random() * 2 - 1)*10
+        self.data.T1 = self.data.T1 + (random.random() * 2 - 1)*1
+        self.data.Safe = False
+    
+    def sendCommand(self, command):
+        print(f"Sim send command: {command}") 
   
 if __name__ == "__main__":
 
     serialPort = "COM3"
-    arduino = Arduino(serialPort)
-    #arduino = ArduinoSim()
+    #arduino = Arduino(serialPort)
+    arduino = ArduinoSim()
 
     app = App(arduino)
     app.loop(100)
