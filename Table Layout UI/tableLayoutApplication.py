@@ -14,235 +14,175 @@ import random
 import numpy as np
 import os
 
-def getNextRow(frame):
-    if not hasattr(frame, 'row'):
-        frame.row = 0
-    row = frame.row
-    frame.row += 1
-    return row
+# class ScaleSlider(tk.Frame):
+#     def __init__(self, parent, callback, x_data):
+#         super().__init__(parent)
+#         self.callback = callback
+
+#         self.values = x_data
+
+#         self.sliderAtMax = True
+#         self.sliderAtMin = True
+
+#         self.minValue = 0
+#         self.maxValue = 0
+        
+#         #Labels
+#         self.minLabel = tk.Label(self, text="Min:")
+#         self.minLabel.grid(column=0, row=0)
+#         self.maxLabel = tk.Label(self, text="Max:")
+#         self.maxLabel.grid(column=0, row=1)
+
+#         # Sliders
+#         self.sliderMin = tk.Scale(self, from_=0, to=100, length=600, orient='horizontal', command=self.minSliderChanged, showvalue=0, sliderlength=10, relief=tk.GROOVE)
+#         self.sliderMin.grid(column=1, row=0)
+        
+#         self.sliderMax = tk.Scale(self, from_=0, to=100, length=600, orient='horizontal', command=self.maxSliderChanged, showvalue=0, sliderlength=10, relief=tk.GROOVE)
+#         self.sliderMax.grid(column=1, row=1)
+#         self.sliderMax.set(100)
+
+#         #Values
+#         self.minValueLabel = tk.Label(self, text="...")
+#         self.minValueLabel.grid(column=2, row=0)
+#         self.maxValueLabel = tk.Label(self, text="...")
+#         self.maxValueLabel.grid(column=2, row=1)
+
+#     def minSliderChanged(self, minValue):
+#         self.minValue = int(minValue)
+#         if (self.minValue >= self.maxValue - 1):
+#             self.minValue = self.maxValue - 1
+#             self.sliderMin.set(self.minValue)
+#         if (self.minValue == 0):
+#             self.sliderAtMin= True
+#         else:
+#             self.sliderAtMin = False
+        
+#         self.minValueLabel.configure(text=f"{self.values[self.minValue]}"[10:-4])
+#         self.callback(self.minValue, self.maxValue)
+    
+#     def maxSliderChanged(self, maxValue):
+#         self.maxValue = int(maxValue)
+#         if (self.maxValue <= self.minValue + 1):
+#             self.maxValue = self.minValue + 1
+#             self.sliderMax.set(self.maxValue)
+#         if (self.maxValue == self.values.size - 1):
+#             self.sliderAtMax = True
+#         else:
+#             self.sliderAtMax = False
+
+#         self.maxValueLabel.configure(text=f"{self.values[self.maxValue]}"[10:-4])
+#         self.callback(self.minValue, self.maxValue)
+
+#     def update(self, x_data):
+#         self.values = x_data
+#         maxIndex = self.values.size - 1
+#         self.sliderMin.configure(to=maxIndex)
+#         self.sliderMax.configure(to=maxIndex)
+#         if self.sliderAtMax:
+#             self.maxValue = self.values.size - 1
+#             self.sliderMax.set(self.maxValue)
+#             if not self.sliderAtMin:
+#                 self.minValue = self.minValue + 1
+#                 self.sliderMin.set(self.minValue)
+#             else:
+#                 self.minValueLabel.configure(text=f"{self.values[self.minValue]}"[10:-4])
 
 
-
-# TODO: Refactor
-class PressurePlot(tk.Frame):
-    def __init__(self, parent, x_data):  
+class Plot(tk.Frame):
+    def __init__(self, parent, data):  
         super().__init__(parent)
 
         # matplotlib figure
-        self.figure = plt.Figure(figsize=(8.5, 3.5), dpi=100)
+        self.figure = plt.Figure(figsize=(8, 8), dpi=100)
         self.ax = self.figure.add_subplot(111)
 
         # Label Axes
+        self.ax2 = self.ax.twinx()
+
         self.ax.set_xlabel('Time (hh:mm:ss)')
         self.ax.set_ylabel('Pressure (PSI)') 
 
+        self.ax2.set_ylabel("Temperature (Degrees C)")
+
         # Format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
         self.ax.xaxis.set_major_formatter(myFmt)
 
         # Set initial x and y data (Null Data)
-        self.x_data = x_data
-        self.y_data = np.zeros((4,0))
-        #print(self.y_data)
+        self.data = data
 
         # Create the plots
-        self.pressure1Plot, = self.ax.plot(self.x_data, self.y_data[0], label='Pressure1', color="red")
-        self.pressure2Plot, = self.ax.plot(self.x_data, self.y_data[1], label='Pressure2', color="yellow")
-        self.pressure3Plot, = self.ax.plot(self.x_data, self.y_data[2], label='Pressure3', color="purple")
-        self.pressure4Plot, = self.ax.plot(self.x_data, self.y_data[3], label='Pressure4', color="green")
+        self.pressure1Plot, = self.ax.plot(self.data[0], self.data[1], label='Pressure1', color="red")
+        self.pressure2Plot, = self.ax.plot(self.data[0], self.data[2], label='Pressure2', color="yellow")
+        self.pressure3Plot, = self.ax.plot(self.data[0], self.data[3], label='Pressure3', color="purple")
+        self.pressure4Plot, = self.ax.plot(self.data[0], self.data[4], label='Pressure4', color="green")
+
+        self.temperaturePlot, = self.ax2.plot(self.data[0], self.data[5], label='Temperature', color="orange", marker="*")
 
         # Add Legend
         self.ax.legend()
+        self.ax2.legend()
 
         # Auto format date labels
         self.figure.autofmt_xdate()
         self.canvas = FigureCanvasTkAgg(self.figure, self)
         self.canvas.get_tk_widget().pack()
+        
 
-    def update(self, x_data, P1, P2, P3, P4):
-
-        self.x_data = x_data
-        self.y_data = np.append(self.y_data, [[P1],[P2],[P3],[P4]], axis=1)
-
-
-        # remove oldest data point
-        #self.x_data = self.x_data[1:]
-        #self.y_data = np.delete(self.y_data, (0), axis=1)
-
+    def update(self, data):    
         #  Update plot data
-        self.pressure1Plot.set_xdata(self.x_data)
-        self.pressure2Plot.set_xdata(self.x_data)
-        self.pressure3Plot.set_xdata(self.x_data)
-        self.pressure4Plot.set_xdata(self.x_data)
-        self.pressure1Plot.set_ydata(self.y_data[0])
-        self.pressure2Plot.set_ydata(self.y_data[1])
-        self.pressure3Plot.set_ydata(self.y_data[2])
-        self.pressure4Plot.set_ydata(self.y_data[3])
+        self.pressure1Plot.set_xdata(data[0])
+        self.pressure2Plot.set_xdata(data[0])
+        self.pressure3Plot.set_xdata(data[0])
+        self.pressure4Plot.set_xdata(data[0])
+        self.temperaturePlot.set_xdata(data[0])
+
+        self.pressure1Plot.set_ydata(data[1])
+        self.pressure2Plot.set_ydata(data[2])
+        self.pressure3Plot.set_ydata(data[3])
+        self.pressure4Plot.set_ydata(data[4])
+        self.temperaturePlot.set_ydata(data[5])
+
+        if (len(data[0]) > 1):
+            self.updatePlotLimits(data)
 
         self.canvas.draw_idle()  # redraw plot
-
-        #self.canvas.draw()
-        #self.canvas.flush_events()
-
-class TemperaturePlot(tk.Frame):
-    def __init__(self, parent, x_data):
-        super().__init__(parent)
-
-        # matplotlib figure
-        self.figure = plt.Figure(figsize=(8.5, 3.5), dpi=100)
-        self.ax = self.figure.add_subplot(111)
-
-        # Format the x-axis to show the time
-        myFmt = mdates.DateFormatter("%H:%M:%S")
-        self.ax.xaxis.set_major_formatter(myFmt)
-
-        # Set initial x and y data (Null Data)
-        self.x_data = x_data
-        self.y_data = np.zeros(0)
-
-        # Create the plot
-        self.plot = self.ax.plot(self.x_data, self.y_data, label='Temperature', color="orange")[0]
-        
-        # Label Axes
-        self.ax.set_xlabel('Time (hh:mm:ss)')
-        self.ax.set_ylabel('Temperature (Degrees C)') 
-
-        # Auto format date labels
-        self.figure.autofmt_xdate()
-        self.canvas = FigureCanvasTkAgg(self.figure, self)
-        self.canvas.get_tk_widget().pack()
-
-    def update(self, x_data, temperature):
-        # append new data point to the x and y data
-        self.x_data = x_data
-        self.y_data = np.append(self.y_data, temperature)
-
-        # remove oldest data point
-        #self.x_data = self.x_data[1:]
-        #self.y_data = self.y_data[1:]
-
-        #  update plot data
-        self.plot.set_xdata(self.x_data)
-        self.plot.set_ydata(self.y_data)
-
-        self.canvas.draw_idle()  # redraw plot
-
-
-class ScaleSlider(tk.Frame):
-    def __init__(self, parent, callback, x_data):
-        super().__init__(parent)
-        self.callback = callback
-
-        self.values = x_data
-
-        self.sliderAtMax = True
-        self.sliderAtMin = True
-
-        self.minValue = 0
-        self.maxValue = 0
-        
-        #Labels
-        self.minLabel = tk.Label(self, text="Min:")
-        self.minLabel.grid(column=0, row=0)
-        self.maxLabel = tk.Label(self, text="Max:")
-        self.maxLabel.grid(column=0, row=1)
-
-        # Sliders
-        self.sliderMin = tk.Scale(self, from_=0, to=100, length=600, orient='horizontal', command=self.minSliderChanged, showvalue=0, sliderlength=10, relief=tk.GROOVE)
-        self.sliderMin.grid(column=1, row=0)
-        
-        self.sliderMax = tk.Scale(self, from_=0, to=100, length=600, orient='horizontal', command=self.maxSliderChanged, showvalue=0, sliderlength=10, relief=tk.GROOVE)
-        self.sliderMax.grid(column=1, row=1)
-        self.sliderMax.set(100)
-
-        #Values
-        self.minValueLabel = tk.Label(self, text="...")
-        self.minValueLabel.grid(column=2, row=0)
-        self.maxValueLabel = tk.Label(self, text="...")
-        self.maxValueLabel.grid(column=2, row=1)
-
-    def minSliderChanged(self, minValue):
-        self.minValue = int(minValue)
-        if (self.minValue >= self.maxValue - 1):
-            self.minValue = self.maxValue - 1
-            self.sliderMin.set(self.minValue)
-        if (self.minValue == 0):
-            self.sliderAtMin= True
-        else:
-            self.sliderAtMin = False
-        
-        self.minValueLabel.configure(text=f"{self.values[self.minValue]}"[10:-4])
-        self.callback(self.minValue, self.maxValue)
     
-    def maxSliderChanged(self, maxValue):
-        self.maxValue = int(maxValue)
-        if (self.maxValue <= self.minValue + 1):
-            self.maxValue = self.minValue + 1
-            self.sliderMax.set(self.maxValue)
-        if (self.maxValue == self.values.size - 1):
-            self.sliderAtMax = True
-        else:
-            self.sliderAtMax = False
+    def updatePlotLimits(self, data):
+        self.ax.set_xlim(data[0][0],data[0][len(data[0])-1])
+        
+        self.ax.set_ylim(data[1][0]*0.9, data[1][len(data[1])-1]*1.1)
+        
+        maxYValue = np.max(np.array(data[1:4])) #[:, minIndex:maxIndex+1]
 
-        self.maxValueLabel.configure(text=f"{self.values[self.maxValue]}"[10:-4])
-        self.callback(self.minValue, self.maxValue)
-
-    def update(self, x_data):
-        self.values = x_data
-        maxIndex = self.values.size - 1
-        self.sliderMin.configure(to=maxIndex)
-        self.sliderMax.configure(to=maxIndex)
-        if self.sliderAtMax:
-            self.maxValue = self.values.size - 1
-            self.sliderMax.set(self.maxValue)
-            if not self.sliderAtMin:
-                self.minValue = self.minValue + 1
-                self.sliderMin.set(self.minValue)
-            else:
-                self.minValueLabel.configure(text=f"{self.values[self.minValue]}"[10:-4])
+        #self.pressurePlot.ax.set_xlim(self.pressurePlot.x_data[minIndex], self.pressurePlot.x_data[maxIndex])
+        self.ax.set_ylim(np.min(np.array(data[1:4]))-maxYValue*0.1, maxYValue*1.10)
+        self.ax2.set_ylim(np.min(data[5])*0.5, np.max(data[5])*1.5)
 
 class PlotSet(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.x_data = np.zeros(0)
+        self.data = np.zeros((6,0))
 
-        self.pressurePlot = PressurePlot(self, self.x_data)
-        self.pressurePlot.grid(row=getNextRow(self), column=0)
+        self.plot = Plot(self, self.data)
+        self.plot.grid(row=0, column=0)
 
-        self.slider = ScaleSlider(self, self.updatePlotLimits, self.x_data)
-        self.slider.grid(row=getNextRow(self), column=0)
-
-        self.temperaturePlot = TemperaturePlot(self, self.x_data)
-        self.temperaturePlot.grid(row=getNextRow(self), column=0)
+        #self.slider = ScaleSlider(self, self.updatePlotLimits, self.x_data)
+        #self.slider.grid(row=2, column=0)
 
     def update(self, time, data):
-        self.x_data = np.append(self.x_data, time)
+        self.data = np.append(self.data, [[time],[data.P1],[data.P2],[data.P3],[data.P4],[data.T1]], axis=1)
 
-        self.slider.update(self.x_data)
+        #self.slider.update(self.x_data)
         
-        self.pressurePlot.update(self.x_data, data.P1, data.P2, data.P3, data.P4)
-        self.temperaturePlot.update(self.x_data, data.T1)
+        self.plot.update(self.data)
 
         # Update Limits
-        if self.slider.sliderAtMax:
-            self.updatePlotLimits(self.slider.minValue, self.slider.maxValue)
-
-    def updatePlotLimits(self, minIndex, maxIndex):
-
-        maxYValue = np.max(np.array(self.pressurePlot.y_data)[:, minIndex:maxIndex+1])
-
-        self.pressurePlot.ax.set_xlim(self.pressurePlot.x_data[minIndex], self.pressurePlot.x_data[maxIndex])
-        self.pressurePlot.ax.set_ylim(np.min(np.array(self.pressurePlot.y_data)[:, minIndex:maxIndex+1])-maxYValue*0.1, maxYValue*1.10)
-        self.temperaturePlot.ax.set_xlim(self.temperaturePlot.x_data[minIndex], self.temperaturePlot.x_data[maxIndex])
-        self.temperaturePlot.ax.set_ylim(np.min(self.temperaturePlot.y_data[minIndex:maxIndex+1])-5, np.max(self.temperaturePlot.y_data[minIndex:maxIndex+1])+5)
-
-
-
-
+        #if self.slider.sliderAtMax:
+        #    self.updatePlotLimits(self.slider.minValue, self.slider.maxValue)
 
 # Good Code
-
 class LabeledToggle(tk.Frame):
     def __init__(self, parent, text, callback, command, armed_state_var):
         super().__init__(parent)
@@ -277,7 +217,6 @@ class LabeledToggle(tk.Frame):
 
                 self.callback(self.command+"1")
 
-
 class App(tk.Tk):
     def __init__(self, arduino):
         super().__init__()
@@ -300,7 +239,7 @@ class App(tk.Tk):
 
         # Plots and Sliders
         self.plotSet = PlotSet(self.plotsFrame)
-        self.plotSet.grid(row=getNextRow(self.plotsFrame), column=0)
+        self.plotSet.grid(row=0, column=0)
 
         # Right Hand Frame
         self.rightFrame = tk.Frame(self)
@@ -346,44 +285,53 @@ class App(tk.Tk):
         self.armed_state_var = tk.BooleanVar()
         self.armed_state_var.set(False) #set check state
         self.armed_checkbutton = tk.Checkbutton(self.buttonsFrame, text='Armed', var=self.armed_state_var)
-        self.armed_checkbutton.grid(row=0, column=0, pady=(20,0), columnspan=2)
+        self.armed_checkbutton.grid(row=0, column=0, pady=(20,0), columnspan=3)
 
         # Solenoid Toggles
         self.solenoidFire_toggle = LabeledToggle(self.buttonsFrame, text="Fire", callback=self.arduino.sendCommand, command="00", armed_state_var=self.armed_state_var)
-        self.solenoidFire_toggle.grid(row=1, column=0, pady=5, padx=20)
+        self.solenoidFire_toggle.grid(row=1, column=0, pady=10, padx=20)
 
         self.solenoidFill_toggle = LabeledToggle(self.buttonsFrame, text="Fill", callback=self.arduino.sendCommand, command="01", armed_state_var=self.armed_state_var)
-        self.solenoidFill_toggle.grid(row=2, column=0, pady=5, padx=20)
+        self.solenoidFill_toggle.grid(row=2, column=0, pady=10, padx=20)
 
         self.solenoidVent_toggle = LabeledToggle(self.buttonsFrame, text="Vent", callback=self.arduino.sendCommand, command="02", armed_state_var=self.armed_state_var)
-        self.solenoidVent_toggle.grid(row=3, column=0, pady=5, padx=20)
+        self.solenoidVent_toggle.grid(row=3, column=0, pady=10, padx=20)
 
         self.solenoidPower_toggle = LabeledToggle(self.buttonsFrame, text="Power", callback=self.arduino.sendCommand, command="03", armed_state_var=self.armed_state_var)
-        self.solenoidPower_toggle.grid(row=4, column=0, pady=5, padx=20)
+        self.solenoidPower_toggle.grid(row=4, column=0, pady=10, padx=20)
 
         self.solenoid5_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 5", callback=self.arduino.sendCommand, command="04", armed_state_var=self.armed_state_var)
-        self.solenoid5_toggle.grid(row=5, column=0, pady=5, padx=20)
+        self.solenoid5_toggle.grid(row=5, column=0, pady=10, padx=20)
 
         self.solenoid6_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 6", callback=self.arduino.sendCommand, command="05", armed_state_var=self.armed_state_var)
-        self.solenoid6_toggle.grid(row=6, column=0, pady=0, padx=20)
+        self.solenoid6_toggle.grid(row=1, column=1, pady=10, padx=20)
 
         self.solenoid7_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 7", callback=self.arduino.sendCommand, command="06", armed_state_var=self.armed_state_var)
-        self.solenoid7_toggle.grid(row=1, column=1, pady=5, padx=20)
+        self.solenoid7_toggle.grid(row=2, column=1, pady=10, padx=20)
 
         self.solenoid8_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 8", callback=self.arduino.sendCommand, command="07", armed_state_var=self.armed_state_var)
-        self.solenoid8_toggle.grid(row=2, column=1, pady=5, padx=20)
+        self.solenoid8_toggle.grid(row=3, column=1, pady=10, padx=20)
 
         self.solenoid9_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 9", callback=self.arduino.sendCommand, command="08", armed_state_var=self.armed_state_var)
-        self.solenoid9_toggle.grid(row=3, column=1, pady=5, padx=20)
+        self.solenoid9_toggle.grid(row=4, column=1, pady=10, padx=20)
 
         self.solenoid10_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 10", callback=self.arduino.sendCommand, command="09", armed_state_var=self.armed_state_var)
-        self.solenoid10_toggle.grid(row=4, column=1, pady=5, padx=20)
+        self.solenoid10_toggle.grid(row=5, column=1, pady=10, padx=20)
 
         self.solenoid11_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 11", callback=self.arduino.sendCommand, command="10", armed_state_var=self.armed_state_var)
-        self.solenoid11_toggle.grid(row=5, column=1, pady=5, padx=20)
+        self.solenoid11_toggle.grid(row=1, column=2, pady=10, padx=20)
 
         self.solenoid12_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 12", callback=self.arduino.sendCommand, command="11", armed_state_var=self.armed_state_var)
-        self.solenoid12_toggle.grid(row=6, column=1, pady=5, padx=20)
+        self.solenoid12_toggle.grid(row=2, column=2, pady=10, padx=20)
+
+        self.solenoid11_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 13", callback=self.arduino.sendCommand, command="10", armed_state_var=self.armed_state_var)
+        self.solenoid11_toggle.grid(row=3, column=2, pady=10, padx=20)
+
+        self.solenoid12_toggle = LabeledToggle(self.buttonsFrame, text="Solenoid 14", callback=self.arduino.sendCommand, command="11", armed_state_var=self.armed_state_var)
+        self.solenoid12_toggle.grid(row=4, column=2, pady=10, padx=20)
+
+        self.clearData_button = tk.Button(self.buttonsFrame, text="Clear Data", command=self.clearData)
+        self.clearData_button.grid(row=7, column=0, columnspan=3, pady=20)
 
     def close(self):
         print("Closing Application") 
@@ -395,13 +343,18 @@ class App(tk.Tk):
     def slider(self, name):
         print(name)
 
+    def clearData(self):
+        self.plotSet = PlotSet(self.plotsFrame)
+        self.plotSet.grid(row=0, column=0)
+
     # The main code loop that runs in the background of the window (Every "frequency" milliseconds)
     def loop(self, frequency):
         try:
-            #Check for received data
-            self.arduino.recvData()                
-        
             time = datetime.now()
+            
+            # Check for received data
+            self.arduino.recvData()
+
             # Update Plots
             self.plotSet.update(time, self.arduino.data)
             
@@ -410,19 +363,18 @@ class App(tk.Tk):
             self.pressureReadout1.config(text=f'{round(self.arduino.data.P1, 2)}')
             self.pressureReadout2.config(text=f'{round(self.arduino.data.P2, 2)}')
             self.pressureReadout3.config(text=f'{round(self.arduino.data.P3, 2)}')
-            self.pressureReadout4.config(text=f'{round(self.arduino.data.P4,2)}')
+            self.pressureReadout4.config(text=f'{round(self.arduino.data.P4, 2)}')
 
-            self.logger.write(f"{time},{self.arduino.data.L1},{self.arduino.data.P1},{self.arduino.data.P2},{self.arduino.data.P3},{self.arduino.data.P4},{self.arduino.data.T1},{self.arduino.data.Safe}\n")
+            # Log data to file
+            self.logger.write(time, self.arduino.data)
+
         except Exception as e:
             print(f"Error Parsing Arduino data: '{e}'")
             import traceback
             traceback.print_exc()
             
-            
-
         # Run Loop again after "frequency" milliseconds
         self.after(frequency, self.loop, frequency)
-
 
 class Logger():
     def __init__(self):
@@ -434,10 +386,10 @@ class Logger():
             os.makedirs(dataFilesPath)
         date = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.file = open(f"{dataFilesPath}/data_{date}.txt", "w")
-        self.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
+        self.file.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
 
-    def write(self, message):
-        self.file.write(message)
+    def write(self, time, data):
+        self.file.write(f"{time},{data.L1},{data.P1},{data.P2},{data.P3},{data.P4},{data.T1},{data.Safe}\n")
 
     def close(self):
         self.file.close()
