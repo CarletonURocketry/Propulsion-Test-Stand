@@ -1,3 +1,10 @@
+"""The Test Stand application is intended to be used for the Carleton CUInSpace rocket team test stand
+for the new hybrid rocket engine.
+
+Author: Michael Marsland (michaelmarsland@cmail.carleton.ca)
+Date: June 11th, 2022
+"""
+
 # Tkinter
 import tkinter as tk
 from tkinter import ttk
@@ -8,14 +15,13 @@ import matplotlib.dates as mdates
 # Serial
 from pySerialTransfer import pySerialTransfer as txfer
 # Other
-import time
 from datetime import datetime, timedelta
-import random
 import numpy as np
-import os
-import math
+import time, os, math, random
 
 
+""" Plot defines the tkinter component for the Pressure and Temperature Plot
+"""
 class Plot(tk.Frame):
     def __init__(self, parent, data):  
         super().__init__(parent)
@@ -26,7 +32,6 @@ class Plot(tk.Frame):
         self.ax = self.figure.add_subplot(111)
         self.figure.subplots_adjust(left=0.1, bottom=0, right=0.92, top=0.97, wspace=0, hspace=0)
         
-
         # Label Axes
         self.ax2 = self.ax.twinx()
 
@@ -71,6 +76,9 @@ class Plot(tk.Frame):
             
         self.canvas.draw_idle()  # redraw plot
 
+""" PlotSet defines the tkinter component for the Pressure and Temperature Plot as well as the
+controls for the plot including the slider, range, display checkboxes and save plot button.
+"""
 class PlotSet(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -161,7 +169,6 @@ class PlotSet(tk.Frame):
         minIndex = self.getMinIndex(maxIndex)
         self.plot.ax.set_xlim(data[0][minIndex], data[0][maxIndex])
 
-        #TODO: Make adjust for only shown data
         maxPressure = 0
         minPressure = 99999999
         if (self.displayPressure1.get() == 1):
@@ -178,13 +185,14 @@ class PlotSet(tk.Frame):
             minPressure = min(minPressure, np.min(np.array(data[4, minIndex:maxIndex+1])))
 
         #Make only for shown range
-        #maxYValue = np.max(np.array(data[1:5, minIndex:maxIndex+1])) #[:, minIndex:maxIndex+1]
         self.plot.ax.set_ylim(minPressure-abs(maxPressure)*0.1, maxPressure*1.10)
 
         maxTemp = np.max(data[5, minIndex:maxIndex+1])
         minTemp = np.min(data[5, minIndex:maxIndex+1])
         self.plot.ax2.set_ylim(minTemp-abs(maxTemp)*0.2, maxTemp*1.2)
 
+""" ScaleSlider defines the component for the slider for the plot
+"""
 class ScaleSlider(tk.Frame):
     def __init__(self, parent, plotSet, callback):
         super().__init__(parent)
@@ -226,6 +234,9 @@ class ScaleSlider(tk.Frame):
             self.slider.set(self.index)
             self.sliderLabel.configure(text=f"{self.plotSet.data[0][self.index]}"[10:-4])
 
+""" LabeledToggle defines the component for the toggle switches that are used
+to control the solenoid valves
+"""
 class LabeledToggle(tk.Frame):
     def __init__(self, parent, id, callback, command, armed_state_var):
         super().__init__(parent)
@@ -249,6 +260,7 @@ class LabeledToggle(tk.Frame):
         
 
     def labelClicked(self, event):
+        # Replaces the default left click behavior with a right click
         widget = event.widget
         entry_widget = tk.Entry(widget)
         entry_widget.place(x=0, y=0, anchor="nw", relwidth=1.0, relheight=1.0)
@@ -289,6 +301,7 @@ class LabeledToggle(tk.Frame):
         f.close()
 
     def readLabel(self):
+        # Reads the labels from the labels file
         f = open("labels.csv", "r")
         label = ""
         for l in f:
@@ -297,6 +310,9 @@ class LabeledToggle(tk.Frame):
         f.close()
         return label
 
+""" App is the main component for the application. It is the main tkinter window as well as
+the main running code for the application
+"""
 class App(tk.Tk):
     def __init__(self, arduino, refreshRate):
         super().__init__()
@@ -427,7 +443,7 @@ class App(tk.Tk):
         self.plotSet.grid(row=0, column=0)
 
 
-    # The main code loop that runs in the background of the window (Every "frequency" milliseconds)
+    # The main code loop that runs in the background of the window (Repeatedly after "frequency" milliseconds)
     def loop(self, frequency):
         try:
             time = datetime.now()
@@ -459,6 +475,8 @@ class App(tk.Tk):
         # Run Loop again after "frequency" milliseconds
         self.after(frequency, self.loop, frequency)
 
+""" Logger is used to log the data to a dataFile while the application is running
+"""
 class Logger():
     def __init__(self):
         pass
@@ -477,6 +495,8 @@ class Logger():
     def close(self):
         self.file.close()
 
+""" This Data class defines the data structure that is received from the Ardiono
+"""
 class Data():
         millisSince = 0
         L1 = 0.0 #Loadcell
@@ -487,6 +507,10 @@ class Data():
         T1 = 0.0 #Tank Temperature
         Safety = False
 
+""" The Arduino class defines the connection to the arduino connected to the computer on which
+the application runs, this allows the application to read data off the Arduino through a serial
+connection
+"""
 class Arduino():
     def __init__(self, serialPort):
         #Initialize Serial Link
@@ -555,7 +579,7 @@ class Arduino():
     
     def sendCommand(self, command):
         print(command)
-        # Commands encoded as 2 digit numbers: 1-4 for solenoid number, and 0-1 for off/on
+        # Commands encoded as 3 digit numbers: 01-... for solenoid number, and 0-1 for off/on
         self.control_list[-int(command[0]+command[1])-1] = int(command[2])
         self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2)
         try:
@@ -567,7 +591,10 @@ class Arduino():
             traceback.print_exc()
                
             self.link.close()    
-    
+
+""" The ArduinoSim is used to allow the application to be tested (for development) without
+needing to connect an arduino
+"""
 class ArduinoSim():
     def __init__(self):
         self.data = Data()
@@ -603,13 +630,19 @@ class ArduinoSim():
     def sendCommand(self, command):
         print(f"Sim send command: {command}") 
   
+""" The main code block is run when this python file is run and starts the application"""
 if __name__ == "__main__":
 
+    # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
     serialPort = "COM3"
     #arduino = Arduino(serialPort)
+
+    # Currently using the ArduinoSim class to test the application with fake data.
     arduino = ArduinoSim()
 
-    refreshRate = 500 # Ms
+    # Refresh Rate is how often the UI readouts are updated to allow for better readability
+    refreshRate = 500 # The UI updates every 500 ms
     app = App(arduino, refreshRate)
+    # The app main loop will run repeatedly in a loop with at 10ms delay to allow the UI to update
     app.loop(10)
     app.mainloop()
