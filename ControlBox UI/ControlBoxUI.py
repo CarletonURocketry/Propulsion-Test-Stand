@@ -6,9 +6,11 @@ Date: June 11th, 2022
 """
 
 # Tkinter
+from cgi import test
 from ctypes.wintypes import INT
 import tkinter as tk
 from tkinter import ttk
+from turtle import width
 # Matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -151,8 +153,10 @@ class PlotSet(tk.Frame):
         self.loadCB = tk.Checkbutton(self.plotButtonsFrame, text="Load", variable=self.displayLoad, command=lambda: self.checkboxClicked(6, self.displayLoad))
         self.loadCB.grid(row=2, column=5)
         
-
-        self.saveButton = tk.Button(self.plotButtonsFrame, text="Save Plot", command=self.savePlot)
+        self.clearData_button = tk.Button(self.plotButtonsFrame, text="Clear Data", command=self.clearData)
+        self.clearData_button.grid(row=1, column=6)
+        
+        self.saveButton = tk.Button(self.plotButtonsFrame, text="Save  Plot", command=self.savePlot)
         self.saveButton.grid(row=2, column=6)
     
     def checkboxClicked(self, id, var):
@@ -183,6 +187,9 @@ class PlotSet(tk.Frame):
 
         date = datetime.now().strftime("%Y%m%d_%H%M%S")
         self.plot.figure.savefig(f"{figuresPath}/plot_{date}.png")
+        
+    def clearData(self):
+        self.data = np.zeros((7,0))
 
     def update(self, time, data):
 
@@ -227,8 +234,6 @@ class PlotSet(tk.Frame):
 
         self.plot.ax3.set_ylim(-500, 10000)
         
-        
-
 """ ScaleSlider defines the component for the slider for the plot
 """
 class ScaleSlider(tk.Frame):
@@ -353,12 +358,23 @@ class LabeledToggle(tk.Frame):
 the main running code for the application
 """
 class App(tk.Tk):
-    def __init__(self, arduino, refreshRate):
+    def __init__(self, arduino, refreshRate, debug = False):
         super().__init__()
 
         self.arduino = arduino
         self.lastDisplayTime = datetime.now()
         self.refreshRate = refreshRate
+        
+        indicators = [[0,"Error","red",1],[0,"Warning","yellow",2],[0,"Waiting","blue",256],[0,"Packet","blue",512],
+                [0,"Armed","yellow",4],[0,"Active","yellow",8],[0,"Abort","red",16],[0,"Invalid","red",32],
+                [0,"Mismatch","red",1024],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],
+                [0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],
+                [0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],
+                [0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],
+                [0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],
+                [0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0],[0,"Unused","red",0]]
+        
+        self.indicators = indicators
 
         self.protocol("WM_DELETE_WINDOW", self.close)
 
@@ -389,38 +405,137 @@ class App(tk.Tk):
         self.temperatureLabel.grid(row=0, column=0, columnspan=2)
         self.temperatureReadout = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
         self.temperatureReadout.grid(row=1, column=0, columnspan=2)
-
-        # Pressure Readouts
-        self.pressureLabel1 = tk.Label(self.readoutsFrame, text='Pressure 1', font=("Arial", 10))
-        self.pressureLabel1.grid(row=2, column=0)
-        self.pressureReadout1 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
-        self.pressureReadout1.grid(row=3, column=0, padx=20)
-
-        self.pressureLabel2 = tk.Label(self.readoutsFrame, text='Pressure 2', font=("Arial", 10))
-        self.pressureLabel2.grid(row=2, column=1)
-        self.pressureReadout2 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
-        self.pressureReadout2.grid(row=3, column=1, padx=20)
-
-        self.pressureLabel3 = tk.Label(self.readoutsFrame, text='Pressure 3', font=("Arial", 10))
-        self.pressureLabel3.grid(row=4, column=0)
-        self.pressureReadout3 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
-        self.pressureReadout3.grid(row=5, column=0, padx=20)
-
-        self.pressureLabel4 = tk.Label(self.readoutsFrame, text='Pressure 4', font=("Arial", 10))
-        self.pressureLabel4.grid(row=4, column=1)
-        self.pressureReadout4 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
-        self.pressureReadout4.grid(row=5, column=1, padx=20)
-
-        self.buttonsFrame = tk.Frame(self.rightFrame)
-        self.buttonsFrame.grid(row=1, column=0)
-        self.rightFrame.grid_columnconfigure(0, weight=1)
         
         #Load Readout
         self.loadLabel = tk.Label(self.readoutsFrame, text='Load', font=("Arial", 10))
-        self.loadLabel.grid(row=6, column=0, columnspan=2)
+        self.loadLabel.grid(row=2, column=0, columnspan=2)
         self.loadReadout = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
-        self.loadReadout.grid(row=7, column=0, columnspan=2)
+        self.loadReadout.grid(row=3, column=0, columnspan=2)
+
+        # Pressure Readouts
+        self.pressureLabel1 = tk.Label(self.readoutsFrame, text='Pressure 1', font=("Arial", 10))
+        self.pressureLabel1.grid(row=4, column=0)
+        self.pressureReadout1 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
+        self.pressureReadout1.grid(row=5, column=0, padx=20)
+
+        self.pressureLabel2 = tk.Label(self.readoutsFrame, text='Pressure 2', font=("Arial", 10))
+        self.pressureLabel2.grid(row=4, column=1)
+        self.pressureReadout2 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
+        self.pressureReadout2.grid(row=5, column=1, padx=20)
+
+        self.pressureLabel3 = tk.Label(self.readoutsFrame, text='Pressure 3', font=("Arial", 10))
+        self.pressureLabel3.grid(row=6, column=0)
+        self.pressureReadout3 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
+        self.pressureReadout3.grid(row=7, column=0, padx=20)
+
+        self.pressureLabel4 = tk.Label(self.readoutsFrame, text='Pressure 4', font=("Arial", 10))
+        self.pressureLabel4.grid(row=6, column=1)
+        self.pressureReadout4 = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
+        self.pressureReadout4.grid(row=7, column=1, padx=20)
         
+        #Status Indicators
+        self.indicatorsFrame = tk.Frame(self.rightFrame)
+        self.indicatorsFrame.grid(row=1, column=0 ,columnspan=2, pady=25)
+
+        i = 0
+        
+        for x in range(32):
+            if indicators[x][1] != "Unused":
+                indicator = tk.Label(self.indicatorsFrame, text=indicators[x][1], width = 10, height = 2 , border = 5,relief="sunken")
+                indicator.grid(column=x%4 , row = i)
+                indicators[x][0] = indicator
+            if x%4 == 3:
+                i += 1
+        
+        if debug:
+            controls = ControlsApp(arduino,250)
+            controls.grab_set()
+        
+        
+
+    def close(self):
+        print("Closing Application") 
+        if (hasattr(self, 'arduino')):
+            self.arduino.close()
+        self.logger.close()
+        self.destroy()
+    
+    def slider(self, name):
+        print(name)
+
+    # The main code loop that runs in the background of the window (Repeatedly after "frequency" milliseconds)
+    def loop(self, frequency):
+        try:
+            time = datetime.now()
+            
+            global lastStatus
+            # Check for received data
+            if (self.arduino.recvData()):
+                output = ""
+                for x in self.indicators:
+                    if x[0] != 0:
+                        if self.arduino.data.status_int & x[3]:
+                            output += x[1]
+                            x[0].config(bg = x[2])
+                        else:
+                            x[0].config(bg = "white")
+                            
+                    
+                if lastStatus != self.arduino.data.status_int:
+                    print(output)
+                    lastStatus = self.arduino.data.status_int
+                
+                
+                # Update Plots
+                self.plotSet.update(time, self.arduino.data)
+
+                currentTime = datetime.now()
+                # Update Readouts if 500ms have passed
+                if ((currentTime - self.lastDisplayTime).total_seconds() * 1000 > self.refreshRate):
+                    self.temperatureReadout.config(text=f'{round(self.arduino.data.T1, 2)}')
+                    self.pressureReadout1.config(text=f'{round(self.arduino.data.P1, 2)}')
+                    self.pressureReadout2.config(text=f'{round(self.arduino.data.P2, 2)}')
+                    self.pressureReadout3.config(text=f'{round(self.arduino.data.P3, 2)}')
+                    self.pressureReadout4.config(text=f'{round(self.arduino.data.P4, 2)}')
+                    self.loadReadout.config(text=f'{round(self.arduino.data.L1, 2)}')
+                    self.lastDisplayTime = currentTime
+
+                # Log data to file
+                self.logger.write(time, self.arduino.data)
+
+        except Exception as e:
+            print(f"Error Parsing Arduino data: '{e}'")
+            import traceback
+            traceback.print_exc()
+            
+        # Run Loop again after "frequency" milliseconds
+        self.after(frequency, self.loop, frequency)
+        
+""" ControlsApp is used to send controls from the computer for debugging
+"""
+class ControlsApp(tk.Toplevel):
+    def __init__(self, arduino, refreshRate):
+        super().__init__()
+
+        self.arduino = arduino
+        self.lastDisplayTime = datetime.now()
+        self.refreshRate = refreshRate
+
+        self.protocol("WM_DELETE_WINDOW", self.destroy)
+        
+        # Root window configuration
+        self.title('Controls GUI')
+        self.geometry('500x500')
+        self.row = 0
+
+        # Right Hand Frame
+        self.rightFrame = tk.Frame(self)
+        self.rightFrame.grid(row=0, column=1)
+        self.grid_columnconfigure(1, weight=1)
+        
+        self.buttonsFrame = tk.Frame(self.rightFrame)
+        self.buttonsFrame.grid(row=1, column=0)
+        self.rightFrame.grid_columnconfigure(0, weight=1)
 
         # Armed Check
         self.armed_state_var = tk.BooleanVar()
@@ -471,81 +586,12 @@ class App(tk.Tk):
         self.solenoid14_toggle = LabeledToggle(self.buttonsFrame, id=14, callback=self.arduino.sendCommand, command="13", armed_state_var=self.armed_state_var)
         self.solenoid14_toggle.grid(row=4, column=2, pady=10, padx=20)
 
-        self.clearData_button = tk.Button(self.buttonsFrame, text="Clear Data", command=self.clearData)
-        self.clearData_button.grid(row=7, column=0, columnspan=3, pady=20)
-
     def close(self):
         print("Closing Application") 
         if (hasattr(self, 'arduino')):
             self.arduino.close()
         self.logger.close()
         self.destroy()
-    
-    def slider(self, name):
-        print(name)
-
-    def clearData(self):
-        self.plotSet = PlotSet(self)
-        self.plotSet.grid(row=0, column=0)
-
-
-    # The main code loop that runs in the background of the window (Repeatedly after "frequency" milliseconds)
-    def loop(self, frequency):
-        try:
-            time = datetime.now()
-            
-            global lastStatus
-            # Check for received data
-            if (self.arduino.recvData()):
-                output = ""
-                if self.arduino.data.status_int & 1:
-                    output += "Error "
-                if self.arduino.data.status_int & 2:
-                    output += "Warn "
-                if self.arduino.data.status_int & 4:
-                    output += "Armed "
-                if self.arduino.data.status_int & 8:
-                    output += "Active "
-                if self.arduino.data.status_int & 16:
-                    output += "Abort "
-                if self.arduino.data.status_int & 32:
-                    output += "Invalid "
-                if self.arduino.data.status_int & 256:
-                    output += "Waiting "
-                if self.arduino.data.status_int & 512:
-                    output += "Packet "
-                if self.arduino.data.status_int == 0:
-                    output = "Nominal"
-                    
-                if lastStatus != self.arduino.data.status_int:
-                    print(output)
-                    lastStatus = self.arduino.data.status_int
-                
-                
-                # Update Plots
-                self.plotSet.update(time, self.arduino.data)
-
-                currentTime = datetime.now()
-                # Update Readouts if 500ms have passed
-                if ((currentTime - self.lastDisplayTime).total_seconds() * 1000 > self.refreshRate):
-                    self.temperatureReadout.config(text=f'{round(self.arduino.data.T1, 2)}')
-                    self.pressureReadout1.config(text=f'{round(self.arduino.data.P1, 2)}')
-                    self.pressureReadout2.config(text=f'{round(self.arduino.data.P2, 2)}')
-                    self.pressureReadout3.config(text=f'{round(self.arduino.data.P3, 2)}')
-                    self.pressureReadout4.config(text=f'{round(self.arduino.data.P4, 2)}')
-                    self.loadReadout.config(text=f'{round(self.arduino.data.L1, 2)}')
-                    self.lastDisplayTime = currentTime
-
-                # Log data to file
-                self.logger.write(time, self.arduino.data)
-
-        except Exception as e:
-            print(f"Error Parsing Arduino data: '{e}'")
-            import traceback
-            traceback.print_exc()
-            
-        # Run Loop again after "frequency" milliseconds
-        self.after(frequency, self.loop, frequency)
 
 """ Logger is used to log the data to a dataFile while the application is running
 """
@@ -706,14 +752,16 @@ if __name__ == "__main__":
 
     # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
     serialPort = "COM4"
-    #arduino = Arduino(serialPort)
+    arduino = Arduino(serialPort)
 
     # Currently using the ArduinoSim class to test the application with fake data.
-    arduino = ArduinoSim()
+    #arduino = ArduinoSim()
 
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
     refreshRate = 250 # The UI updates every 500 ms
-    app = App(arduino, refreshRate)
+    app = App(arduino, refreshRate, debug = True)
+    
     # The app main loop will run repeatedly in a loop with at 10ms delay to allow the UI to update
     app.loop(10)
     app.mainloop()
+    
