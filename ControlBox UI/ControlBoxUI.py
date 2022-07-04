@@ -34,22 +34,29 @@ class Plot(tk.Frame):
 
         # matplotlib figure
         self.figure = plt.Figure(figsize=(8,7.4), dpi=100)
-        self.ax = self.figure.add_subplot(111)
+        #Pressure subplot
+        self.ax = self.figure.add_subplot(212)
+        #Load/Temp subplot
+        self.ax2 = self.figure.add_subplot(211)
+         
         self.figure.subplots_adjust(left=0.1, bottom=0, right=0.9, top=0.97, wspace=0, hspace=0)
         
         # Label Axes
-        self.ax2 = self.ax.twinx()
-        self.ax3 = self.ax.twinx()
+        self.ax3 = self.ax2.twinx()
 
         self.ax.set_xlabel('Time (hh:mm:ss)')
         self.ax.set_ylabel('Pressure (PSI)') 
         self.ax2.set_ylabel("Temperature (Degrees C)")
-        self.ax3.set_ylabel("Load (N)",labelpad = 8.0,color = "brown")
+        self.ax3.set_ylabel("Load (N)")
 
         # Format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
         self.ax.xaxis.set_major_formatter(myFmt)
-        self.ax3.tick_params(axis="y",color = "brown")
+        self.ax2.xaxis.set_major_formatter(myFmt)
+        
+        #Vertical grid lines
+        self.ax.grid(axis = "both")
+        self.ax2.grid(axis = "both")
 
         # Create the plots
         self.pressure1Plot, = self.ax.plot(data[0], data[1], label='Pressure1', color="red")
@@ -57,13 +64,17 @@ class Plot(tk.Frame):
         self.pressure3Plot, = self.ax.plot(data[0], data[3], label='Pressure3', color="purple")
         self.pressure4Plot, = self.ax.plot(data[0], data[4], label='Pressure4', color="green")
 
-        self.temperaturePlot, = self.ax2.plot(data[0], data[5], label='Temperature', color="orange", linestyle="dashed")
+        self.temperaturePlot, = self.ax2.plot(data[0], data[5], label='Temperature', color="red", linestyle="dashed")
         
-        self.loadPlot, = self.ax3.plot(data[0], data[6], label='Load', color="brown")
+        self.loadPlot, = self.ax3.plot(data[0], data[6], label='Load', color="blue")
 
-        lns = [self.pressure1Plot, self.pressure2Plot, self.pressure3Plot, self.pressure4Plot, self.temperaturePlot, self.loadPlot]
+        lns = [self.pressure1Plot, self.pressure2Plot, self.pressure3Plot, self.pressure4Plot]
         labs = [l.get_label() for l in lns]
         self.ax.legend(lns, labs, loc=2)
+        
+        lns2 = [ self.temperaturePlot, self.loadPlot]
+        labs2 = [l2.get_label() for l2 in lns2]
+        self.ax2.legend(lns2, labs2, loc=2)
 
         # Auto format date labels
         self.figure.autofmt_xdate()
@@ -203,32 +214,18 @@ class PlotSet(tk.Frame):
         if minIndex > 0: 
             self.data = np.delete(self.data,[0,minIndex,1],1) #Delete old data from memory
             
-        self.plot.ax.set_xlim(data[0][minPlotIndex], data[0][maxIndex-minIndex]) #Resize Plot
-
-        maxPressure = 0
-        minPressure = 99999999
-        if (self.displayPressure1.get() == 1):
-            maxPressure = max(maxPressure, np.max(np.array(data[1, minIndex:maxIndex+1])))
-            minPressure = min(minPressure, np.min(np.array(data[1, minIndex:maxIndex+1])))
-        if (self.displayPressure2.get() == 1):
-            maxPressure = max(maxPressure, np.max(np.array(data[2, minIndex:maxIndex+1])))
-            minPressure = min(minPressure, np.min(np.array(data[2, minIndex:maxIndex+1])))
-        if (self.displayPressure3.get() == 1):
-            maxPressure = max(maxPressure, np.max(np.array(data[3, minIndex:maxIndex+1])))
-            minPressure = min(minPressure, np.min(np.array(data[3, minIndex:maxIndex+1])))
-        if (self.displayPressure4.get() == 1):
-            maxPressure = max(maxPressure, np.max(np.array(data[4, minIndex:maxIndex+1])))
-            minPressure = min(minPressure, np.min(np.array(data[4, minIndex:maxIndex+1])))
+        self.plot.ax.set_xlim(data[0][minPlotIndex], data[0][maxIndex-minIndex])
+        self.plot.ax2.set_xlim(data[0][minPlotIndex], data[0][maxIndex-minIndex])#Resize Plot
 
         #Make only for shown range
-        self.plot.ax.set_ylim(minPressure-abs(maxPressure)*0.1, maxPressure*1.10)
+        self.plot.ax.set_ylim(-15, 1000)
 
         maxTemp = np.max(data[5, minIndex:maxIndex+1])
         minTemp = np.min(data[5, minIndex:maxIndex+1])
-        self.plot.ax2.set_ylim(minTemp-abs(maxTemp)*0.2, maxTemp*1.2)
+        self.plot.ax2.set_ylim(-50, 1000)
         
 
-        self.plot.ax3.set_ylim(0, 10000)
+        self.plot.ax3.set_ylim(-500, 10000)
         
         
 
@@ -712,7 +709,7 @@ if __name__ == "__main__":
     #arduino = Arduino(serialPort)
 
     # Currently using the ArduinoSim class to test the application with fake data.
-    arduino = Arduino(serialPort)
+    arduino = ArduinoSim()
 
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
     refreshRate = 250 # The UI updates every 500 ms
