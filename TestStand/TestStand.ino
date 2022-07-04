@@ -39,29 +39,47 @@ HX711_ADC LoadCell(HX711_dout, HX711_sck);
 
 bool loadC;
 
-//SerialTransfer Stuff
+//SerialTransfer
 SerialTransfer testStand;
 
 struct STRUCT1 {
-  float millisSince = 0;
-  float L1; //Loadcell
-  float P1; //Don't know
-  float P2; //Tank Pressure Bottom
-  float P3; //Tank Pressure Top
-  float P4; //Don't know
-  float T1; //Tank Temperature
-} data; //28 bytes
+  uint16_t L1; //Loadcell
+  uint16_t P1; //Don't know
+  uint16_t P2; //Tank Pressure Bottom
+  uint16_t P3; //Tank Pressure Top
+  uint16_t P4; //Don't know
+  uint16_t T1; //Tank Temperature
+  uint16_t status = 0; //Status int
+} data; //14 bytes
 
-int control_int;
+uint32_t control_int;
 
 Servo fireServo;
 
-unsigned long millisAtStart = 0;
-unsigned long previousMillis = 0;
-const long sendInterval = 50;
+float L1Raw;
+float P1Raw;
+float P2Raw;
+float P3Raw;
+float P4Raw; 
+float T1Raw;
+
+uint32_t millisAtStart = 0;
+uint32_t previousMillis = 0;
+uint32_t lastPacket = 0;
+const uint8_t sendInterval = 50;
+uint8_t badPackets = 0; 
+
 
 
 bool previousState = 0;
+
+//ASFAS variables
+bool ASFASArmed = false;
+bool ASFASActive = false;
+bool ASFASAbort = false;
+const uint32_t validState = 340289;
+bool stateValid = false;
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -70,7 +88,7 @@ void setup() {
   testStand.begin(Serial1);
   LoadCell.begin();
   float calibrationValue = -10015; // calibration value (see example file "Calibration.ino")
-  long stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
+  uint16_t stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
 
   LoadCell.start(stabilizingtime, true);
 
@@ -104,15 +122,42 @@ void loop() {
   uint16_t txSize = 0;
   uint16_t rxSize = 0;
 
-  unsigned long currentMillis = millis();
+  uint32_t currentMillis = millis();
 
-  //Check Recieve Buffer
+  //Check Receive Buffer
   if (testStand.available()) {
-    //Fill Recive Buffer
-    rxSize = testStand.rxObj(control_int, rxSize);
+    //Check packet status and warn 
+    if (testStand.status < 1) {
+      badPackets++;
+      if (badPackets > 10) {
+          data.status = ( data.status | 1 ) | 512;
+      } else {
+          data.status = ( data.status | 2 ) | 512;
+      }
+    } else {
 
-    testStandControls();
+          //Copy Receive Buffer into control_int
+          uint32_t control_int_incoming = 0;
+          rxSize = testStand.rxObj(control_int_incoming, rxSize);
+          
+          if (control_int_incoming & 65536 && not (control_int_incoming & 131072) && control_int_incoming & 262144) {
+            control_int = control_int_incoming;
+            lastPacket = currentMillis;
+          }
+    }
+    
+  } else {
+      //Warn if no packets received in last second
+      if(currentMillis - lastPacket >= 5000) {
+        data.status = ( data.status | 1 ) | 256;
+      } else if (currentMillis - lastPacket >= 1000) {
+        data.status = ( data.status | 2 ) | 256;
+      }
+
   }
+
+  ASFAS();
+  testStandControls();
 
   //Send Data Back
   if (currentMillis - previousMillis >= sendInterval) {
@@ -123,6 +168,7 @@ void loop() {
 
     txSize = testStand.txObj(data, txSize);
     testStand.sendData(txSize);
+    data.status = 0;
   }
 }
 
@@ -140,7 +186,7 @@ void testStandControls() {
     previousState = (control_int & 1);
   }
 
-  //Relay controls
+  {   //Relay controls
   //D22 XV-1 (2)
   if (control_int & 2) {
     digitalWrite(22, HIGH);
@@ -213,26 +259,103 @@ void testStandControls() {
   } else {
     digitalWrite(33, LOW);
    }
+  }
 }
 
 void readSensors() {
 
   // check for new from load cell
   if (LoadCell.update() and loadC) {
-    data.L1 = LoadCell.getData();
+    L1Raw = LoadCell.getData();
+    data.L1 = static_cast<uint16_t>(round(L1Raw));
     //newDataReady = 0;
   } else {
-    data.L1 = 12345;
+    data.L1 = 0;
   }
 
-  data.P1 = ((analogRead(1) - 205) * 4.9 * 0.295);
-  data.P2 = ((analogRead(2) - 205) * 4.9 * 0.295);
-  data.P3 = ((analogRead(3) - 205) * 4.9 * 0.295);
-  data.P4 = ((analogRead(4) - 205) * 4.9 * 0.295);
+  P1Raw = ((analogRead(1) - 205) * 4.9 * 0.295);
+  P2Raw = ((analogRead(2) - 205) * 4.9 * 0.295);
+  P3Raw = ((analogRead(3) - 205) * 4.9 * 0.295);
+  P4Raw = ((analogRead(4) - 205) * 4.9 * 0.295);
+
+
+  data.P1 = static_cast<uint16_t>(round(P1Raw));
+  data.P2 = static_cast<uint16_t>(round(P2Raw));
+  data.P3 = static_cast<uint16_t>(round(P3Raw));
+  data.P4 = static_cast<uint16_t>(round(P4Raw));
+
   if (thermC) {
-    data.T1 = mcp.readThermocouple();
+    T1Raw = mcp.readThermocouple();
+    data.T1 = static_cast<uint16_t>((round(T1Raw) + 273) * 10);
   } else {
-    data.T1 = 12345;
+    data.T1 = 273;
   }
 
+}
+
+void ASFAS() {
+  if (control_int & 8192) {
+    if (not ASFASAbort) {
+      //Determine State
+      stateValid = true;
+      if (((control_int | 1)) != validState) {
+        stateValid = false;
+        Serial.println(control_int | 1 );
+      }
+
+      //Check state
+      if (not ASFASArmed && stateValid) {
+        ASFASArmed = true;
+      } else if (not stateValid) {
+        //Send up Error, ASFAS Invalid State
+        data.status = ( data.status | 1 ) | 32;
+ 
+        if (ASFASArmed && not stateValid) {
+          ASFASAbort = true;
+          //Abort
+        }
+      }
+    
+      if (ASFASArmed) {
+        // Activation on igniter signal
+        if (control_int & 32768) {
+          ASFASActive = true;
+        }
+
+        //Active check
+        if (ASFASActive) {
+          // Check abort conditions
+          if (ASFASAbort) {
+            //Send up Error
+            data.status = ( data.status | 1 ) | 32;
+            //perform abort
+          }
+        }
+      }
+    } else if (not ASFASArmed){
+      ASFASAbort = false;
+      ASFASActive = false;
+      ASFASArmed = false;
+    }
+  } else {
+      ASFASAbort = false;
+      ASFASActive = false;
+      ASFASArmed = false;
+      stateValid = true;
+  }
+
+  //Set ASFAS statuses 
+  if (ASFASAbort) {
+    data.status = data.status | 16;
+  }
+
+  if (ASFASActive) {
+    data.status = data.status | 8;
+  }
+
+  if (ASFASArmed) {
+    data.status = data.status | 4;
+  }
+
+  
 }

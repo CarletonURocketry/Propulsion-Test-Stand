@@ -5,26 +5,27 @@ SerialTransfer testStand;
 SerialTransfer computer;
 
 struct STRUCT1 {
-  float millisSince = 0;
-  float L1; //Loadcell
-  float P1; //Don't know
-  float P2; //Tank Pressure Bottom
-  float P3; //Tank Pressure Top
-  float P4; //Don't know
-  float T1; //Tank Temperature
-  bool Safety;
-} data; //29 bytes
+  uint16_t L1; //Loadcell
+  uint16_t P1; //Don't know
+  uint16_t P2; //Tank Pressure Bottom
+  uint16_t P3; //Tank Pressure Top
+  uint16_t P4; //Don't know
+  uint16_t T1; //Tank Temperature
+  uint16_t status = 0; //Status int
+} data; //14 bytes
 
-int control_int;
+uint32_t control_int;
 
+uint32_t currentMicros;
+uint32_t currentMillis;
+uint32_t previousMillis = 0;
+const uint16_t interval = 100;
+const uint16_t commandInterval = 500;
+uint32_t previousCommand = 0;
 
-unsigned long currentMicros;
-unsigned long currentMillis;
-unsigned long previousMillis = 0;
-const int interval = 100;
-int intervalData = 0;
+uint32_t intervalData = 0;
 float dataRate = 0;
-int delta = 0;
+int32_t delta = 0;
 
 
 void setup() {
@@ -41,7 +42,7 @@ void loop() {
   //Buffer Variables
   uint16_t txSize_t = 0;
   uint16_t rxSize_t = 0;
-   uint16_t txSize_c = 0;
+  uint16_t txSize_c = 0;
   uint16_t rxSize_c = 0;
   
   //Recieve from teststand
@@ -59,6 +60,13 @@ void loop() {
     txSize_t = testStand.txObj(control_int, txSize_t);
     //Send to Teststand
     testStand.sendData(txSize_t);
+
+  } else if (currentMillis - previousCommand >= commandInterval) { //Keep Alive signal (sort of)
+    //Fill TestStand Transmit Buffer
+    txSize_t = testStand.txObj(control_int, txSize_t);
+    //Send to Teststand
+    testStand.sendData(txSize_t);
+    previousCommand = millis();
   }
   
   if (digitalRead(8) == HIGH) {
@@ -85,7 +93,7 @@ void loop() {
 }
 
 void printdata() {
-  //Serial.print(data.millisSince);
+  //Serial.println(data.status);
   //Serial.print(",");
   //Serial.println(data.L1);
   //Serial.print(",");

@@ -6,6 +6,7 @@ Date: June 11th, 2022
 """
 
 # Tkinter
+from ctypes.wintypes import INT
 import tkinter as tk
 from tkinter import ttk
 # Matplotlib
@@ -19,6 +20,10 @@ from datetime import datetime, timedelta
 import numpy as np
 import time, os, math, random
 
+#Debuging variables
+lastStatus = -1
+
+
 
 """ Plot defines the tkinter component for the Pressure and Temperature Plot
 """
@@ -30,18 +35,21 @@ class Plot(tk.Frame):
         # matplotlib figure
         self.figure = plt.Figure(figsize=(8,7.4), dpi=100)
         self.ax = self.figure.add_subplot(111)
-        self.figure.subplots_adjust(left=0.1, bottom=0, right=0.92, top=0.97, wspace=0, hspace=0)
+        self.figure.subplots_adjust(left=0.1, bottom=0, right=0.9, top=0.97, wspace=0, hspace=0)
         
         # Label Axes
         self.ax2 = self.ax.twinx()
+        self.ax3 = self.ax.twinx()
 
         self.ax.set_xlabel('Time (hh:mm:ss)')
         self.ax.set_ylabel('Pressure (PSI)') 
         self.ax2.set_ylabel("Temperature (Degrees C)")
+        self.ax3.set_ylabel("Load (N)",labelpad = 8.0,color = "brown")
 
         # Format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
         self.ax.xaxis.set_major_formatter(myFmt)
+        self.ax3.tick_params(axis="y",color = "brown")
 
         # Create the plots
         self.pressure1Plot, = self.ax.plot(data[0], data[1], label='Pressure1', color="red")
@@ -50,8 +58,10 @@ class Plot(tk.Frame):
         self.pressure4Plot, = self.ax.plot(data[0], data[4], label='Pressure4', color="green")
 
         self.temperaturePlot, = self.ax2.plot(data[0], data[5], label='Temperature', color="orange", linestyle="dashed")
+        
+        self.loadPlot, = self.ax3.plot(data[0], data[6], label='Load', color="brown")
 
-        lns = [self.pressure1Plot, self.pressure2Plot, self.pressure3Plot, self.pressure4Plot, self.temperaturePlot]
+        lns = [self.pressure1Plot, self.pressure2Plot, self.pressure3Plot, self.pressure4Plot, self.temperaturePlot, self.loadPlot]
         labs = [l.get_label() for l in lns]
         self.ax.legend(lns, labs, loc=2)
 
@@ -67,12 +77,14 @@ class Plot(tk.Frame):
         self.pressure3Plot.set_xdata(data[0])
         self.pressure4Plot.set_xdata(data[0])
         self.temperaturePlot.set_xdata(data[0])
+        self.loadPlot.set_xdata(data[0])
 
         self.pressure1Plot.set_ydata(data[1])
         self.pressure2Plot.set_ydata(data[2])
         self.pressure3Plot.set_ydata(data[3])
         self.pressure4Plot.set_ydata(data[4])
         self.temperaturePlot.set_ydata(data[5])
+        self.loadPlot.set_ydata(data[6])
             
         self.canvas.draw_idle()  # redraw plot
 
@@ -83,14 +95,15 @@ class PlotSet(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.data = np.zeros((6,0))
-
+        self.data = np.zeros((7,0))
+        
         self.plot = Plot(self, self.data)
         self.plot.grid(row=0, column=0)
 
         self.plotButtonsFrame = tk.Frame(self)
         self.plotButtonsFrame.grid(row=0, column=0, sticky="se")
 
+        self.maxDuration = tk.IntVar(value=600)
         self.duration = tk.IntVar(value=10)
 
         self.duration_10mins = tk.Radiobutton(self.plotButtonsFrame, text="10 Minutes", variable=self.duration, value=600)
@@ -122,9 +135,14 @@ class PlotSet(tk.Frame):
         self.displayTemperature = tk.IntVar(value=True)
         self.TemperatureCB = tk.Checkbutton(self.plotButtonsFrame, text="Temperature", variable=self.displayTemperature, command=lambda: self.checkboxClicked(5, self.displayTemperature))
         self.TemperatureCB.grid(row=2, column=4)
+        
+        self.displayLoad = tk.IntVar(value=True)
+        self.loadCB = tk.Checkbutton(self.plotButtonsFrame, text="Load", variable=self.displayLoad, command=lambda: self.checkboxClicked(6, self.displayLoad))
+        self.loadCB.grid(row=2, column=5)
+        
 
         self.saveButton = tk.Button(self.plotButtonsFrame, text="Save Plot", command=self.savePlot)
-        self.saveButton.grid(row=2, column=5)
+        self.saveButton.grid(row=2, column=6)
     
     def checkboxClicked(self, id, var):
         if (id == 5):
@@ -134,6 +152,13 @@ class PlotSet(tk.Frame):
             else:
                 self.plot.ax2.get_yaxis().set_visible(True)
                 self.plot.temperaturePlot.set_linestyle("dashed")
+        elif (id == 6):
+            if (var.get() == False):
+                self.plot.ax3.get_yaxis().set_visible(False)
+                self.plot.loadPlot.set_linestyle("none")
+            else:
+                self.plot.ax3.get_yaxis().set_visible(True)
+                self.plot.loadPlot.set_linestyle("solid")
         else:
             if (var.get() == False):
                 self.plot.ax.lines[id-1].set_linestyle("none")
@@ -150,24 +175,35 @@ class PlotSet(tk.Frame):
 
     def update(self, time, data):
 
-        self.data = np.append(self.data, [[time],[data.P1],[data.P2],[data.P3],[data.P4],[data.T1]], axis=1)
+        self.data = np.append(self.data, [[time],[data.P1],[data.P2],[data.P3],[data.P4],[data.T1],[data.L1]], axis=1)
 
         self.slider.update(self.data[0])
         self.plot.update(self.data)   
         if not len(self.data[0]) == 1:
             self.updatePlotLimits()
 
-    def getMinIndex(self, maxIndex):
+    def getPlotMinIndex(self, maxIndex):
         currentTime = self.data[0][maxIndex]
         approxMinTime = self.data[0][maxIndex] - timedelta(seconds=self.duration.get())
+        minTime = min(self.data[0], key=lambda d: abs(d - approxMinTime))
+        return np.where(self.data[0] == minTime)[0][0]
+    
+    def getMinIndex(self, maxIndex):
+        currentTime = self.data[0][maxIndex]
+        approxMinTime = self.data[0][maxIndex] - timedelta(seconds=self.maxDuration.get())
         minTime = min(self.data[0], key=lambda d: abs(d - approxMinTime))
         return np.where(self.data[0] == minTime)[0][0]
 
     def updatePlotLimits(self):
         data = self.data
         maxIndex = self.slider.index
-        minIndex = self.getMinIndex(maxIndex)
-        self.plot.ax.set_xlim(data[0][minIndex], data[0][maxIndex])
+        minPlotIndex = self.getPlotMinIndex(maxIndex) # Get index of oldest data to show in the plot
+        
+        minIndex = self.getMinIndex(maxIndex) #Get index of data that is too old
+        if minIndex > 0: 
+            self.data = np.delete(self.data,[0,minIndex,1],1) #Delete old data from memory
+            
+        self.plot.ax.set_xlim(data[0][minPlotIndex], data[0][maxIndex-minIndex]) #Resize Plot
 
         maxPressure = 0
         minPressure = 99999999
@@ -190,6 +226,11 @@ class PlotSet(tk.Frame):
         maxTemp = np.max(data[5, minIndex:maxIndex+1])
         minTemp = np.min(data[5, minIndex:maxIndex+1])
         self.plot.ax2.set_ylim(minTemp-abs(maxTemp)*0.2, maxTemp*1.2)
+        
+
+        self.plot.ax3.set_ylim(0, 10000)
+        
+        
 
 """ ScaleSlider defines the component for the slider for the plot
 """
@@ -221,6 +262,7 @@ class ScaleSlider(tk.Frame):
         self.slider.set(self.index)
         if (self.index >= self.plotSet.data[0].size - 1):
             self.sliderAtMax = True
+            self.index = self.plotSet.data[0].size - 1
         else:
             self.sliderAtMax = False
         self.sliderLabel.configure(text=f"{self.plotSet.data[0][self.index]}"[10:-4])
@@ -375,6 +417,13 @@ class App(tk.Tk):
         self.buttonsFrame = tk.Frame(self.rightFrame)
         self.buttonsFrame.grid(row=1, column=0)
         self.rightFrame.grid_columnconfigure(0, weight=1)
+        
+        #Load Readout
+        self.loadLabel = tk.Label(self.readoutsFrame, text='Load', font=("Arial", 10))
+        self.loadLabel.grid(row=6, column=0, columnspan=2)
+        self.loadReadout = tk.Label(self.readoutsFrame, text='Initalizing...', font=("Arial", 25), width=6)
+        self.loadReadout.grid(row=7, column=0, columnspan=2)
+        
 
         # Armed Check
         self.armed_state_var = tk.BooleanVar()
@@ -419,11 +468,11 @@ class App(tk.Tk):
         self.solenoid12_toggle = LabeledToggle(self.buttonsFrame, id=12, callback=self.arduino.sendCommand, command="11", armed_state_var=self.armed_state_var)
         self.solenoid12_toggle.grid(row=2, column=2, pady=10, padx=20)
 
-        self.solenoid11_toggle = LabeledToggle(self.buttonsFrame, id=13, callback=self.arduino.sendCommand, command="12", armed_state_var=self.armed_state_var)
-        self.solenoid11_toggle.grid(row=3, column=2, pady=10, padx=20)
+        self.solenoid13_toggle = LabeledToggle(self.buttonsFrame, id=13, callback=self.arduino.sendCommand, command="12", armed_state_var=self.armed_state_var)
+        self.solenoid13_toggle.grid(row=3, column=2, pady=10, padx=20)
 
-        self.solenoid12_toggle = LabeledToggle(self.buttonsFrame, id=14, callback=self.arduino.sendCommand, command="13", armed_state_var=self.armed_state_var)
-        self.solenoid12_toggle.grid(row=4, column=2, pady=10, padx=20)
+        self.solenoid14_toggle = LabeledToggle(self.buttonsFrame, id=14, callback=self.arduino.sendCommand, command="13", armed_state_var=self.armed_state_var)
+        self.solenoid14_toggle.grid(row=4, column=2, pady=10, padx=20)
 
         self.clearData_button = tk.Button(self.buttonsFrame, text="Clear Data", command=self.clearData)
         self.clearData_button.grid(row=7, column=0, columnspan=3, pady=20)
@@ -448,9 +497,34 @@ class App(tk.Tk):
         try:
             time = datetime.now()
             
+            global lastStatus
             # Check for received data
             if (self.arduino.recvData()):
-
+                output = ""
+                if self.arduino.data.status_int & 1:
+                    output += "Error "
+                if self.arduino.data.status_int & 2:
+                    output += "Warn "
+                if self.arduino.data.status_int & 4:
+                    output += "Armed "
+                if self.arduino.data.status_int & 8:
+                    output += "Active "
+                if self.arduino.data.status_int & 16:
+                    output += "Abort "
+                if self.arduino.data.status_int & 32:
+                    output += "Invalid "
+                if self.arduino.data.status_int & 256:
+                    output += "Waiting "
+                if self.arduino.data.status_int & 512:
+                    output += "Packet "
+                if self.arduino.data.status_int == 0:
+                    output = "Nominal"
+                    
+                if lastStatus != self.arduino.data.status_int:
+                    print(output)
+                    lastStatus = self.arduino.data.status_int
+                
+                
                 # Update Plots
                 self.plotSet.update(time, self.arduino.data)
 
@@ -462,6 +536,7 @@ class App(tk.Tk):
                     self.pressureReadout2.config(text=f'{round(self.arduino.data.P2, 2)}')
                     self.pressureReadout3.config(text=f'{round(self.arduino.data.P3, 2)}')
                     self.pressureReadout4.config(text=f'{round(self.arduino.data.P4, 2)}')
+                    self.loadReadout.config(text=f'{round(self.arduino.data.L1, 2)}')
                     self.lastDisplayTime = currentTime
 
                 # Log data to file
@@ -490,7 +565,7 @@ class Logger():
         self.file.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
 
     def write(self, time, data):
-        self.file.write(f"{time},{data.L1},{data.P1},{data.P2},{data.P3},{data.P4},{data.T1},{data.Safe}\n")
+        self.file.write(f"{time},{data.L1},{data.P1},{data.P2},{data.P3},{data.P4},{data.T1},{data.status_int}\n")
 
     def close(self):
         self.file.close()
@@ -505,7 +580,7 @@ class Data():
         P3 = 0.0 #Tank Pressure Top
         P4 = 0.0 #Don't know
         T1 = 0.0 #Tank Temperature
-        Safety = False
+        status_int = 0 
 
 """ The Arduino class defines the connection to the arduino connected to the computer on which
 the application runs, this allows the application to read data off the Arduino through a serial
@@ -529,7 +604,7 @@ class Arduino():
                 pass
 
         self.control_int = 0
-        self.control_list = [0] * 13
+        self.control_list = [0] * 32#[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.data = Data()
     
     def close(self):
@@ -542,30 +617,30 @@ class Arduino():
         if self.link.available():
             recSize = 0
             
-            self.data.millisSince = self.link.rx_obj(obj_type='i', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['i']   
+            self.data.L1 = 1000#self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.L1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.P1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.P1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.P2 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.P2 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.P3 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.P3 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.P4 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.P4 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.T1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
+            self.data.T1 = (self.data.T1/10) - 273
             
-            self.data.T1 = self.link.rx_obj(obj_type='f', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['f']
+            self.data.status_int = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            recSize += 2
             
-            self.data.Safe = self.link.rx_obj(obj_type='b', start_pos=recSize)
-            recSize += txfer.STRUCT_FORMAT_LENGTHS['b']
             return True
+        
         elif self.link.status < 0:
             if self.link.status == txfer.CRC_ERROR:
                 print('ERROR: CRC_ERROR')
@@ -578,10 +653,9 @@ class Arduino():
         return False
     
     def sendCommand(self, command):
-        print(command)
         # Commands encoded as 3 digit numbers: 01-... for solenoid number, and 0-1 for off/on
         self.control_list[-int(command[0]+command[1])-1] = int(command[2])
-        self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2)
+        self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2) + 327680
         try:
             send_size = 0
             send_size = self.link.tx_obj(self.control_int, send_size)
@@ -634,14 +708,14 @@ class ArduinoSim():
 if __name__ == "__main__":
 
     # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
-    serialPort = "COM3"
+    serialPort = "COM4"
     #arduino = Arduino(serialPort)
 
     # Currently using the ArduinoSim class to test the application with fake data.
-    arduino = ArduinoSim()
+    arduino = Arduino(serialPort)
 
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
-    refreshRate = 500 # The UI updates every 500 ms
+    refreshRate = 250 # The UI updates every 500 ms
     app = App(arduino, refreshRate)
     # The app main loop will run repeatedly in a loop with at 10ms delay to allow the UI to update
     app.loop(10)
