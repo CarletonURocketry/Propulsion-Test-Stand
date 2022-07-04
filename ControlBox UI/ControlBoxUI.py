@@ -475,7 +475,7 @@ class App(tk.Tk):
                 for x in self.indicators:
                     if x[0] != 0:
                         if self.arduino.data.status_int & x[3]:
-                            output += x[1]
+                            output += (x[1] + " ")
                             x[0].config(bg = x[2])
                         else:
                             x[0].config(bg = "white")
