@@ -678,9 +678,9 @@ class Arduino():
             self.data.T1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
             recSize += 2
             self.data.T1 = (self.data.T1/10) - 273
-            
-            self.data.status_int = self.link.rx_obj(obj_type='H', start_pos=recSize)
-            recSize += 2
+                       
+            self.data.status_int = self.link.rx_obj(obj_type='I', start_pos=recSize)
+            recSize += 4
             
             return True
         

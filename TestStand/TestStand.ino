@@ -49,10 +49,14 @@ struct STRUCT1 {
   uint16_t P3; //Tank Pressure Top
   uint16_t P4; //Don't know
   uint16_t T1; //Tank Temperature
-  uint16_t status = 0; //Status int
-} data; //14 bytes
+  uint32_t status = 0; //Status int
+} data; //16 bytes
 
-uint32_t control_int;
+uint32_t control_int;//Commands recived from the control box
+
+uint32_t state_int; 
+//Actuall state of the valves, should only be different from 
+//the control_int if the ASFAS is perfoming and abort.
 
 Servo fireServo;
 
@@ -79,6 +83,22 @@ bool ASFASActive = false;
 bool ASFASAbort = false;
 const uint32_t validState = 340289;
 bool stateValid = false;
+//ASFAS Abort conditions
+const int maxP1 = 1000;
+const int minP1 = 0;
+
+const int maxP2 = 1000;
+const int minP2 = 0;
+
+const int maxP3 = 1000;
+const int minP3 = 0;
+
+const int maxP4 = 1000;
+const int minP4 = 0;
+
+const int maxT1 = 30;
+const int minT1 = 5;
+
 
 
 void setup() {
@@ -126,6 +146,7 @@ void loop() {
 
   //Check Receive Buffer
   if (testStand.available()) {
+    
     //Check packet status and warn 
     if (testStand.status < 1) {
       badPackets++;
@@ -176,85 +197,85 @@ void testStandControls() {
 
   //Fire valve control and time since Start
   // This should be tested to see if its still working as intented
-  if ((control_int & 1)) { //Fire valve opens
+  if ((state_int & 1)) { //Fire valve opens
     
     fireServo.writeMicroseconds(1000);
-    previousState = (control_int & 1);
+    previousState = (state_int & 1);
 
   } else {
     fireServo.writeMicroseconds(2250  );
-    previousState = (control_int & 1);
+    previousState = (state_int & 1);
   }
 
   {   //Relay controls
   //D22 XV-1 (2)
-  if (control_int & 2) {
+  if (state_int & 2) {
     digitalWrite(22, HIGH);
   } else {
     digitalWrite(22, LOW);
   }
   //D23 XV-2 (4)
-  if (control_int & 4) {
+  if (state_int & 4) {
     digitalWrite(23, HIGH);
   } else {
     digitalWrite(23, LOW);
   }
   //D24 XV-3 (8)
-  if (control_int & 8) {
+  if (state_int & 8) {
     digitalWrite(24, HIGH);
   } else {
     digitalWrite(24, LOW);
   }
   //D25 XV-4 (16)
-  if (control_int & 16) {
+  if (state_int & 16) {
     digitalWrite(25, HIGH);
   } else {
     digitalWrite(25, LOW);
   }
   //D26 XV-5 (32)
-  if (control_int & 32) {
+  if (state_int & 32) {
     digitalWrite(26, HIGH);
   } else {
     digitalWrite(26, LOW);
   }
   //D27 XV-6 (64)
-  if (control_int & 64) {
+  if (state_int & 64) {
     digitalWrite(27, HIGH);
   } else {
     digitalWrite(27, LOW);
   }
   //D28 XV-7 (128)
-  if (control_int & 128) {
+  if (state_int & 128) {
     digitalWrite(28, HIGH);
   } else {
     digitalWrite(28, LOW);
   }
   //D29 XV-8 (256)
-  if (control_int & 256) {
+  if (state_int & 256) {
     digitalWrite(29, HIGH);
   } else {
     digitalWrite(29, LOW);
   }
   //D30 XV-9 (512)
-  if (control_int & 512) {
+  if (state_int & 512) {
     digitalWrite(30, HIGH);
   } else {
     digitalWrite(30, LOW);
   }
   //D31 XV-10 (1024)
-  if (control_int & 1024) {
+  if (state_int & 1024) {
     digitalWrite(31, HIGH);
   } else {
     digitalWrite(31, LOW);
   }
   //D32 XV-11 (2048)
-  if (control_int & 2048) {
+  if (state_int & 2048) {
     digitalWrite(32, HIGH);
   } else {
     digitalWrite(32, LOW);
   }
   //D33 Power Relay (4096)
-  if (control_int & 4096) {
+  if (state_int & 4096) {
     digitalWrite(33, HIGH);
   } else {
     digitalWrite(33, LOW);
@@ -291,6 +312,13 @@ void readSensors() {
     data.T1 = 273;
   }
 
+  //Add the real state of the valves to the status
+  for (int i = 0; i < 12; i++) {
+    if (state_int & static_cast<int>(pow(2,(i)))) {
+      data.status = data.status | static_cast<int>(pow(2,(i + 16)));
+    }
+  }
+
 }
 
 void ASFAS() {
@@ -301,6 +329,8 @@ void ASFAS() {
       if (((control_int | 1)) != validState) {
         stateValid = false;
         Serial.println(control_int | 1 );
+      } else {
+        state_int = control_int;
       }
 
       //Check state
@@ -309,11 +339,6 @@ void ASFAS() {
       } else if (not stateValid) {
         //Send up Error, ASFAS Invalid State
         data.status = ( data.status | 1 ) | 32;
- 
-        if (ASFASArmed && not stateValid) {
-          ASFASAbort = true;
-          //Abort
-        }
       }
     
       if (ASFASArmed) {
@@ -325,10 +350,15 @@ void ASFAS() {
         //Active check
         if (ASFASActive) {
           // Check abort conditions
+          if (not stateValid) {
+            ASFASAbort = true;
+          }
+
           if (ASFASAbort) {
             //Send up Error
             data.status = ( data.status | 1 ) | 32;
-            //perform abort
+            //Abort Procedures
+
           }
         }
       }
@@ -338,6 +368,7 @@ void ASFAS() {
       ASFASArmed = false;
     }
   } else {
+      state_int = control_int;
       ASFASAbort = false;
       ASFASActive = false;
       ASFASArmed = false;
