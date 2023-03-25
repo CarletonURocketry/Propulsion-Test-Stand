@@ -1,69 +1,20 @@
 #include "SerialTransfer.h"
 
-
 SerialTransfer testStand;
 SerialTransfer computer;
 
-//Pin setup
-//ASFAS LEDs
-int armedLED = 2;          //output
-int activeLED = 3;         //output
-int abortLED = 4;          //output
-int invalidLED = 5;        //output
-int contTestLED = 6;       //output
-//Error and Warning LEDs
-int keySwitch = 9;         //input
-int buzzerPin = 10;        //output
-int errorLED = 11;         //output
-int warnLED = 12;          //output
-int packetLED = 13;        //output
-int waitingLED = 14;       //output
-int mismatchLED = 15;      //output
-int cautionLED = 16;       //output
-//Valve Control Pins
-int CV1Switch = 22;        //input
-int CV1LED = 23;           //output
+const int numOfLedPins = 22;
+String ledPinNames[numOfLedPins] = {"armed", "active", "abort", "invld", "error", "warn", "pckt", "waiting", "mismatch", "caution", "CV1LED", "XV1LED", "XV2LED", "XV3LED", "XV4LED", "XV5LED", "XV6LED", "XV7LED", "XV8LED", "XV9LED", "XV10LED", "XV11LED"};
+int ledPinValues[numOfLedPins] = {A1, A0, A3, A2, A5, A4, A7, A6, A11, 22, 24, 26, 28, 30, 32, 36, 38, 40, 42, 44, 46, 48};
 
-int XV1Switch = 24;        //input
-int XV1LED = 25;           //output
+const int numOfSwitchPins = 16;
+String switchPinNames[numOfSwitchPins] = {"CV1SW", "XV1SW", "XV2SW", "XV3SW", "XV4SW", "XV5SW", "XV6SW", "XV7SW", "XV8SW", "XV9SW", "XV10SW", "XV11SW", "abrtBT", "autoSW", "fireBT", "keySwh"};
+int switchPinValues[numOfSwitchPins] = {45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 23, A13, 47, A14, A15};
 
-int XV2Switch = 26;        //input
-int XV2LED = 27;           //output
+int buzBut = 0;        //input
+int buzPin = 10;       //output
 
-int XV3Switch = 28;        //input
-int XV3LED = 29;           //output
-
-int XV4Switch = 30;        //input
-int XV4LED = 31;           //output
-
-int XV5Switch = 32;        //input
-int XV5LED = 33;           //output
-
-int XV6Switch = 34;        //input
-int XV6LED = 35;           //output
-
-int XV7Switch = 36;        //input
-int XV7LED = 37;           //output
-
-int XV8Switch = 38;        //input
-int XV8LED = 39;           //output
-
-int XV9Switch = 40;        //input
-int XV9LED = 41;           //output
-
-int XV10Switch = 42;       //input
-int XV10LED = 43;          //output
-
-int XV11Switch = 44;       //input
-int XV11LED = 45;          //output
-
-//ASFAS control and burst disks
-int ASFASHandoff = 46;     //input
-int valvePower = 47;       //input
-int ignitionButton = 48;   //input
-int contTestButton = 49;   //input
-int RD1Button = 50;        //input
-int RD2Button = 51;        //input
+bool buzzer = false;
 
 struct STRUCT1 {
   uint16_t L1; //Loadcell
@@ -76,12 +27,13 @@ struct STRUCT1 {
 } data; //16 bytes
 
 uint32_t control_int;
+uint32_t previous_control_int = 0;
 
 uint32_t currentMicros;
 uint32_t currentMillis;
 uint32_t previousMillis = 0;
 const uint16_t interval = 100;
-const uint16_t commandInterval = 500;
+const uint16_t commandInterval = 750;
 uint32_t previousCommand = 0;
 
 uint32_t intervalData = 0;
@@ -90,105 +42,90 @@ int32_t delta = 0;
 
 
 void setup() {
+  pinMode(8,INPUT_PULLUP);
   //Serial setup
   Serial.begin(115200);
   Serial1.begin(115200);
   computer.begin(Serial);
   testStand.begin(Serial1);
-
+  pinMode(45,INPUT_PULLUP);
   //Pin mode setup
-  {
-    //ASFAS LEDs
-    pinMode(armedLED, OUTPUT);
-    pinMode(activeLED, OUTPUT);
-    pinMode(abortLED, OUTPUT);
-    pinMode(invalidLED, OUTPUT);
-    pinMode(contTestLED, OUTPUT);
-    //Error and warning LEDs
-    pinMode(keySwitch, INPUT_PULLUP);
-    pinMode(buzzerPin, OUTPUT);
-    pinMode(errorLED, OUTPUT);
-    pinMode(warnLED, OUTPUT);
-    pinMode(packetLED, OUTPUT);
-    pinMode(waitingLED, OUTPUT);
-    pinMode(mismatchLED, OUTPUT);
-    pinMode(cautionLED, OUTPUT);
-    ////Valve Control Pins
-    pinMode(CV1Switch, INPUT_PULLUP);
-    pinMode(CV1LED, OUTPUT);
-    pinMode(XV1Switch, INPUT_PULLUP);
-    pinMode(XV1LED, OUTPUT);
-    pinMode(XV2Switch, INPUT_PULLUP);
-    pinMode(XV2LED, OUTPUT);
-    pinMode(XV3Switch, INPUT_PULLUP);
-    pinMode(XV3LED, OUTPUT);
-    pinMode(XV4Switch, INPUT_PULLUP);
-    pinMode(XV4LED, OUTPUT);
-    pinMode(XV5Switch, INPUT_PULLUP);
-    pinMode(XV5LED, OUTPUT);
-    pinMode(XV6Switch, INPUT_PULLUP);
-    pinMode(XV6LED, OUTPUT);
-    pinMode(XV7Switch, INPUT_PULLUP);
-    pinMode(XV7LED, OUTPUT);
-    pinMode(XV8Switch, INPUT_PULLUP);
-    pinMode(XV8LED, OUTPUT);
-    pinMode(XV9Switch, INPUT_PULLUP);
-    pinMode(XV9LED, OUTPUT);
-    pinMode(XV10Switch, INPUT_PULLUP);
-    pinMode(XV10LED, OUTPUT);
-    pinMode(XV11Switch, INPUT_PULLUP);
-    pinMode(XV11LED, OUTPUT);
-    //ASFAS Input pins
-    pinMode(ASFASHandoff, INPUT_PULLUP);
-    pinMode(valvePower, INPUT_PULLUP);
-    pinMode(ignitionButton, INPUT_PULLUP);
-    pinMode(contTestButton, INPUT_PULLUP);
-    pinMode(RD1Button, INPUT_PULLUP);
-    pinMode(RD2Button, INPUT_PULLUP);
+  for (int i = 0; i < numOfSwitchPins; i++) {
+    pinMode(switchPinValues[i], INPUT_PULLUP);
   }
+
+  for (int i = 0; i < numOfLedPins; i ++) {
+    pinMode(ledPinValues[i], OUTPUT);
+  }
+
+  pinMode(buzBut, INPUT_PULLUP);
+  pinMode(buzPin, OUTPUT);
  
 }
 
 void loop() {
+  control_int = bit(16) | bit(18);
   //Buffer Variables
   uint16_t txSize_t = 0;
   uint16_t rxSize_t = 0;
   uint16_t txSize_c = 0;
   uint16_t rxSize_c = 0;
-  
+
+  //Read Switches
+  for (int i = 0; i < numOfSwitchPins; i++) {
+    if (digitalRead(switchPinValues[i]) == LOW) {
+          control_int = control_int | bit(i);
+        }
+  }
+
+  //If controls changed update Teststand
+  if (control_int != previous_control_int) {
+    //Fill TestStand Transmit Buffer
+    txSize_t = testStand.txObj(control_int, txSize_t);
+    //Send to Teststand
+    testStand.sendData(txSize_t);
+    previousCommand = millis();
+    previous_control_int = control_int;
+  }
+
   //Recieve from teststand
   if (testStand.available()) {
     //Fill Recive Buffer
     rxSize_t = testStand.rxObj(data, rxSize_t);
     intervalData += rxSize_t;
-    printdata();
+    
   }
-  //Recieve Control Input from Computer and Send to Teststand
-  if (computer.available()) {
-    //Fill Recive Buffer
-    rxSize_c = computer.rxObj(control_int, rxSize_c);
-    //Fill TestStand Transmit Buffer
-    txSize_t = testStand.txObj(control_int, txSize_t);
-    //Send to Teststand
-    testStand.sendData(txSize_t);
+  
+  //Write to LEDs
+  for (int i = 0; i < numOfLedPins; i++) {
+    if(data.status & bit(i)) {
+      digitalWrite(ledPinValues[i], HIGH);
+      if (i == 2) {
+        buzzer = true;
+      }
+    }
+  }
 
-  } else if (currentMillis - previousCommand >= commandInterval) { //Keep Alive signal (sort of)
+  //Buzzer
+  if (digitalRead(buzPin) == LOW) {
+    buzzer = false;
+    digitalWrite(13,LOW);
+  } else if (buzzer){
+    digitalWrite(13,HIGH);
+  }
+
+  //Test Stand Keep Alive
+  if (currentMillis - previousCommand >= commandInterval) {
     //Fill TestStand Transmit Buffer
     txSize_t = testStand.txObj(control_int, txSize_t);
     //Send to Teststand
     testStand.sendData(txSize_t);
     previousCommand = millis();
   }
-  
-  if (digitalRead(8) == HIGH) {
-    //control.CV1 = false;
-  }
-  //else control.CV1 = true;
 
-  currentMillis = millis();
-
+  //Sensor Data Relay
+  //currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
-    // save the last time you blinked the LED
     previousMillis = currentMillis;
 
     //Rx Datarate
@@ -197,9 +134,6 @@ void loop() {
     //Fill Computer Transmit Buffer
     txSize_c = computer.txObj(data, txSize_c);
     computer.sendData(txSize_c);
-  
-    
-
   }
 }
 
@@ -214,4 +148,16 @@ void printdata() {
   //currentMicros = micros();
   //delta = micros() - currentMicros;
   //Serial.println(delta);
+  Serial.println(data.T1/10);
+}
+
+void printInputs() {
+  for (int i = 0; i < numOfSwitchPins; i++) {
+    if (control_int & bit(i)) {
+      
+      Serial.print(switchPinNames[i]);
+      Serial.print(",");
+    }
+  }
+  Serial.println("");
 }

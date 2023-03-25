@@ -346,7 +346,7 @@ class LabeledToggle(tk.Frame):
 
     def readLabel(self):
         # Reads the labels from the labels file
-        f = open("labels.csv", "r")
+        f = open("ControlBox UI\labels.csv", "r")
         label = ""
         for l in f:
             if l.split(",")[0] == f"{self.id}":
@@ -656,11 +656,11 @@ class Arduino():
         except Exception:
             pass
 
-    def recvData(self):   
+    def recvData(self):
         if self.link.available():
             recSize = 0
             
-            self.data.L1 = 1000#self.link.rx_obj(obj_type='H', start_pos=recSize)
+            self.data.L1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
             recSize += 2
             
             self.data.P1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
@@ -676,9 +676,9 @@ class Arduino():
             recSize += 2
             
             self.data.T1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            self.data.T1 = self.data.T1/10
             recSize += 2
-            self.data.T1 = (self.data.T1/10) - 273
-                       
+
             self.data.status_int = self.link.rx_obj(obj_type='I', start_pos=recSize)
             recSize += 4
             
@@ -751,15 +751,15 @@ class ArduinoSim():
 if __name__ == "__main__":
 
     # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
-    serialPort = "COM4"
-    arduino = Arduino(serialPort)
+    serialPort = "COM3"
+    #arduino = Arduino(serialPort)
 
     # Currently using the ArduinoSim class to test the application with fake data.
-    #arduino = ArduinoSim()
+    arduino = ArduinoSim()
 
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
     refreshRate = 250 # The UI updates every 500 ms
-    app = App(arduino, refreshRate, debug = True)
+    app = App(arduino, refreshRate, debug = False)
     
     # The app main loop will run repeatedly in a loop with at 10ms delay to allow the UI to update
     app.loop(10)

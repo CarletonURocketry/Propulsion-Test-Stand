@@ -4,7 +4,8 @@
 #include <Wire.h>
 #include "Adafruit_MCP9600.h"
 
-//Pin layout
+//---Pin layout---
+
 //A1 Pressure transducer 1
 //A2 Pressure transducer 2
 //A3 Pressure transducer 3
@@ -21,22 +22,37 @@
 //D30 XV-9 (512)
 //D31 XV-10 (1024)
 //D32 XV-11 (2048)
-//D33 Power Relay (4096)
 //D18 Serial1 Tx
 //D19 Serial1 Rx
 
-//stuff for the thrmocouple
+//Presssure Tranducers
+const int numOfPt = 4;
+int PtPins[numOfPt] = {A0, A1, A2, A3};
+//Fire Valve
+int fireValvePin = 8;
+
+Servo fireServo;
+
+//Solenoid Valves
+const int numOfSolValve = 12;
+int SolValvePins[numOfSolValve] = {22,23,24,25,26,27,28,29,30,31,32,33};
+
+//Ignitor
+int ignitorPin = 7;
+
+//Keyswitch
+int keyPin = 41;
+
+//Thermocouple
 #define I2C_ADDRESS (0x67)
 Adafruit_MCP9600 mcp;
 bool thermC;
 
-// load cell pins:
+//Load Cells
 const int HX711_dout = 3; //mcu > HX711 dout pin
-const int HX711_sck = 2; //mcu > HX711 sck pin
+const int HX711_sck = 4; //mcu > HX711 sck pin
 
-//HX711(Load cell amp) constructor:
 HX711_ADC LoadCell(HX711_dout, HX711_sck);
-
 bool loadC;
 
 //SerialTransfer
@@ -52,14 +68,15 @@ struct STRUCT1 {
   uint32_t status = 0; //Status int
 } data; //16 bytes
 
-uint32_t control_int;//Commands recived from the control box
 
+//Commands recived from the control box
+uint32_t control_int;
+
+//Actuall state of the valves
 uint32_t state_int; 
-//Actuall state of the valves, should only be different from 
-//the control_int if the ASFAS is perfoming and abort.
+//should only be different from the control_int if the ASFAS is perfoming and abort.
 
-Servo fireServo;
-
+//Sensor Variables
 float L1Raw;
 float P1Raw;
 float P2Raw;
@@ -67,15 +84,14 @@ float P3Raw;
 float P4Raw; 
 float T1Raw;
 
+//Other Variables and constants
 uint32_t millisAtStart = 0;
 uint32_t previousMillis = 0;
 uint32_t lastPacket = 0;
-const uint8_t sendInterval = 50;
+const uint8_t sendInterval = 1000;
 uint8_t badPackets = 0; 
-
-
-
 bool previousState = 0;
+
 
 //ASFAS variables
 bool ASFASArmed = false;
@@ -83,6 +99,7 @@ bool ASFASActive = false;
 bool ASFASAbort = false;
 const uint32_t validState = 340289;
 bool stateValid = false;
+
 //ASFAS Abort conditions
 const int maxP1 = 1000;
 const int minP1 = 0;
@@ -99,13 +116,13 @@ const int minP4 = 0;
 const int maxT1 = 30;
 const int minT1 = 5;
 
-
-
 void setup() {
-  // put your setup code here, to run once:
+  //Serial Setup
   Serial.begin(115200);
   Serial1.begin(115200);
   testStand.begin(Serial1);
+  
+  //Load Cell Start up and Calibration
   LoadCell.begin();
   float calibrationValue = -10015; // calibration value (see example file "Calibration.ino")
   uint16_t stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
@@ -119,9 +136,11 @@ void setup() {
     LoadCell.setCalFactor(calibrationValue); // set calibration value (float)
     loadC = true;
   }
-  fireServo.attach(13);
 
-  //Setup the IC2 link to the thermocouple
+  //Servo
+  fireServo.attach(fireValvePin);
+
+  //Thermocouple startup
   if (! mcp.begin(I2C_ADDRESS)) {
     thermC = false;
   } else {
@@ -131,17 +150,35 @@ void setup() {
     mcp.enable(true);
     thermC = true;
   }
+
+  //Pin mode setup
+  
+  //Solenoid Valves
+  for (int i = 0; i < numOfSolValve; i++) {
+    pinMode(SolValvePins[i], OUTPUT);
+  }
+  
+  //Pressure Tranducers
+  for (int i = 0; i < numOfPt; i ++) {
+    pinMode(PtPins[i], INPUT);
+  }
+
+  //Other Pins
+  pinMode(fireValvePin, OUTPUT);
+  pinMode(ignitorPin, OUTPUT);
+  pinMode(keyPin,INPUT_PULLUP);
 }
 
 void loop() {
 
   //HX711 Amp Variable
-  // boolean newDataReady = 0;
+  //boolean newDataReady = 0;
 
   //Buffer Variables
   uint16_t txSize = 0;
   uint16_t rxSize = 0;
 
+  //New Time
   uint32_t currentMillis = millis();
 
   //Check Receive Buffer
@@ -160,8 +197,8 @@ void loop() {
           //Copy Receive Buffer into control_int
           uint32_t control_int_incoming = 0;
           rxSize = testStand.rxObj(control_int_incoming, rxSize);
-          
-          if (control_int_incoming & 65536 && not (control_int_incoming & 131072) && control_int_incoming & 262144) {
+
+          if (bitRead(control_int_incoming,16) && !bitRead(control_int_incoming,17) && bitRead(control_int_incoming,18)) {
             control_int = control_int_incoming;
             lastPacket = currentMillis;
           }
@@ -176,8 +213,9 @@ void loop() {
       }
 
   }
-
-  ASFAS();
+  
+  //ASFAS();
+  state_int = control_int;
   testStandControls();
 
   //Send Data Back
@@ -186,7 +224,6 @@ void loop() {
     previousMillis = currentMillis;
 
     readSensors();
-
     txSize = testStand.txObj(data, txSize);
     testStand.sendData(txSize);
     data.status = 0;
@@ -195,91 +232,24 @@ void loop() {
 
 void testStandControls() {
 
-  //Fire valve control and time since Start
-  // This should be tested to see if its still working as intented
-  if ((state_int & 1)) { //Fire valve opens
-    
-    fireServo.writeMicroseconds(1000);
-    previousState = (state_int & 1);
-
-  } else {
-    fireServo.writeMicroseconds(2250  );
-    previousState = (state_int & 1);
+  //Fire valve control
+  if (bitRead(state_int,0)) { //Fire valve opens
+    fireServo.writeMicroseconds(900);
+  } else { // Fire valve closes
+    fireServo.writeMicroseconds(1600);
   }
 
-  {   //Relay controls
-  //D22 XV-1 (2)
-  if (state_int & 2) {
-    digitalWrite(22, HIGH);
+  //Toggle Igniter Relay
+  if (bitRead(state_int,14)) {
+    digitalWrite(ignitorPin,HIGH);
   } else {
-    digitalWrite(22, LOW);
+    digitalWrite(ignitorPin,LOW);
   }
-  //D23 XV-2 (4)
-  if (state_int & 4) {
-    digitalWrite(23, HIGH);
-  } else {
-    digitalWrite(23, LOW);
-  }
-  //D24 XV-3 (8)
-  if (state_int & 8) {
-    digitalWrite(24, HIGH);
-  } else {
-    digitalWrite(24, LOW);
-  }
-  //D25 XV-4 (16)
-  if (state_int & 16) {
-    digitalWrite(25, HIGH);
-  } else {
-    digitalWrite(25, LOW);
-  }
-  //D26 XV-5 (32)
-  if (state_int & 32) {
-    digitalWrite(26, HIGH);
-  } else {
-    digitalWrite(26, LOW);
-  }
-  //D27 XV-6 (64)
-  if (state_int & 64) {
-    digitalWrite(27, HIGH);
-  } else {
-    digitalWrite(27, LOW);
-  }
-  //D28 XV-7 (128)
-  if (state_int & 128) {
-    digitalWrite(28, HIGH);
-  } else {
-    digitalWrite(28, LOW);
-  }
-  //D29 XV-8 (256)
-  if (state_int & 256) {
-    digitalWrite(29, HIGH);
-  } else {
-    digitalWrite(29, LOW);
-  }
-  //D30 XV-9 (512)
-  if (state_int & 512) {
-    digitalWrite(30, HIGH);
-  } else {
-    digitalWrite(30, LOW);
-  }
-  //D31 XV-10 (1024)
-  if (state_int & 1024) {
-    digitalWrite(31, HIGH);
-  } else {
-    digitalWrite(31, LOW);
-  }
-  //D32 XV-11 (2048)
-  if (state_int & 2048) {
-    digitalWrite(32, HIGH);
-  } else {
-    digitalWrite(32, LOW);
-  }
-  //D33 Power Relay (4096)
-  if (state_int & 4096) {
-    digitalWrite(33, HIGH);
-  } else {
-    digitalWrite(33, LOW);
-   }
+
+
+  //Toggle Relays According to State_int
+  for (int i = 0; i < numOfSolValve; i++) {
+    digitalWrite(SolValvePins[i],bitRead(state_int,i));
   }
 }
 
@@ -307,21 +277,18 @@ void readSensors() {
 
   if (thermC) {
     T1Raw = mcp.readThermocouple();
-    data.T1 = static_cast<uint16_t>((round(T1Raw) + 273) * 10);
+    data.T1 = static_cast<uint16_t>((round(T1Raw)) * 10);
   } else {
-    data.T1 = 273;
+    data.T1 = 300;
   }
 
   //Add the real state of the valves to the status
   for (int i = 0; i < 12; i++) {
-    if (state_int & static_cast<int>(pow(2,(i)))) {
-      data.status = data.status | static_cast<int>(pow(2,(i + 16)));
-    }
+    bitWrite(data.status,i+16,bitRead(state_int,i));
   }
-
 }
 
-void ASFAS() {
+void ASFAS() { //Remake this shit
   if (control_int & 8192) {
     if (not ASFASAbort) {
       //Determine State
@@ -377,16 +344,15 @@ void ASFAS() {
 
   //Set ASFAS statuses 
   if (ASFASAbort) {
-    data.status = data.status | 16;
+    bitSet(data.status,4);
   }
 
   if (ASFASActive) {
-    data.status = data.status | 8;
+    bitSet(data.status,3);
   }
 
   if (ASFASArmed) {
-    data.status = data.status | 4;
+    bitSet(data.status,2);
   }
-
   
 }
