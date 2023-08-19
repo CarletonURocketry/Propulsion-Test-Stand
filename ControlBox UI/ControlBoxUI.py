@@ -15,6 +15,8 @@ from turtle import width
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.dates as mdates
+import matplotlib.style as mplstyle
+mplstyle.use('fast')
 # Serial
 from pySerialTransfer import pySerialTransfer as txfer
 # Other
@@ -49,7 +51,7 @@ class Plot(tk.Frame):
         self.ax.set_xlabel('Time (hh:mm:ss)')
         self.ax.set_ylabel('Pressure (PSI)') 
         self.ax2.set_ylabel("Temperature (Degrees C)")
-        self.ax3.set_ylabel("Load (N)")
+        self.ax3.set_ylabel("Load (Kg)")
 
         # Format the x-axis to show the time
         myFmt = mdates.DateFormatter("%H:%M:%S")
@@ -227,12 +229,12 @@ class PlotSet(tk.Frame):
         #Make only for shown range
         self.plot.ax.set_ylim(-15, 1000)
 
-        maxTemp = np.max(data[5, minIndex:maxIndex+1])
-        minTemp = np.min(data[5, minIndex:maxIndex+1])
+        #maxTemp = np.max(data[5, minIndex:maxIndex+1])
+        #minTemp = np.min(data[5, minIndex:maxIndex+1])
         self.plot.ax2.set_ylim(-50, 1000)
         
 
-        self.plot.ax3.set_ylim(-500, 10000)
+        self.plot.ax3.set_ylim(-1, 25)
         
 """ ScaleSlider defines the component for the slider for the plot
 """
@@ -484,10 +486,10 @@ class App(tk.Tk):
                 if lastStatus != self.arduino.data.status_int:
                     print(output)
                     lastStatus = self.arduino.data.status_int
-                
-                
+
                 # Update Plots
                 self.plotSet.update(time, self.arduino.data)
+                
 
                 currentTime = datetime.now()
                 # Update Readouts if 500ms have passed
@@ -501,7 +503,7 @@ class App(tk.Tk):
                     self.lastDisplayTime = currentTime
 
                 # Log data to file
-                self.logger.write(time, self.arduino.data)
+                #self.logger.write(time, self.arduino.data)
 
         except Exception as e:
             print(f"Error Parsing Arduino data: '{e}'")
@@ -661,6 +663,8 @@ class Arduino():
             recSize = 0
             
             self.data.L1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
+            self.data.L1 = self.data.L1/100
+            print(self.data.L1)
             recSize += 2
             
             self.data.P1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
@@ -752,16 +756,16 @@ if __name__ == "__main__":
 
     # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
     serialPort = "COM3"
-    #arduino = Arduino(serialPort)
+    arduino = Arduino(serialPort)
 
     # Currently using the ArduinoSim class to test the application with fake data.
-    arduino = ArduinoSim()
+    #arduino = ArduinoSim()
 
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
-    refreshRate = 250 # The UI updates every 500 ms
+    refreshRate = 100 # The UI updates every 500 ms
     app = App(arduino, refreshRate, debug = False)
     
     # The app main loop will run repeatedly in a loop with at 10ms delay to allow the UI to update
-    app.loop(10)
+    app.loop(33)
     app.mainloop()
     

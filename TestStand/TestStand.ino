@@ -1,6 +1,6 @@
 #include "SerialTransfer.h"
 #include <HX711_ADC.h>
-#include <Servo.h>
+#include "Servo.h"
 #include <Wire.h>
 #include "Adafruit_MCP9600.h"
 
@@ -35,13 +35,14 @@ Servo fireServo;
 
 //Solenoid Valves
 const int numOfSolValve = 12;
-int SolValvePins[numOfSolValve] = {22,23,24,25,26,27,28,29,30,31,32,33};
+int SolValvePins[numOfSolValve] = {24,22,26,28,30,32,33,31,29,27,25,23};
 
 //Ignitor
 int ignitorPin = 7;
 
-//Keyswitch
+//Keyswitc
 int keyPin = 41;
+bool Safe;
 
 //Thermocouple
 #define I2C_ADDRESS (0x67)
@@ -88,7 +89,7 @@ float T1Raw;
 uint32_t millisAtStart = 0;
 uint32_t previousMillis = 0;
 uint32_t lastPacket = 0;
-const uint8_t sendInterval = 1000;
+const uint8_t sendInterval = 100;
 uint8_t badPackets = 0; 
 bool previousState = 0;
 
@@ -124,7 +125,7 @@ void setup() {
   
   //Load Cell Start up and Calibration
   LoadCell.begin();
-  float calibrationValue = -10015; // calibration value (see example file "Calibration.ino")
+  float calibrationValue = 43960.14; // calibration value (see example file "Calibration.ino")
   uint16_t stabilizingtime = 2000; // preciscion right after power-up can be improved by adding a few seconds of stabilizing time
 
   LoadCell.start(stabilizingtime, true);
@@ -158,7 +159,7 @@ void setup() {
     pinMode(SolValvePins[i], OUTPUT);
   }
   
-  //Pressure Tranducers
+  //Pressure Transducers
   for (int i = 0; i < numOfPt; i ++) {
     pinMode(PtPins[i], INPUT);
   }
@@ -189,7 +190,7 @@ void loop() {
       badPackets++;
       if (badPackets > 10) {
           data.status = ( data.status | 1 ) | 512;
-      } else {
+      } else if (badPackets  > 0) {
           data.status = ( data.status | 2 ) | 512;
       }
     } else {
@@ -240,25 +241,30 @@ void testStandControls() {
   }
 
   //Toggle Igniter Relay
-  if (bitRead(state_int,14)) {
-    digitalWrite(ignitorPin,HIGH);
-  } else {
-    digitalWrite(ignitorPin,LOW);
-  }
+//  if (bitRead(state_int,12)) {
+//    digitalWrite(ignitorPin,HIGH);
+//  } else {
+//    digitalWrite(ignitorPin,LOW);
+//  }
+
+  digitalWrite(ignitorPin,bitRead(state_int,14));
 
 
   //Toggle Relays According to State_int
-  for (int i = 0; i < numOfSolValve; i++) {
-    digitalWrite(SolValvePins[i],bitRead(state_int,i));
+  for (int i = 0; i < numOfSolValve-1; i++) {
+    digitalWrite(SolValvePins[i],bitRead(state_int,i+1));
   }
 }
 
 void readSensors() {
 
+  //Read Key Switch
+  Safe = digitalRead(keyPin);
+
   // check for new from load cell
   if (LoadCell.update() and loadC) {
     L1Raw = LoadCell.getData();
-    data.L1 = static_cast<uint16_t>(round(L1Raw));
+    data.L1 = static_cast<uint16_t>(round(L1Raw*100));
     //newDataReady = 0;
   } else {
     data.L1 = 0;
@@ -277,14 +283,14 @@ void readSensors() {
 
   if (thermC) {
     T1Raw = mcp.readThermocouple();
-    data.T1 = static_cast<uint16_t>((round(T1Raw)) * 10);
+    data.T1 = static_cast<uint16_t>(round(T1Raw * 10));
   } else {
-    data.T1 = 300;
+    data.T1 = 123;
   }
 
   //Add the real state of the valves to the status
   for (int i = 0; i < 12; i++) {
-    bitWrite(data.status,i+16,bitRead(state_int,i));
+    bitWrite(data.status,i+16,bitRead(state_int,i++));
   }
 }
 

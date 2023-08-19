@@ -3,16 +3,19 @@
 SerialTransfer testStand;
 SerialTransfer computer;
 
-const int numOfLedPins = 22;
-String ledPinNames[numOfLedPins] = {"armed", "active", "abort", "invld", "error", "warn", "pckt", "waiting", "mismatch", "caution", "CV1LED", "XV1LED", "XV2LED", "XV3LED", "XV4LED", "XV5LED", "XV6LED", "XV7LED", "XV8LED", "XV9LED", "XV10LED", "XV11LED"};
-int ledPinValues[numOfLedPins] = {A1, A0, A3, A2, A5, A4, A7, A6, A11, 22, 24, 26, 28, 30, 32, 36, 38, 40, 42, 44, 46, 48};
+const int numOfLedPins = 32;
+
+String ledPinNames[numOfLedPins] = {"error", "warn", "armed", "active", "abort", "invld", "Unassigned","Unassigned","waiting","pckt", "mismatch", "Unassigned","Unassigned","Unassigned","Unassigned","CV1LED", "XV1LED", "XV2LED", "XV3LED", "XV4LED", "XV5LED", "XV6LED", "XV7LED", "XV8LED", "XV9LED", "XV10LED", "XV11LED"};
+int ledPinValues[numOfLedPins] =  {A5,A4,A0, A1, A3, A2, -1,-1, A7,A6, A8, -1, -1,-1, -1, 22, 24, 26, 28, 30, 32, 36, 38, 40, 42, 44, 46, 48};
+
 
 const int numOfSwitchPins = 16;
 String switchPinNames[numOfSwitchPins] = {"CV1SW", "XV1SW", "XV2SW", "XV3SW", "XV4SW", "XV5SW", "XV6SW", "XV7SW", "XV8SW", "XV9SW", "XV10SW", "XV11SW", "abrtBT", "autoSW", "fireBT", "keySwh"};
-int switchPinValues[numOfSwitchPins] = {45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 23, A13, 47, A14, A15};
+int switchPinValues[numOfSwitchPins] = {45, 43, 41, 39, 37, 35, 33, 31, 29, 27, 25, 23, 3, 51, 4, 5};
 
-int buzBut = 0;        //input
-int buzPin = 10;       //output
+int buzBut = 2;        //input
+int buzPin = 53;       //output
+int prevStatus = 0;
 
 bool buzzer = false;
 
@@ -46,6 +49,7 @@ void setup() {
   //Serial setup
   Serial.begin(115200);
   Serial1.begin(115200);
+
   computer.begin(Serial);
   testStand.begin(Serial1);
   pinMode(45,INPUT_PULLUP);
@@ -53,18 +57,28 @@ void setup() {
   for (int i = 0; i < numOfSwitchPins; i++) {
     pinMode(switchPinValues[i], INPUT_PULLUP);
   }
-
+  
   for (int i = 0; i < numOfLedPins; i ++) {
     pinMode(ledPinValues[i], OUTPUT);
   }
 
   pinMode(buzBut, INPUT_PULLUP);
   pinMode(buzPin, OUTPUT);
- 
+
+  //Start up sequence
+  for (int i = 0; i < numOfLedPins; i++) {
+      delay(100);
+      digitalWrite(ledPinValues[i], HIGH);
+  }
+  for (int i = 0; i < numOfLedPins; i++) {
+      digitalWrite(ledPinValues[i], LOW);
+      delay(100);
+  }
 }
 
 void loop() {
   control_int = bit(16) | bit(18);
+  
   //Buffer Variables
   uint16_t txSize_t = 0;
   uint16_t rxSize_t = 0;
@@ -78,7 +92,7 @@ void loop() {
         }
   }
 
-  //If controls changed update Teststand
+  //If controls changed then update Teststand
   if (control_int != previous_control_int) {
     //Fill TestStand Transmit Buffer
     txSize_t = testStand.txObj(control_int, txSize_t);
@@ -100,18 +114,21 @@ void loop() {
   for (int i = 0; i < numOfLedPins; i++) {
     if(data.status & bit(i)) {
       digitalWrite(ledPinValues[i], HIGH);
-      if (i == 2) {
+      if (i <= 2) {
         buzzer = true;
       }
+    } else {
+      digitalWrite(ledPinValues[i], LOW);
     }
   }
 
   //Buzzer
-  if (digitalRead(buzPin) == LOW) {
+  if (digitalRead(buzBut) == LOW) { 
     buzzer = false;
-    digitalWrite(13,LOW);
-  } else if (buzzer){
-    digitalWrite(13,HIGH);
+    digitalWrite(buzPin,LOW);
+  } else if (buzzer && (data.status =! prevStatus)){
+    analogWrite(buzPin,100);
+    prevStatus = data.status;
   }
 
   //Test Stand Keep Alive
@@ -124,31 +141,36 @@ void loop() {
   }
 
   //Sensor Data Relay
-  //currentMillis = millis();
+  currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
 
     //Rx Datarate
     dataRate = intervalData/(float(interval)/1000);
     intervalData = 0;
+
     //Fill Computer Transmit Buffer
     txSize_c = computer.txObj(data, txSize_c);
     computer.sendData(txSize_c);
   }
+  //printdata();
+  //printInputs();
 }
 
+
+//Debug functions
+
 void printdata() {
-  //Serial.println(data.status);
-  //Serial.print(",");
-  //Serial.println(data.L1);
-  //Serial.print(",");
-  //Serial.print(dataRate);
-  //Serial.print(",");
-  //Serial.println();
-  //currentMicros = micros();
-  //delta = micros() - currentMicros;
-  //Serial.println(delta);
-  Serial.println(data.T1/10);
+  Serial.print(data.status);
+  Serial.print(",");
+  Serial.print(data.L1);
+  Serial.print(",");
+  Serial.print(dataRate);
+  Serial.print(",");
+  Serial.println(data.T1);
+  currentMicros = micros();
+  delta = micros() - currentMicros;
+ 
 }
 
 void printInputs() {
