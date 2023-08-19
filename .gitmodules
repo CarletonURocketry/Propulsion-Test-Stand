@@ -1,0 +1,3 @@
+[submodule "ControlBox UI/pyqtgraph"]
+	path = ControlBox UI/pyqtgraph
+	url = https://github.com/pyqtgraph/pyqtgraph.git

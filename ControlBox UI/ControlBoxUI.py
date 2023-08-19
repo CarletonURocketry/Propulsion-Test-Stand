@@ -5,7 +5,7 @@ Author: Michael Marsland (michaelmarsland@cmail.carleton.ca)
 Date: June 11th, 2022
 """
 # Be sure to use the local subpackage rather than any globally-installed version.
-import local_pyqtgraph.pyqtgraph as pg
+import pyqtgraph as pg
 from pyqtgraph.Qt import QtCore
 # Serial
 from pySerialTransfer import pySerialTransfer as txfer
