@@ -1,8 +1,10 @@
-"""The Test Stand application is intended to be used for the Carleton CUInSpace rocket team test stand
+"""The refactored Test Stand application is intended to be used for the Carleton CUInSpace rocket team test stand
 for the new hybrid rocket engine.
 
-Author: Michael Marsland (michaelmarsland@cmail.carleton.ca)
-Date: June 11th, 2022
+Note that chunks of the code have yet to be cleaned up, due to lack in context on respective functionality from team members.
+
+Author: Angela Chen (angelachen4@cmail.carleton.ca)
+Date: November 6, 2023
 """
 # Be sure to use the local subpackage rather than any globally-installed version.
 import pyqtgraph as pg
@@ -17,17 +19,54 @@ import time, os, math, random
 #Debuging variables
 lastStatus = -1
 
-plot = pg.plot()
-plot.setWindowTitle('ControlBoxUI')
-plot.setLabel('bottom', 'Time', units='s')
-plot.setLabel('left', 'Pressure', units='PSI')
-plot.showGrid(x=True, y=True)
+win = pg.GraphicsLayoutWidget(show=True, title="Control Box UI")
+win.resize(900,600)
+win.setWindowTitle('Control Box UI')
+# Enable antialiasing for prettier plots
+pg.setConfigOptions(antialias=True)
+L1 = win.addPlot(title="Load Cell")
+L1.setLabel('bottom', 'Time', units = 's')
+L1.setLabel('left', 'Unit Load')
+L1.showGrid(x=True, y=True)
+# plot = pg.plot()
+# plot.setWindowTitle('ControlBoxUI')
+# plot.setLabel('bottom', 'Time', units='s')
+# plot.setLabel('left', 'Pressure', units='PSI')
+# plot.showGrid(x=True, y=True)
+
+legend = win.addPlot(title="Legend")
+legend.setYRange(-1, 2)
+current_time = pg.TextItem("Current Time:")
+current_time.setPos(0, 0)
+elapsed_seconds = pg.TextItem("Elapsed Seconds Since Program Start:")
+speed = pg.TextItem("Speed (in Hz):")
+legend.addItem(current_time)
+legend.addItem(elapsed_seconds)
+legend.addItem(speed)
+
+win.nextRow()
+
+pressure = win.addPlot(title="Pressure Chambers")
+pressure.setLabel('bottom', 'Time', units = 's')
+pressure.setLabel('left', 'Pressure', units = 'PSI')
+pressure.showGrid(x=True, y=True)
+
+T1 = win.addPlot(title="Temperature")
+T1.setLabel('bottom', 'Time', units = 's')
+T1.setLabel('left', 'Temperature', units = 'C')
+T1.showGrid(x=True, y=True)
+
 nPlots = 6
 # curves = [loadcell, pressure1, pressure2, pressure3, pressure4, temperature]
 curves = []
 for idx in range(nPlots):
     curve = pg.PlotCurveItem(pen=({'color': (idx, nPlots*1.3), 'width': 1}), skipFiniteCheck=True)
-    plot.addItem(curve)
+    if idx == 0:
+        L1.addItem(curve)
+    elif idx == 5:
+        T1.addItem(curve)
+    else:
+        pressure.addItem(curve)
     curve.setPos(0,idx*6)
     curves.append(curve)
 
@@ -101,7 +140,7 @@ class App():
                 curves[3].setData(self.data[0], self.data[3])
                 curves[4].setData(self.data[0], self.data[4])
                 curves[5].setData(self.data[0], self.data[5])
-                plot.setTitle(f'Elapsed Time: {elapsed_seconds:.1f} seconds')
+                #plot.setTitle(f'Elapsed Time: {elapsed_seconds:.1f} seconds')
                 # Log data to file
                 self.logger.write(time, self.arduino.data)
 
