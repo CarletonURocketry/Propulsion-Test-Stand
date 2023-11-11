@@ -134,6 +134,7 @@ class App():
                 elapsed_seconds = (time - self.start_time).total_seconds()
                 global curves, ptr
                 self.data = np.append(self.data, [[elapsed_seconds],[self.arduino.data.P1],[self.arduino.data.P2],[self.arduino.data.P3],[self.arduino.data.P4],[self.arduino.data.T1],[self.arduino.data.L1]], axis=1)
+
                 if ptr < 100:
                    curves[0].setData(self.data[0], self.data[6])
                    curves[1].setData(self.data[0], self.data[1])
@@ -142,19 +143,24 @@ class App():
                    curves[4].setData(self.data[0], self.data[4])
                    curves[5].setData(self.data[0], self.data[5])
                 else:
+                    #self.data = self.data[0:6,:-1]
+                    ptr += 1
                 # Update Readouts if 50ms have passed
-                    curves[0].setPos(elapsed_seconds, 0)
-                    curves[1].setPos(elapsed_seconds, 0)
-                    curves[2].setPos(elapsed_seconds, 0)
-                    curves[3].setPos(elapsed_seconds, 0)
-                    curves[4].setPos(elapsed_seconds, 0)
-                    curves[5].setPos(elapsed_seconds, 0)
-                    curves[0].setData(self.data[0,:-20], self.data[6,:-20])
-                    curves[1].setData(self.data[0,:-20], self.data[1,:-20])
-                    curves[2].setData(self.data[0,:-20], self.data[2,:-20])
-                    curves[3].setData(self.data[0,:-20], self.data[3, :-20])
-                    curves[4].setData(self.data[0,:-20], self.data[4, :-20])
-                    curves[5].setData(self.data[0,:-20], self.data[5, :-20])
+                    
+                    # self.data = self.data[0:7, :-99]
+                    # np.append(self.data, [[elapsed_seconds],[self.arduino.data.P1],[self.arduino.data.P2],[self.arduino.data.P3],[self.arduino.data.P4],[self.arduino.data.T1],[self.arduino.data.L1]], axis=1)
+                    # curves[0].setPos(self.data[0,-100], self.data[6,0])
+                    # curves[1].setPos(self.data[0, -100], self.data[1,0])
+                    # curves[2].setPos(self.data[0, -100], self.data[2,0])
+                    # curves[3].setPos(self.data[0, -100], self.data[3,0])
+                    # curves[4].setPos(self.data[0, -100], self.data[4,0])
+                    curves[0].setData(self.data[0, -100:-1], self.data[6, -100:-1])
+                    curves[1].setData(self.data[0, -100:-1], self.data[1, -100:-1])
+                    curves[2].setData(self.data[0, -100:-1], self.data[2, -100:-1])
+                    curves[3].setData(self.data[0, -100:-1], self.data[3, -100:-1])
+                    curves[4].setData(self.data[0, -100:-1], self.data[4, -100:-1])
+                    curves[5].setData(self.data[0, -100:-1], self.data[5, -100:-1])
+        
                 #plot.setTitle(f'Elapsed Time: {elapsed_seconds:.1f} seconds')
                 # Log data to file
                 self.logger.write(time, self.arduino.data)
