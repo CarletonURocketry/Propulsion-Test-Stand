@@ -20,7 +20,7 @@ import time, os, math, random
 lastStatus = -1
 
 win = pg.GraphicsLayoutWidget(show=True, title="Control Box UI")
-win.resize(900,600)
+win.resize(1600,800)
 win.setWindowTitle('Control Box UI')
 # Enable antialiasing for prettier plots
 pg.setConfigOptions(antialias=True)
@@ -69,6 +69,7 @@ for idx in range(nPlots):
         pressure.addItem(curve)
     curve.setPos(0,idx*6)
     curves.append(curve)
+ptr = 0
 
 """ App is the main component for the application. It is the main tkinter window as well as
 the main running code for the application
@@ -131,18 +132,33 @@ class App():
                     lastStatus = self.arduino.data.status_int
             
                 elapsed_seconds = (time - self.start_time).total_seconds()
+                global curves, ptr
                 self.data = np.append(self.data, [[elapsed_seconds],[self.arduino.data.P1],[self.arduino.data.P2],[self.arduino.data.P3],[self.arduino.data.P4],[self.arduino.data.T1],[self.arduino.data.L1]], axis=1)
+                if ptr < 100:
+                   curves[0].setData(self.data[0], self.data[6])
+                   curves[1].setData(self.data[0], self.data[1])
+                   curves[2].setData(self.data[0], self.data[2])
+                   curves[3].setData(self.data[0], self.data[3])
+                   curves[4].setData(self.data[0], self.data[4])
+                   curves[5].setData(self.data[0], self.data[5])
+                else:
                 # Update Readouts if 50ms have passed
-                global curves, plot
-                curves[0].setData(self.data[0], self.data[6])
-                curves[1].setData(self.data[0], self.data[1])
-                curves[2].setData(self.data[0], self.data[2])
-                curves[3].setData(self.data[0], self.data[3])
-                curves[4].setData(self.data[0], self.data[4])
-                curves[5].setData(self.data[0], self.data[5])
+                    curves[0].setPos(elapsed_seconds, 0)
+                    curves[1].setPos(elapsed_seconds, 0)
+                    curves[2].setPos(elapsed_seconds, 0)
+                    curves[3].setPos(elapsed_seconds, 0)
+                    curves[4].setPos(elapsed_seconds, 0)
+                    curves[5].setPos(elapsed_seconds, 0)
+                    curves[0].setData(self.data[0,:-20], self.data[6,:-20])
+                    curves[1].setData(self.data[0,:-20], self.data[1,:-20])
+                    curves[2].setData(self.data[0,:-20], self.data[2,:-20])
+                    curves[3].setData(self.data[0,:-20], self.data[3, :-20])
+                    curves[4].setData(self.data[0,:-20], self.data[4, :-20])
+                    curves[5].setData(self.data[0,:-20], self.data[5, :-20])
                 #plot.setTitle(f'Elapsed Time: {elapsed_seconds:.1f} seconds')
                 # Log data to file
                 self.logger.write(time, self.arduino.data)
+                ptr += 1
 
         except Exception as e:
             print(f"Error Parsing Arduino data: '{e}'")
