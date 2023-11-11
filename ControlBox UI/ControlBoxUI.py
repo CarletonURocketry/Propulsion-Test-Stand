@@ -20,7 +20,7 @@ import time, os, math, random
 lastStatus = -1
 
 win = pg.GraphicsLayoutWidget(show=True, title="Control Box UI")
-win.resize(1600,800)
+win.resize(2880,1920)
 win.setWindowTitle('Control Box UI')
 # Enable antialiasing for prettier plots
 pg.setConfigOptions(antialias=True)
