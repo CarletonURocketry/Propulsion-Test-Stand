@@ -6,9 +6,18 @@ Note that chunks of the code have yet to be cleaned up, due to lack in context o
 Author: Angela Chen (angelachen4@cmail.carleton.ca)
 Date: November 6, 2023
 """
+# def toggleMode(state):
+#     if state == 2:  # 2 corresponds to checked state
+#         # Dark mode
+#         pg.setConfigOption('background', 'k')
+#         pg.setConfigOption('foreground', 'w')
+#     else:
+#         # Light mode
+#         pg.setConfigOption('background', 'w')
+#         pg.setConfigOption('foreground', 'k')
 # Be sure to use the local subpackage rather than any globally-installed version.
 import pyqtgraph as pg
-from pyqtgraph.Qt import QtCore
+from pyqtgraph.Qt import QtCore, QtWidgets
 # Serial
 from pySerialTransfer import pySerialTransfer as txfer
 # Other
@@ -18,21 +27,28 @@ import time, os, math, random
 
 #Debuging variables
 lastStatus = -1
+qtApp = pg.mkQApp("Control Box UI")
+pg.setConfigOption('background', 'w')
+view = pg.GraphicsView()
+win = pg.GraphicsLayout(border=(100,100,100))
+#win = pg.GraphicsLayout(show=True, title="Control Box UI")
+view.setCentralItem(win)
+view.show()
+view.resize(2880,1920)
+view.setWindowTitle('Control Box UI')
+# pg.setConfigOption('foreground', 'k')
 
-win = pg.GraphicsLayoutWidget(show=True, title="Control Box UI")
-win.resize(2880,1920)
-win.setWindowTitle('Control Box UI')
 # Enable antialiasing for prettier plots
 pg.setConfigOptions(antialias=True)
 L1 = win.addPlot(title="Load Cell")
 L1.setLabel('bottom', 'Time', units = 's')
 L1.setLabel('left', 'Unit Load')
 L1.showGrid(x=True, y=True)
-# plot = pg.plot()
-# plot.setWindowTitle('ControlBoxUI')
-# plot.setLabel('bottom', 'Time', units='s')
-# plot.setLabel('left', 'Pressure', units='PSI')
-# plot.showGrid(x=True, y=True)
+
+# toggleArea = win.addViewBox(lockAspect=True)
+# checkbox = pg.QCheckBox("Dark Mode")
+# toggleArea.addWidget(checkbox)
+# toggleArea.autoRange()
 
 legend = win.addPlot(title="Legend")
 legend.setYRange(-1, 2)
@@ -43,7 +59,8 @@ speed = pg.TextItem("Speed (in Hz):")
 legend.addItem(current_time)
 legend.addItem(elapsed_seconds)
 legend.addItem(speed)
-
+# legend.addItem(checkbox)
+# checkbox.setPos(400, 20, 100)
 win.nextRow()
 
 pressure = win.addPlot(title="Pressure Chambers")
@@ -60,7 +77,7 @@ nPlots = 6
 # curves = [loadcell, pressure1, pressure2, pressure3, pressure4, temperature]
 curves = []
 for idx in range(nPlots):
-    curve = pg.PlotCurveItem(pen=({'color': (idx, nPlots*1.3), 'width': 1}), skipFiniteCheck=True)
+    curve = pg.PlotCurveItem(pen=({'color': (idx, nPlots*1.3), 'width': 8}), skipFiniteCheck=True)
     if idx == 0:
         L1.addItem(curve)
     elif idx == 5:
@@ -71,6 +88,7 @@ for idx in range(nPlots):
     curves.append(curve)
 ptr = 0
 
+pressure_legend = pressure.addLegend()
 """ App is the main component for the application. It is the main tkinter window as well as
 the main running code for the application
 """
