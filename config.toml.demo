@@ -23,6 +23,9 @@ XV6 = 'B.2'
 [data]
 format = {time = ["elapsedTime", "currentTime"], pressures = ["pi1","pi2"], temps = ["t1","t2"], valves = ["XV1", "XV2", "XV3", "XV4", "XV5", "XV6"], loads = ["L1", "dm"]}
 
+[control]
+format = {valves = ["XV1", "XV2", "XV3", "XV4", "XV5", "XV6"], commands = ["fire", "disconnect"]}
+
 [log]
 path = "Logs/"
 name = "testLog" # Appends current date and time to the name

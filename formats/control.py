@@ -1,11 +1,17 @@
 """
-Data format for commands sent from the control side to the teststand.
+Data format example for commands sent from the control side to the teststand.
 """
 {
 "valve": {
     "xv1": bool,
-    "xv2": bool # Repeat for all valves in config.toml
+    "xv2": bool,
+    "xv3": bool,
+    "xv4": bool,
+    "xv5": bool,
+    "xv6": bool
     },
-"fire": bool, # Fire valve servo
-"disconnect": bool # Hose disconnect servo
+"commands": {
+    "fire": bool, # Fire valve servo
+    "disconnect": bool # Hose disconnect servo
+    }
 }

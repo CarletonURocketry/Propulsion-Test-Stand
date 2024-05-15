@@ -135,6 +135,7 @@ class MainWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(mainLayout)
         self.setCentralWidget(widget)
+        return
 
 
     def update_ui(self):
@@ -144,7 +145,7 @@ class MainWindow(QMainWindow):
 
         # Update the time
         self.Time = self.Time[1:]
-        self.Time.append(float(self.data["time"]["elapsedTime"]))
+        self.Time.append(float(self.data.get("time", {}).get("elapsedTime", 0)))
         
 
         self.y = self.y[1:]  
@@ -152,18 +153,18 @@ class MainWindow(QMainWindow):
 
         # Update the temp data
         self.T1 = self.T1[1:]
-        self.T1.append(float(self.data["temps"]["T1"]))
+        self.T1.append(float(self.data.get("temps", {}).get("T1", 0)))
 
         # Update the pressure data
         self.P1 = self.P1[1:]
-        self.P1.append(float(self.data["pressures"]["P1"]))
+        self.P1.append(float(self.data.get("pressures", {}).get("P1", 0)))
 
         self.P2 = self.P2[1:]
-        self.P2.append(float(self.data["pressures"]["P2"]))
+        self.P2.append(float(self.data.get("pressures", {}).get("P2", 0)))
 
         # Update the load cell data
         self.L1 = self.L1[1:]
-        self.L1.append(float(self.data["loads"]["L1"]))
+        self.L1.append(float(self.data.get("loads", {}).get("L1", 0)))
         
         # Update the graphs
         self.temp_data_line.setData(self.Time, self.T1)
@@ -172,18 +173,18 @@ class MainWindow(QMainWindow):
         self.loadCell_data_line.setData(self.Time, self.L1)
         self.thrust_data_line.setData(self.x, self.y)
         
-        # Update the time widgets
-        self.serverTimeWidget.setText(f"Last Comm Time: {self.data["time"]["serverTime"]}")
+         # Update the time widgets
+        self.serverTimeWidget.setText(f"Last Comm Time: {self.data.get('time', {}).get('serverTime', 'hh:mm:ss')}")
         self.clientTimeWidget.setText(f"Client Time: {datetime.datetime.now().strftime('%H:%M:%S.%f')[:-3]}")
 
-        self.elapsedTimeWidget.setText(f"Elapsed Time: {self.data["time"]["elapsedTime"]}s")
+        self.elapsedTimeWidget.setText(f"Elapsed Time: {self.data.get('time', {}).get('elapsedTime', 0)}s")
 
-        print(self.data)
+
         # Update the valve state widgets
-        self.xv1Widget.setText(f"XV1: {self.data["valves"]["XV1"]}")
-        self.xv2Widget.setText(f"XV2: {self.data["valves"]["XV2"]}")
-        self.xv3Widget.setText(f"XV3: {self.data["valves"]["XV3"]}")
-        self.xv4Widget.setText(f"XV4: {self.data["valves"]["XV4"]}")
-        self.xv5Widget.setText(f"XV5: {self.data["valves"]["XV5"]}")
-        self.xv6Widget.setText(f"XV6: {self.data["valves"]["XV6"]}")
-        print(self.data)
+        self.xv1Widget.setText(f"XV1: {self.data.get('valves', {}).get('XV1', 'False')}")
+        self.xv2Widget.setText(f"XV2: {self.data.get('valves', {}).get('XV2', 'False')}")
+        self.xv3Widget.setText(f"XV3: {self.data.get('valves', {}).get('XV3', 'False')}")
+        self.xv4Widget.setText(f"XV4: {self.data.get('valves', {}).get('XV4', 'False')}")
+        self.xv5Widget.setText(f"XV5: {self.data.get('valves', {}).get('XV5', 'False')}")
+        self.xv6Widget.setText(f"XV6: {self.data.get('valves', {}).get('XV6', 'False')}")
+        return

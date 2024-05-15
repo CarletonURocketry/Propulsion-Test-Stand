@@ -6,13 +6,12 @@ from raspi_gpio import GPIO # This is a mock library for the GPIO pins
 # import RPi.GPIO as GPIO # This is the actual library for the GPIO pins
 
 class Control():
-    """Class to manage the IO of the control side of the system
-    """
-    def __init__(self, switchMap: dict["switchID": "pinID"]) -> None:
-        """_summary_
+    def __init__(self, switchMap: dict["switchID": "pinID"], ledMap: dict["ledID": "pinID"] = {}) -> None:
+        """Class to manage the IO of the control side of the system
 
         Args:
             switchMap (dict): Switch ID (xv1) : Pin ID (A.1)
+            ledMap (dict): LED ID : Pin ID (On the GPIO multiplexer)
         """
         self.switchMap: dict = switchMap # Switch ID (xv1) : Pin ID (A.1)
         self.pinMap: dict = dict([(value, key) for key, value in switchMap.items()]) # Pin ID (A.1) : Switch ID (xv1)
@@ -23,38 +22,24 @@ class Control():
         GPIO.setwarnings(False)
 
         for switchID in self.switchMap.keys():
-            pinID: str = self.switchMap[switchID]
-            pinNum: int = self.pinConfig[pinID]
+            pinID: str = self.switchMap.get(switchID)
+            pinNum: int = self.pinConfig.get(pinID)
             GPIO.setup(pinNum, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             self.switchMap[switchID] = pinNum # Switch ID (xv1) : Pin Number (22)
 
-        print(self.switchMap)
         return
     
     def updateStatus(self) -> dict["switchID": bool]:
         for switchID in self.switchMap.keys():
-            pinNum: int = self.switchMap[switchID]
+            pinNum: int = self.switchMap.get(switchID)
             self.switchStatus[switchID] = GPIO.input(pinNum)
         
         return self.switchStatus
 
-class LEDs():
-    """Class to control the LEDs connected to the GPIO expander
-    """
-    def __init__(self) -> None:
-        """_summary_
-
-        Args:
-            
-        """
-
-        return
     
 class Test():
-    """Class to manage the IO and sensors of the test side of the system
-    """
     def __init__(self) -> None:
-        """_summary_
+        """Class to manage the IO and sensors of the test side of the system
 
         Args:
             
@@ -62,3 +47,22 @@ class Test():
 
         return
     
+    def updateSensor(self) -> dict["sensorID": float]:
+        """Function to get updated sensor data
+
+        Returns:
+            _type_: _description_
+        """
+        sensorData: dict = {}
+        return sensorData
+    
+    def updateOutput(self, output: dict["outputID": float]) -> dict["outputID": float]:
+        """Function to update the outputs of the system.
+
+        Args:
+            output (dict): Dictionary of the outputs and their values
+
+        Returns:
+            dict: Dictionary with the current states of the outputs
+        """
+        return

@@ -7,7 +7,7 @@ Author: Angela Chen (angelachen4@cmail.carleton.ca)
 Date: November 6, 2023
 """
 
-import utils
+import testStand.utils as utils
 import pyqtgraph as pg
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QCheckBox, QVBoxLayout, QWidget

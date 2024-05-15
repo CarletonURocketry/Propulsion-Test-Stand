@@ -1,3 +1,5 @@
+"""Module to read test data from a csv file and return it line by line in the correct format as dictionaries.
+"""
 import csv
 
 class testData:

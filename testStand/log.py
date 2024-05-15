@@ -1,30 +1,25 @@
-"""Class for logging data to a file from a predefined format
+"""Contains the class to write data to a log file
 """
 from datetime import datetime
 
 
 class LogFile():
-    """Datalogger class
-    """
     def __init__(self, config: dict[list], logName: str, logPath: str = "") -> None:
-        """Initalizes the data logger and write headers
+        """Class to write data to a log file
 
         Args:
             logName (str): Name of the log file
             logPath (str): Relative to the log file from the main script location
             config (dict): Configuration for the logfile
         """
-
         self.logPath: str = f"{logPath}{logName}"
         logFile = open(self.logPath, "w")
         self.config = config
         headerStr: str = "time.WriteTime"
-        print(self.config.keys())
         for key in self.config.keys():
-            print(key)
             #key = config[key].split(".")
             for subkey in self.config[key]:
-                header: str = f"{key}.{subkey},"
+                header: str = f",{key}.{subkey}"
                 headerStr += header
         print(headerStr)
         logFile.write(headerStr)
@@ -39,10 +34,10 @@ class LogFile():
         """
 
         logFile = open(self.logPath, "w")
-        dataWrite: str = f"{datetime.now().strftime('%H-%M-%S.%f')[:-3]},"
+        dataWrite: str = f"{datetime.now()},"
         for key in self.config.keys():
             for subKey in self.config[key]:
-                dataWrite.append(f"{status[key][subKey]},")
+                dataWrite.append(f",{status[key][subKey]}")
             
         self.logfile.write(dataWrite)
         self.logFile.close()
@@ -59,6 +54,5 @@ if __name__ == "__main__":
     import datetime
 
     config = tomllib.load(open("config.toml", "rb"))
-    print(config["data"]["format"])
     log = LogFile(config["data"]["format"], f"{config["log"]["name"]}-test-{datetime.datetime.now().strftime("%y-%m-%d-%H-%M")}.csv", config["log"]["path"])
 
