@@ -30,3 +30,19 @@
 *.exe
 *.out
 *.app
+
+# VS Code settings
+.vscode/ 
+*.code-workspace
+
+# Data Logs
+dataFiles/ 
+
+# Python cache
+__pycache__/
+
+# Place to put files to play around with
+testing/
+
+# Config files
+*.toml
