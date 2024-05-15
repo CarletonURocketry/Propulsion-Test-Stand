@@ -17,3 +17,8 @@ The Test Stand UI application can be run through python by installing the requir
 
 The Test Stand UI currently looks like this:
 ![alt text](Test%20Stand%20UI/GUI_Example.png)
+
+## Installation
+### Dependencies
+- Python3 (All required packages can be installed by pip install -r requirments.txt)
+

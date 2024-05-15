@@ -7,33 +7,10 @@ Author: Angela Chen (angelachen4@cmail.carleton.ca)
 Date: November 6, 2023
 """
 
-#im being lazy -antoine
-def pressureConversion(x):
-
-  minVoltage = 1
-  maxVoltage = 5
-
-  minPressure = 0
-  maxPressure = 1000
-
-  voltage = x * (6.144/(32768 >> 4))
-
-  raw = (voltage - minVoltage) * (maxPressure - minPressure) // (maxVoltage - minVoltage) + minPressure
-
-  corrected = raw #insert calibration code here
-  return corrected
-
-# def toggleMode(state):
-#     if state == 2:  # 2 corresponds to checked state
-#         # Dark mode
-#         pg.setConfigOption('background', 'k')
-#         pg.setConfigOption('foreground', 'w')
-#     else:
-#         # Light mode
-#         pg.setConfigOption('background', 'w')
-#         pg.setConfigOption('foreground', 'k')
-# Be sure to use the local subpackage rather than any globally-installed version.
+import utils
 import pyqtgraph as pg
+import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow, QCheckBox, QVBoxLayout, QWidget
 from pyqtgraph.Qt import QtCore, QtWidgets
 # Serial
 from pySerialTransfer import pySerialTransfer as txfer
@@ -132,20 +109,11 @@ class App():
         self.indicators = indicators
 
         #self.protocol("WM_DELETE_WINDOW", self.close)
-
-        # Logger
-        self.logger = Logger()
-        self.logger.open()
-        
-        # #Status Indicators
         # self.indicatorsFrame = tk.Frame(self.rightFrame)
         # self.indicatorsFrame.grid(row=1, column=0 ,columnspan=2, pady=25)
 
     def close(self):
         print("Closing Application") 
-        if (hasattr(self, 'arduino')):
-            self.arduino.close()
-        self.logger.close()
         self.destroy()
 
     # The main code loop that runs in the background of the window (Repeatedly after "frequency" milliseconds)
@@ -207,180 +175,13 @@ class App():
             print(f"Error Parsing Arduino data: '{e}'")
             import traceback
             traceback.print_exc()
-        
-""" Logger is used to log the data to a dataFile while the application is running
-"""
-class Logger():
-    def __init__(self):
-        pass
 
-    def open(self):
-        dataFilesPath = "dataFiles"
-        if not os.path.isdir(dataFilesPath):
-            os.makedirs(dataFilesPath)
-        date = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.file = open(f"{dataFilesPath}/data_{date}.txt", "w")
-        self.file.write(f"Time,L1,P1,P2,P3,P4,T1,Safe\n")
-
-    def write(self, time, data):
-        self.file.write(f"{time},{data.L1},{data.P1},{data.P2},{data.P3},{data.P4},{data.T1},{data.status_int}\n")
-
-    def close(self):
-        self.file.close()
-
-""" This Data class defines the data structure that is received from the Ardiono
-"""
-class Data():
-        millisSince = 0
-        L1 = 0.0 #Loadcell
-        P1 = 0.0 #Don't know
-        P2 = 0.0 #Tank Pressure Bottom
-        P3 = 0.0 #Tank Pressure Top
-        P4 = 0.0 #Don't know
-        T1 = 0.0 #Tank Temperature
-        status_int = 0 
-
-""" The Arduino class defines the connection to the arduino connected to the computer on which
-the application runs, this allows the application to read data off the Arduino through a serial
-connection
-"""
-class Arduino():
-    def __init__(self, serialPort):
-        #Initialize Serial Link
-        try:
-            self.link = txfer.SerialTransfer(serialPort)
-            self.link.open()
-            time.sleep(2)
-            
-        except Exception:
-            import traceback
-            traceback.print_exc()
-            
-            try:
-                self.link.close()
-            except Exception:
-                pass
-
-        self.control_int = 0
-        self.control_list = [0] * 32#[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        self.data = Data()
-    
-    def close(self):
-        try:
-            self.link.close()
-        except Exception:
-            pass
-
-    def recvData(self):
-        if self.link.available():
-            recSize = 0
-            
-            self.data.L1 = self.link.rx_obj(obj_type='H', start_pos=recSize)/1000
-            recSize += 2
-            
-            self.data.P1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
-            recSize += 2
-            
-            self.data.P2 = self.link.rx_obj(obj_type='H', start_pos=recSize)
-            recSize += 2
-            
-            self.data.P3 = 0 #self.link.rx_obj(obj_type='H', start_pos=recSize)
-            recSize += 2
-            
-            self.data.P4 = 0 #self.link.rx_obj(obj_type='H', start_pos=recSize)
-            recSize += 2
-            
-            self.data.T1 = self.link.rx_obj(obj_type='H', start_pos=recSize)
-            self.data.T1 = self.data.T1/1000
-            recSize += 2
-
-            self.data.status_int = self.link.rx_obj(obj_type='I', start_pos=recSize)
-            recSize += 4
-
-            #pressure stuff
-            
-            self.data.P1 = pressureConversion(self.data.P1)
-            self.data.P2 = pressureConversion(self.data.P2)
-            
-            print("P1: {} P2: {} T1: {} L1: {}".format(self.data.P1,self.data.P2,self.data.T1,self.data.L1))
-            return True
-        
-        elif self.link.status < 0:
-            if self.link.status == txfer.CRC_ERROR:
-                print('ERROR: CRC_ERROR')
-            elif self.link.status == txfer.PAYLOAD_ERROR:
-                print('ERROR: PAYLOAD_ERROR')
-            elif self.link.status == txfer.STOP_BYTE_ERROR:
-                print('ERROR: STOP_BYTE_ERROR')
-            else:
-                print('ERROR: {}'.format(self.link.status))
-        return False
-    
-    def sendCommand(self, command):
-        # Commands encoded as 3 digit numbers: 01-... for solenoid number, and 0-1 for off/on
-        self.control_list[-int(command[0]+command[1])-1] = int(command[2])
-        self.control_int = int(str(self.control_list).strip("[ ]").replace(", ",""),2) + 327680
-        try:
-            send_size = 0
-            send_size = self.link.tx_obj(self.control_int, send_size)
-            self.link.send(send_size)
-        except:
-            import traceback
-            traceback.print_exc()
-               
-            self.link.close()    
-
-""" The ArduinoSim is used to allow the application to be tested (for development) without
-needing to connect an arduino
-"""
-class ArduinoSim():
-    def __init__(self):
-        self.data = Data()
-        self.data.P1 = 100
-        self.data.P2 = 300
-        self.data.P3 = 700
-        self.data.P4 = 900
-        self.data.T1 = 25
-
-        self.lastSendTime = datetime.now()
-
-    
-    def close(self):
-        print(f"Sim close()") 
-        pass
-
-    def recvData(self): 
-        currentTime = datetime.now()
-
-        if (((currentTime - self.lastSendTime).total_seconds() * 1000) > 100):
-            self.data.millisSince = self.data.millisSince + ((currentTime - self.lastSendTime).total_seconds() * 1000)
-            self.data.L1 = self.data.L1 + (random.random() * 2 - 1)*100
-            self.data.P1 = self.data.P1 + (random.random() * 2 - 1)*10
-            self.data.P2 = self.data.P2 + (random.random() * 2 - 1)*10
-            self.data.P3 = self.data.P3 + (random.random() * 2 - 1)*10
-            self.data.P4 = self.data.P4 + (random.random() * 2 - 1)*10
-            self.data.T1 = self.data.T1 + (random.random() * 2 - 1)*1
-            self.data.Safe = False
-            self.lastSendTime = currentTime
-            return True
-        return False
-    
-    def sendCommand(self, command):
-        print(f"Sim send command: {command}") 
-  
 """ The main code block is run when this python file is run and starts the application"""
 if __name__ == "__main__":
 
-    # Select the serial port of the arduino, may be COM or whatever the Mac one is, use the Arduino IDE to find it.
-    serialPort = "COM3"
-    arduino = Arduino(serialPort)
-
-    # Currently using the ArduinoSim class to test the application with fake data.
-    #arduino = ArduinoSim()
-
     # Refresh Rate is how often the UI readouts are updated to allow for better readability
     refreshRate = 250 # The UI updates every 500 ms
-    app = App(arduino, refreshRate, debug = True)
+    app = App(refreshRate, debug = True)
     timer = QtCore.QTimer()
     timer.timeout.connect(app.loop)
     timer.start(50)
