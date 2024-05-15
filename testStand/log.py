@@ -27,7 +27,7 @@ class LogFile():
         return
 
     def updateLog(self, status: dict[dict]) -> None:
-        """Updates the log file with the status of the switches
+        """Updates the log file with the status of the system
 
         Args:
             status (dict): dictionary with the current state of the system
@@ -37,16 +37,16 @@ class LogFile():
         dataWrite: str = f"{datetime.now()},"
         for key in self.config.keys():
             for subKey in self.config[key]:
-                dataWrite.append(f",{status[key][subKey]}")
+                dataWrite += f",{status.get(key, {}).get(subKey)}"
             
-        self.logfile.write(dataWrite)
-        self.logFile.close()
+        logFile.write(dataWrite)
+        logFile.close()
         return
 
     def readLog(self) -> None:
-        self.logFile = open(self.logPath, "r")
-        print(self.logFile.read())
-        self.logFile.close()
+        logFile = open(self.logPath, "r")
+        print(logFile.read())
+        logFile.close()
         return
 
 if __name__ == "__main__":

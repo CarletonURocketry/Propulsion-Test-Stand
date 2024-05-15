@@ -47,7 +47,7 @@ class Test():
 
         return
     
-    def updateSensor(self) -> dict["sensorID": float]:
+    def updateSensorData(self) -> dict["sensorID": float]:
         """Function to get updated sensor data
 
         Returns:

@@ -14,12 +14,12 @@ import testStand.log as log
 config = tomllib.load(open("config.toml", "rb"))
 comm = comm.Client(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", 0))
 
-switch = IO.Switch(config.get("switch", {}))
+io = IO.Control(config.get("switch", {}))
 log = log.LogFile(config.get("data", {}).get("format"), f"control-{config.get("log", {}).get("name")}{datetime.datetime.now().strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
 
 print("Starting UI")
 
 app = QApplication(sys.argv)
-ui = UI.MainWindow(comm, config, switch, log)
+ui = UI.MainWindow(comm, config, io, log)
 ui.show()
 app.exec()

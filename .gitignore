@@ -37,6 +37,7 @@
 
 # Data Logs
 dataFiles/ 
+Logs/
 
 # Python cache
 __pycache__/

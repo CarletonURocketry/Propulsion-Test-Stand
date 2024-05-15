@@ -21,12 +21,22 @@ def pressureConversion(x: float, voltageRange: tuple[float,float] = (0, 5), pres
 
 class RTC():
     def __init__(self) -> None:
-        """Class to interface with the RTC module
+        """Class to interface with the RTC module on the Raspberry Pis HAT
         """
         return
 
-    def get_time(self) -> str:
-        return "12:00:00"
+    def get_time(self) -> float:
+        """Function to get the current time from the RTC
 
-    def set_time(self, time: str) -> None:
+        Returns:
+            float: Current time as a unix timestamp with decimal seconds
+        """
+        return 0
+
+    def set_time(self, time: float) -> None:
+        """Function to update the time on the RTC
+
+        Args:
+            time (float): Time to set the RTC to as a unix timestamp with decimal seconds
+        """
         return
