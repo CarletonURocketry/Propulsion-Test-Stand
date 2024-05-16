@@ -3,22 +3,20 @@ Propulsion's Test Stand Arduino Code
 
 This repo contains the code that will be run on two Arduino Mega 2560 rev3s. 
 
-One Arduino (TestStand) will be located at the test stand itself will collect data from pressure transducers, a thermocouple, and the load cell, communicated with the other Arduino, and control the solenoid valves through relays.
+One Raspberry Pi (testSide) will be located at the test stand itself will collect data from pressure transducers, a thermocouple, and the load cell, communicates with the other Arduino, and control the solenoid valves through relays.
 
-The other Arduino (BlastShield) will be located at a safe distance from the test stand and connected to the test stand Arduino through a Cat6 cable. This Arduino will be responsible for receiving and displaying data from the other Arduino as well as passing controls from the blast shield to the test stand.
+The other Raspberry Pi (control) will be located at a safe distance from the test stand and connected to the testSide through a network connection. This Pi will be responsible for receiving and displaying data from the other Arduino as well as passing controls from the blast shield to the test stand.
 
 ## Descriptions:
-BlastSheld and TestStand contain the main code for the blast shield and test stand Ardionos.
+testSide.py contains the main code for the test side Pi and control.py contains the main code for the control side Pi. Both these scripts depend heavily on the scripts located in the testStand
 
-Test Stand UI contains python code for running a Tkinter application that receives pressure data from the BlastShield and sends commands for the four solenoids that can be passed on through the blast shield arduino to the test stand arduino.
+testStand/UI.py contains the code for a PyQt GUI application started by control.py that receives data from the test side arduino and sends commands for the solenoids that can be passed on to the test side Pi through a network connection.
 
-### Test Stand UI
-The Test Stand UI application can be run through python by installing the required libraries (Tkinter, etc...) via pip and running the testStandApplication.py with Python. The application will collect data, log it to a file, display the data in readouts and a plot as well as allow the user to control the solenoids.
-
-The Test Stand UI currently looks like this:
-![alt text](Test%20Stand%20UI/GUI_Example.png)
+## Running
+To run this code on a non Raspberry Pi machine: Fro0m terminals in the directory you copied this code to enter ```python control.py -debug``` in one terminal and ```python testSide.py``` in the other.
 
 ## Installation
 ### Dependencies
-- Python3 (All required packages can be installed by pip install -r requirments.txt)
+- Python 3.11+ (Tested with Python 3.12.3)
+- All other dependencies can be installed with ```pip install -r requirments.txt```
 
