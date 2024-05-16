@@ -3,9 +3,8 @@ import testStand.testData as testData
 import testStand.IO as IO
 import testStand.log as log
 import tomllib
-import datetime
+from datetime import datetime, UTC
 import sys
-import time
 from typing import Any
 
 
@@ -24,9 +23,9 @@ else:
 
 testData = testData.testData()
 config = tomllib.load(open("config.toml", "rb"))
-log = log.LogFile(config.get("data", {}).get("format"), f"testSide-{config.get("log", {}).get("name")}{datetime.datetime.now().strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
+log = log.LogFile(config.get("data", {}).get("format"), f"testSide-{config.get("log", {}).get("name")}{datetime.now(UTC).strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
 
-startTime: float = time.time() # Start time in seconds with fractional seconds allowed
+startTime: float = float(datetime.now(UTC).strftime("%S.%f")) # Start time in seconds with fractional seconds allowed
 
 comm = comm.Server(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", ""),)
 
@@ -41,7 +40,7 @@ while True:
         sendData.update(testData.getTestData())
     else:
         sendData.update(io.updateSensorData())
-    sendData.update({"time": {"elapsedTime": time.time() - startTime, "serverTime": time.time()}}) # Elapsed time since program start in seconds with fractional seconds allowed, Time on the server, as a unix time stamp with fractional seconds allowed
+    sendData.update({"time": {"elapsedTime": float(datetime.now(UTC).strftime("%S.%f")) - startTime, "serverTime": datetime.now(UTC).strftime("%S.%f")}}) # Elapsed time since program start in seconds with fractional seconds allowed, Time on the server, as a unix time stamp with fractional seconds allowed
     log.updateLog(sendData)
     data = comm.recieveData(sendData)
     if debug:

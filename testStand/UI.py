@@ -99,7 +99,7 @@ class MainWindow(QMainWindow):
         self.pressure_1_data_line = self.pressureGraphWidget.plot(self.time, self.p1, pen=pen)
         self.pressure_2_data_line = self.pressureGraphWidget.plot(self.time, self.p2, pen=pen)
         self.loadCell_data_line = self.loadCellGraphWidget.plot(self.time, self.l1, pen=pen)
-        self.thrust_data_line = self.thrustGraphWidget.plot(self.time, self.y, pen=pen)
+        self.thrust_data_line = self.thrustGraphWidget.plot(self.time, self.l2, pen=pen)
         
         # Set up the timer to update the UI
         self.timer = QtCore.QTimer()
