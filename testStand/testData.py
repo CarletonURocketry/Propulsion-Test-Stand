@@ -1,37 +1,37 @@
 """Module to read test data from a csv file and return it line by line in the correct format as dictionaries.
 """
-import csv
 
 class testData:
     def __init__(self):
         file = open("testData.csv", newline='', encoding='utf-8-sig')
-        lines = []
+        lines: list[str] = list()
         for line in file.read().splitlines():
             lines.append(line)
 
-        headers = lines[0].split(",")
+        headers: list[str] = lines[0].split(",")
+        splitHeaders: list[list[str]] = list()
+        splitLines: list[list[str]] = list()
         self.i = 0
-        self.data: list[dict[dict]] = list()
+        self.data: list[dict[str, dict[str, str]]] = list()
         for h in range(len(headers)):
-            headers[h] = headers[h].split(".")
+            splitHeaders[h] = headers[h].split(".")
+        print(headers)
         for k in range(1, len(lines)):
-            lines[k] = lines[k].split(",")
-            dataLine = {}
-            for j in range(len(lines[k])):
-                item: dict = {}
-                item[headers[j][1]] = lines[k][j]
-                if headers[j][0] not in dataLine:
-                    dataLine[headers[j][0]] = {}
-                dataLine[headers[j][0]].update(item)
-            print(dataLine)
+            splitLines[k] = lines[k].split(",")
+            dataLine: dict[str, dict[str, str]] = dict()
+            for j in range(len(splitLines[k])):
+                item: dict[str, str] = dict()
+                item[splitHeaders[j][1]] = splitLines[k][j]
+                if splitHeaders[j][0] not in dataLine:
+                    dataLine[splitHeaders[j][0]] = {}
+                dataLine[splitHeaders[j][0]].update(item)
             self.data.append(dataLine)
 
-    def getTestData(self):
-        sendData = self.data[self.i]
+    def getTestData(self) -> dict[str, dict[str, str]]:
+        sendData: dict[str, dict[str, str]] = self.data[self.i]
         self.i += 1
         if self.i == (len(self.data) - 1):
             self.i = 0
-        print(sendData)
         return sendData
     
 if __name__ == "__main__":

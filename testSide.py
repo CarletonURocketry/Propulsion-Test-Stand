@@ -5,6 +5,9 @@ import testStand.log as log
 import tomllib
 import datetime
 import sys
+import time
+from typing import Any
+
 
 if "-debug" in sys.argv:
     print("Debug Mode")
@@ -12,22 +15,33 @@ if "-debug" in sys.argv:
 else:
     debug = False
 
-comm = comm.Server()
+if "-v" in sys.argv:
+    print("Verbose Mode")
+    verbose = True
+else:
+    verbose = False
+
+
 testData = testData.testData()
 config = tomllib.load(open("config.toml", "rb"))
 log = log.LogFile(config.get("data", {}).get("format"), f"testSide-{config.get("log", {}).get("name")}{datetime.datetime.now().strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
+
+startTime: float = time.time() # Start time in seconds with fractional seconds allowed
+
+comm = comm.Server(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", ""),)
 
 io = IO.Test()
 
 print("Starting Server")
 
-sendData:dict[dict] = {}
+sendData:dict[str, dict[str, Any]] = {}
 
 while True:
     if debug:
         sendData.update(testData.getTestData())
     else:
         sendData.update(io.updateSensorData())
+    sendData.update({"time": {"elapsedTime": time.time() - startTime, "serverTime": time.time()}}) # Elapsed time since program start in seconds with fractional seconds allowed, Time on the server, as a unix time stamp with fractional seconds allowed
     log.updateLog(sendData)
     data = comm.recieveData(sendData)
     if debug:

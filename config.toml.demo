@@ -19,13 +19,15 @@ XV4 = 'A.4'
 XV5 = 'B.1'
 XV6 = 'B.2'
 
+[leds]
+#ledID = 'outputID'
 
 [data]
-format = {time = ["elapsedTime", "currentTime"], pressures = ["pi1","pi2"], temps = ["t1","t2"], valves = ["XV1", "XV2", "XV3", "XV4", "XV5", "XV6"], loads = ["L1", "dm"]}
+format = {time = ["elapsedTime", "serverTime"], pressures = ["pi1","pi2"], temps = ["t1","t2"], valves = ["XV1", "XV2", "XV3", "XV4", "XV5", "XV6"], loads = ["L1", "dm"], commands = ["fire", "disconnect"]}
 
 [control]
 format = {valves = ["XV1", "XV2", "XV3", "XV4", "XV5", "XV6"], commands = ["fire", "disconnect"]}
 
 [log]
 path = "Logs/"
-name = "testLog" # Appends current date and time to the name
+name = "testLog" # Current date, time and file extension are appended to the name
