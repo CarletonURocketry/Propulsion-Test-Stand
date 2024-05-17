@@ -45,5 +45,3 @@ __pycache__/
 # Place to put files to play around with
 testing/
 
-# Config files
-*.toml

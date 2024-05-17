@@ -12,8 +12,10 @@ testSide.py contains the main code for the test side Pi and control.py contains 
 
 testStand/UI.py contains the code for a PyQt GUI application started by control.py that receives data from the test side arduino and sends commands for the solenoids that can be passed on to the test side Pi through a network connection.
 
+webUI.py contains the code to run a similar GUI to UI.py GUI but accessible from a web browser.
+
 ## Running
-To run this code on a non Raspberry Pi machine: Fro0m terminals in the directory you copied this code to enter ```python control.py -debug``` in one terminal and ```python testSide.py``` in the other.
+To run this code on a non Raspberry Pi machine: From terminals in the directory you copied this code to enter ```python webUI.py -debug``` in one terminal and ```python testSide.py -debug``` in the other.
 
 ## Installation
 ### Dependencies
