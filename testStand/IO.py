@@ -200,14 +200,7 @@ class Test():
             bool: Continuity status
         """
         return bool(self.continuity.value)
-    
-    def readStrainGauge(self) -> float:
-        """Function to read the strain gauge
 
-        Returns:
-            float: Strain Gauge reading
-        """
-        return 0.0
     
 
     

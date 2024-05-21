@@ -4,6 +4,7 @@ import socket
 import json
 import sys
 from typing import Any
+import asyncio
 
 class Client:
     def __init__(self, addr: str = "127.0.0.1", port: int = 65431) -> None:
@@ -32,16 +33,18 @@ class Client:
         else:
             self.debug = False
         return
-
-    def sendData(self, sendData: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            sock.connect((self.addr, self.port))
-            #print(f"sending {sendData} to server")
-            sock.sendall(json.dumps(sendData).encode())
-            recvData = sock.recv(1024)
+    async def sendData(self, sendData: dict[str, dict[str, Any] | str]) -> dict[str, dict[str, Any]] | str:
+        try:
+            reader, writer = await asyncio.open_connection(self.addr, self.port)
+            writer.write(json.dumps(sendData).encode())
+            await writer.drain()
+            recvData = await reader.read(10240)
             recvData = json.loads(recvData.decode())
-            #print(f"Recieved {recvData}")
-        return recvData
+
+            return recvData
+        except Exception as e:
+            print("Connection Error")
+            return f"{e}"
 
 class Server:
     def __init__(self, addr: str = "127.0.0.1", port: int = 65431):
@@ -71,7 +74,7 @@ class Server:
             self.debug = False
         return
     
-    def recieveData(self, sendData: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    def recieveData(self, sendData: dict[str, dict[str, Any] | str]) -> dict[str, dict[str, Any]]:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((self.addr, self.port))
             sock.listen()
@@ -79,7 +82,7 @@ class Server:
             with conn:
                 if self.verbose:
                     print(f"Connected by {addr}")
-                recvData = conn.recv(20240)
+                recvData = conn.recv(10240)
                 #print(f"Recieved {json.loads(recvData.decode())}")
                 if not recvData:
                     print("No data recieved")

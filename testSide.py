@@ -43,10 +43,10 @@ while True:
         sendData.update(testData.getTestData())
     else:
         sendData.update(io.updateSensorData())
-    sendData.update({"time": {"elapsedTime": (datetime.timestamp(datetime.now(UTC)) - startTime), "serverTime": datetime.now(UTC).strftime("%S.%f")}}) # Elapsed time since program start in seconds with fractional seconds allowed, Time on the server, as a unix time stamp with fractional seconds allowed
+    sendData.update({"time": {"elapsedTime": (datetime.timestamp(datetime.now(UTC)) - startTime), "serverTime": datetime.timestamp(datetime.now(UTC))}}) # Elapsed time since program start in seconds with fractional seconds allowed, Time on the server, as a unix time stamp with fractional seconds allowed
     log.updateLog(sendData)
     data = comm.recieveData(sendData)
-    if debug:
-        io.updateOutput(testData.getTestData().get("switch"))
-    else:
-        io.updateOutput(data)
+    #if debug:
+        #io.updateOutput(testData.getTestData().get("switch"))
+    #else:
+        #io.updateOutput(data)
