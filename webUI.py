@@ -2,15 +2,16 @@
 """
 from nicegui import ui
 import sys
-from testStand import log, communication as comm, IO, svg
+from testStand import log, communication, IO, svg
 from datetime import datetime, UTC
 import tomllib
 from typing import Any
+from testStand.utils import maxList
 
 
 
 config = tomllib.load(open("config.toml", "rb"))
-comm = comm.Client(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", 0))
+comm = communication.Client(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", 0))
 
 io = IO.Control(config.get("switch", {}), config.get("leds", {}))
 log = log.LogFile(config.get("data", {}).get("format"), f"control-{config.get("log", {}).get("name")}{datetime.now(UTC).strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
@@ -35,13 +36,13 @@ else:
     native = False
 
 # Initial Data Values
-time: list[float] = [0] * 100
-t1: list[float] = [0] * 100
-t2: list[float] = [0] * 100
-p1: list[float] = [0] * 100
-p2: list[float] = [0] * 100
-l1: list[float] = [0] * 100
-l2: list[float] = [0] * 100
+time: maxList[float] = maxList(100)
+t1: maxList[float] = maxList(100)
+t2: maxList[float] = maxList(100)
+p1: maxList[float] = maxList(100)
+p2: maxList[float] = maxList(100)
+l1: maxList[float] = maxList(100)
+l2: maxList[float] = maxList(100)
 
 
 danger: bool = True
@@ -112,40 +113,33 @@ async def dataUpdate() -> None:
     connection_icon.update()
 
     if connected:
-        # Update the time
-        time = time[1:]
+        # Update the elapsed time
         time.append(round(float(data.get("time", {}).get("elapsedTime", 0.0)), 3))
 
         # Update the temp data
-        t1 = t1[1:]
         t1.append(float(data.get("temps", {}).get("T1", 0)))
 
         # Update the pressure data
-        p1 = p1[1:]
         p1.append(float(data.get("pressures", {}).get("P1", 0)))
 
-        p2 = p2[1:]
         p2.append(float(data.get("pressures", {}).get("P2", 0)))
 
         # Update the load cell data
-        l1 = l1[1:]
         l1.append(float(data.get("loads", {}).get("L1", 0)))
             
         # Update the graphs
-        tempGraph.options['series'][0]['data'] = list(zip(time, t1)) # type: ignore
-        tempGraph.options['series'][1]['data'] = list(zip(time, t2)) # type: ignore
-        pressureGraph.options['series'][0]['data'] = list(zip(time, p1)) # type: ignore
-        pressureGraph.options['series'][1]['data'] = list(zip(time, p2)) # type: ignore
-        loadCellGraph.options['series'][0]['data'] = list(zip(time, l1)) # type: ignore
-        thrustGraph.options['series'][0]['data'] = list(zip(time, l2)) # type: ignore
+        tempGraph.options['series'][0]['data'] = list(zip(time, t1)) #type: ignore
+        tempGraph.options['series'][1]['data'] = list(zip(time, t2)) #type: ignore
+        pressureGraph.options['series'][0]['data'] = list(zip(time, p1)) #type: ignore
+        pressureGraph.options['series'][1]['data'] = list(zip(time, p2)) #type: ignore
+        loadCellGraph.options['series'][0]['data'] = list(zip(time, l1)) #type: ignore
+        thrustGraph.options['series'][0]['data'] = list(zip(time, l2)) #type: ignore
 
         tempGraph.update()
         pressureGraph.update()
         loadCellGraph.update()
         thrustGraph.update()
         
-        print('test1')
-
         # Update the time widgets
         serverUTC = datetime.fromtimestamp(float(data.get('time', {}).get('serverTime', 0)), UTC)
         print(serverUTC)
@@ -164,7 +158,6 @@ async def dataUpdate() -> None:
 
     # Update the valve state widgets
     if connected_state == True:
-        print(data.get('relays', {}).get('xv1', False))
         state_xv1 = strToBool.get(data.get('relays', {}).get('xv1', False), False)
         if state_xv1:
             xv1_state_icon.name = 'toggle_on'
@@ -227,11 +220,11 @@ async def dataUpdate() -> None:
 
     if connected: 
         # Update the dial widgets
-        p1_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P1', 0)) # type: ignore
+        p1_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P1', 0)) #type: ignore
         p1_dial.update()
-        p2_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P2', 0)) # type: ignore
+        p2_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P2', 0)) #type: ignore
         p2_dial.update()
-        t1_dial.options['series'][0]['data'][0]['value'] = float(data.get('temps', {}).get('T1', 0)) # type: ignore
+        t1_dial.options['series'][0]['data'][0]['value'] = float(data.get('temps', {}).get('T1', 0)) #type: ignore
         t1_dial.update()
     return
 
@@ -523,9 +516,9 @@ with ui.column(): # Full Page Layout
                     #pidImageWidget = ui.interactive_image('UI_PID.png').style('width: 70vw; height: 80vh')
                     #ui.image('CF2_PID.svg').style('width: 70vw; height: 80vh')
                     pidImage = svg.svgEdit("CF2_PID.svg")
-                    pidStr = pidImage.returnStr().decode() #type: ignore
+                    pidStr = pidImage.returnStr().decode()
 
-                    pidImageHTML = ui.html(pidStr).style('width: 70vw; height: 80vh; max-width: 70vw').classes('object-scale-down')
+                    pidImageHTML = ui.html(pidStr).style('width: 70vw; height: 80vh; max-width: 70vw').classes('object-scale-down') 
                     pidImageHTML.update()
 
         with ui.column().style('width: 21vw'): # Right Layout

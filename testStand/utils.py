@@ -1,5 +1,6 @@
 """This module contains utility functions for the test stand and control system
 """
+from typing import Any, Iterable, Generic, TypeVar
 
 def pressureConversion(x: float, voltageRange: tuple[float,float] = (0, 5), pressureRange: tuple[float,float] = (0, 1000)) -> float:
     """Function to convert pressure from ADC reading to UNITS
@@ -40,3 +41,33 @@ class RTC():
             time (float): Time to set the RTC to as a unix timestamp with decimal seconds
         """
         return
+    
+
+T = TypeVar('T')
+class maxList(Generic[T], list[Any]):
+    def __init__(self, maxLen: int) -> None:
+        """Class to create a list with a maximum length
+
+        Args:
+            maxLen (int): Maximum length of the list
+        """
+        self.maxLen = maxLen
+
+    def append(self, item: Any) -> None:
+        """Function to append an item to the list
+
+        Args:
+            item (Any): Item to append to the list
+        """
+        if len(self) >= self.maxLen:
+            self.pop(0)
+        super().append(item)
+
+    def extend(self, items: Iterable[Any]) -> None:
+        """Function to extend the list with another list
+
+        Args:
+            items (list[Any]): List to extend the list with
+        """
+        for item in items:
+            self.append(item)

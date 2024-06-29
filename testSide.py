@@ -4,10 +4,10 @@ import testStand.IO as IO
 import testStand.log as log
 import tomllib
 from datetime import datetime, UTC
-from calendar import timegm
+#from calendar import timegm
 import sys
 from typing import Any
-import time
+#import time
 
 
 if "-debug" in sys.argv:

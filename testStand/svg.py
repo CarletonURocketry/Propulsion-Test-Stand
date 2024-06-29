@@ -11,7 +11,7 @@ class svgEdit:
         self.svg = SVG.parse(file) #type: ignore
         return
 
-    def returnStr(self): #type: ignore
+    def returnStr(self) -> bytes: #type: ignore
         """Function to return the SVG file as a string.
 
         Returns:

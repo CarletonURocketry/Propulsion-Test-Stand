@@ -74,7 +74,7 @@ class Server:
             self.debug = False
         return
     
-    def recieveData(self, sendData: dict[str, dict[str, Any] | str]) -> dict[str, dict[str, Any]]:
+    def recieveData(self, sendData: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((self.addr, self.port))
             sock.listen()
