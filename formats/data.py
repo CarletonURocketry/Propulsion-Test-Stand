@@ -2,6 +2,8 @@
 Data format example for data sent from the teststand to the control side. Structure is defined by config.toml file, both config files should be kept in sync.
 """
 {
+"type": "data", # Type of message, should always be "data
+"content": {
 "time": {
     "elapsedTime": float, # Elapsed time in seconds with decimal seconds allowed
     "currentTime": float # Time on the server, as a unix time stamp with decimal seconds allowed
@@ -27,3 +29,4 @@ Data format example for data sent from the teststand to the control side. Struct
     "thrust": float # Reading from load cell
 }
 }
+} # type: ignore

@@ -1,5 +1,5 @@
-from svgelements import SVG, Color
-import cairosvg
+from svgelements import SVG, Color # type: ignore
+import cairosvg # type: ignore
 
 class svgEdit:
     def __init__(self, file: str) -> None:
@@ -11,7 +11,18 @@ class svgEdit:
         self.svg = SVG.parse(file) #type: ignore
         return
 
-    def changeColor(self, paths: list[str], color: str) -> None:
+    def returnStr(self): #type: ignore
+        """Function to return the SVG file as a string.
+
+        Returns:
+            bytes: SVG file as a string
+        """
+
+        self.svg.write_xml("UI_PID.svg") #type: ignore
+
+        return cairosvg.svg2svg(url="UI_PID.svg") #type: ignore
+
+    def changeColor(self, paths: list[str], color: str) -> bytes:
         """Function to change the color of the paths in the SVG file.
 
         Args:
@@ -24,6 +35,6 @@ class svgEdit:
         
         self.svg.write_xml("UI_PID.svg") #type: ignore
 
-        cairosvg.svg2png(url="UI_PID.svg", write_to="UI_PID.png") #type: ignore
+        #print(type(cairosvg.svg2svg(url="UI_PID.svg")))
 
-        return
+        return cairosvg.svg2svg(url="UI_PID.svg") #type: ignore

@@ -24,7 +24,7 @@ strToBool = {"True": True, "False": False, "true": True, "false": False}
 if "-v" in sys.argv:
     verbose = True
 else:
-    sverbose = False
+    verbose = False
 if "-debug" in sys.argv:
     debug = True
 else:
@@ -59,9 +59,6 @@ data: dict[str, dict[str, Any]] = dict()
 noValves = ['xv3', 'xv4']
 
 ncValves = ['xv1', 'xv2']
-
-openValves: list[str] = []
-closedValves: list[str] = []
 
 # Callback function to update the UI
 async def dataUpdate() -> None:
@@ -167,8 +164,8 @@ async def dataUpdate() -> None:
 
     # Update the valve state widgets
     if connected_state == True:
-        print(data.get('valves', {}).get('xv1', False))
-        state_xv1 = strToBool.get(data.get('valves', {}).get('xv1', False), False)
+        print(data.get('relays', {}).get('xv1', False))
+        state_xv1 = strToBool.get(data.get('relays', {}).get('xv1', False), False)
         if state_xv1:
             xv1_state_icon.name = 'toggle_on'
             xv1_state_icon.style(replace='color: Green')
@@ -178,7 +175,7 @@ async def dataUpdate() -> None:
             xv1_state_icon.style(replace='color: Red')
             xv1_state_icon.update()
         
-        state_xv2 = strToBool.get(data.get('valves', {}).get('xv2', False), False)
+        state_xv2 = strToBool.get(data.get('relays', {}).get('xv2', False), False)
         if state_xv2:
             xv2_state_icon.name = 'toggle_on'
             xv2_state_icon.style(replace='color: Green')
@@ -188,7 +185,7 @@ async def dataUpdate() -> None:
             xv2_state_icon.style(replace='color: Red')
             xv2_state_icon.update()
         
-        state_xv3 = strToBool.get(data.get('valves', {}).get('xv3', False), False)
+        state_xv3 = strToBool.get(data.get('relays', {}).get('xv3', False), False)
         if state_xv3:
             xv3_state_icon.name = 'toggle_on'
             xv3_state_icon.style(replace='color: Green')
@@ -198,7 +195,7 @@ async def dataUpdate() -> None:
             xv3_state_icon.style(replace='color: Red')
             xv3_state_icon.update()
 
-        state_xv4 = strToBool.get(data.get('valves', {}).get('xv4', False), False)
+        state_xv4 = strToBool.get(data.get('relays', {}).get('xv4', False), False)
         if state_xv4:
             xv4_state_icon.name = 'toggle_on'
             xv4_state_icon.style(replace='color: Green')
@@ -208,7 +205,7 @@ async def dataUpdate() -> None:
             xv4_state_icon.style(replace='color: Red')
             xv4_state_icon.update()
 
-        state_xv5 = strToBool.get(data.get('valves', {}).get('xv5', False), False)
+        state_xv5 = strToBool.get(data.get('relays', {}).get('xv5', False), False)
         if state_xv5:
             xv5_state_icon.name = 'toggle_on'
             xv5_state_icon.style(replace='color: Green')
@@ -218,7 +215,7 @@ async def dataUpdate() -> None:
             xv5_state_icon.style(replace='color: Red')
             xv5_state_icon.update()
 
-        state_xv6 = strToBool.get(data.get('valves', {}).get('xv6', False), False)
+        state_xv6 = strToBool.get(data.get('relays', {}).get('xv6', False), False)
         if state_xv6:
             xv6_state_icon.name = 'toggle_on'
             xv6_state_icon.style(replace='color: Green')
@@ -306,31 +303,40 @@ async def pidUpdate() -> None:
     """
     global noValves
     global ncValves
-    global openValves
-    global closedValves
-
-    openValves = []
-    closedValves = []
+    openValves: list[str] = []
+    closedValves: list[str] = []
 
     for valve in noValves:
-        if data.get('valves', {}).get(valve, False):
+        print(valve)
+        if strToBool.get(data.get('relays', {}).get(valve, False), False):
             closedValves.append(valve)
         else:
             openValves.append(valve)
     for valve in ncValves:
-        if data.get('valves', {}).get(valve, False):
+        print(valve)
+        #print(type(data.get('relays', {}).get(valve, False)))
+        if strToBool.get(data.get('relays', {}).get(valve, False), False):
             openValves.append(valve)
         else:
             closedValves.append(valve)
     
+    print(openValves)
+    print(closedValves)
+    
     pidImage.changeColor(openValves, 'red')
-    closedValves.append('xv1')
-    openValves.append('xv2')
-    openValves.append('xv3')
-    openValves.append('xv4')
+    #closedValves.append('xv1')
+    #openValves.append('xv2')
+    #openValves.append('xv3')
+    #openValves.append('xv4')
     pidImage.changeColor(closedValves, 'green')
-    pidImageWidget.set_source('UI_PID.svg')
-    pidImageWidget.update()
+
+    #print(pidImage.changeColor(openValves, 'red'))
+
+    pidImageHTML.content = pidImage.returnStr().decode() #type: ignore
+    #pidImageHTML.content = pidImage.changeColor(closedValves, 'green').decode()
+    pidImageHTML.update()
+    #pidImageWidget.set_source('UI_PID.svg')
+    #pidImageWidget.update()
 
 # Set up the page layout and widgets
 with ui.column(): # Full Page Layout
@@ -514,8 +520,13 @@ with ui.column(): # Full Page Layout
                         ui.checkbox('5.4.0: PROP and PAD Disconnect the CO2 source tank. Confirm it is now safe for the rest of personnel to join at the test stand and commence disassembly.')
                     
                 with ui.tab_panel(pidTab).style('width: 74vw'):
-                    pidImageWidget = ui.interactive_image('UI_PID.png').style('width: 70vw; height: 80vh')
+                    #pidImageWidget = ui.interactive_image('UI_PID.png').style('width: 70vw; height: 80vh')
                     #ui.image('CF2_PID.svg').style('width: 70vw; height: 80vh')
+                    pidImage = svg.svgEdit("CF2_PID.svg")
+                    pidStr = pidImage.returnStr().decode() #type: ignore
+
+                    pidImageHTML = ui.html(pidStr).style('width: 70vw; height: 80vh; max-width: 70vw').classes('object-scale-down')
+                    pidImageHTML.update()
 
         with ui.column().style('width: 21vw'): # Right Layout
             with ui.grid(columns='7vw 7vw 7vw').style('width: 21vw; height: 20vh'):
