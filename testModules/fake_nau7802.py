@@ -35,7 +35,7 @@ Implementation Notes
 from typing import Any
 
 import time
-import struct
+#import struct
 
 #from adafruit_bus_device.i2c_device import I2CDevice
 #from adafruit_register.i2c_struct import ROUnaryStruct
@@ -129,8 +129,8 @@ class NAU7802:
         if self._act_channels == 2:
             # 0x0 = Disable PGA out stabilizer cap for dual channel use
             self._pc_cap_enable = 0x0
-        self._calib_mode = None  # Initialize for later use
-        self._adc_out = None  # Initialize for later use
+        self._calib_mode:str = str()  # Initialize for later use
+        self._adc_out = float()  # Initialize for later use
 
     # DEFINE I2C DEVICE BITS, NYBBLES, BYTES, AND REGISTERS
     # Chip Revision  R-
@@ -177,17 +177,17 @@ class NAU7802:
     _pc_cap_enable = 0x1
 
     @property
-    def chip_revision(self):
+    def chip_revision(self) -> int:
         """The chip revision code."""
         return self._rev_id
 
     @property
-    def channel(self):
+    def channel(self) -> int:
         """Selected channel number (1 or 2)."""
         return self._c2_chan_select + 1
 
     @channel.setter
-    def channel(self, chan: int = 1):
+    def channel(self, chan: int = 1) -> bool:
         """Select the active channel. Valid channel numbers are 1 and 2.
         Returns True unless a cycle ready (CR) timeout occurs."""
 
@@ -201,21 +201,21 @@ class NAU7802:
             raise ValueError("Invalid Channel Number")
 
         # Check cycle ready flag; timeout after 1.0 sec
-        start_check = time.monotonic()
-        while not self._pu_cycle_ready:
-            if time.monotonic() - start_check > 1.0:
-                return False
+        #start_check = time.monotonic()
+        #while not self._pu_cycle_ready:
+            #if time.monotonic() - start_check > 1.0:
+                #return False
         return True
 
     @property
-    def ldo_voltage(self):
+    def ldo_voltage(self) -> str:
         """Representation of the LDO voltage value."""
         return self._ldo_voltage
 
     @ldo_voltage.setter
-    def ldo_voltage(self, voltage: str ="EXTERNAL"):
+    def ldo_voltage(self, voltage: str ="EXTERNAL") -> None:
         """Select the LDO Voltage. Valid voltages are '2V4', '2V7', '3V0'."""
-        if not f"LDO_{voltage}" in dir(LDOVoltage):
+        if f"LDO_{voltage}" not in dir(LDOVoltage):
             raise ValueError("Invalid LDO Voltage")
         self._ldo_voltage = voltage
         if self._ldo_voltage == "2V4":
@@ -226,15 +226,15 @@ class NAU7802:
             self._c1_vldo_volts = LDOVoltage.LDO_3V0
 
     @property
-    def gain(self):
+    def gain(self) -> int:
         """The programmable amplifier (PGA) gain factor."""
         return self._gain
 
     @gain.setter
-    def gain(self, factor: int = 1):
+    def gain(self, factor: int = 1) -> None:
         """Select PGA gain factor. Valid values are 1, 2, 4, 8, 16, 32, 64,
         and 128."""
-        if not f"GAIN_X{factor}" in dir(Gain):
+        if f"GAIN_X{factor}" not in dir(Gain):
             raise ValueError("Invalid Gain Factor")
         self._gain = factor
         if self._gain == 1:
@@ -255,14 +255,14 @@ class NAU7802:
             self._c1_gains = Gain.GAIN_X128
 
     @property
-    def poll_rate(self):
+    def poll_rate(self) -> int:
         """ADC conversion/polling rate."""
         return self._c2_conv_rate
 
     @poll_rate.setter
-    def poll_rate(self, rate: int = 0):
+    def poll_rate(self, rate: int = 0) -> None:
         """Select polling rate. Valid values are 10, 20, 40, 80, and 320."""
-        if not f"RATE_{rate}SPS" in dir(ConversionRate):
+        if f"RATE_{rate}SPS" not in dir(ConversionRate):
             raise ValueError("Invalid Conversion Rate")
         self._rate = rate
         if self._rate == 10:
@@ -275,8 +275,9 @@ class NAU7802:
             self._c2_conv_rate = ConversionRate.RATE_80SPS
         if self._rate == 320:
             self._c2_conv_rate = ConversionRate.RATE_320SPS
+        return None
 
-    def enable(self, power: bool = True):
+    def enable(self, power: bool = True) -> bool:
         """Enable(start) or disable(stop) the internal analog and digital
         systems power. Enable = True; Disable (low power) = False. Returns
         True when enabled; False when disabled."""
@@ -286,30 +287,30 @@ class NAU7802:
             self._pu_digital = True
             time.sleep(0.750)  # Wait 750ms; minimum 400ms
             self._pu_start = True  # Start acquisition system cycling
-            return self._pu_ready
+            return bool(self._pu_ready)
         self._pu_analog = False
         self._pu_digital = False
         time.sleep(0.010)  # Wait 10ms (200us minimum)
         return False
 
-    def available(self):
+    def available(self) -> bool:
         """Read the ADC data-ready status. True when data is available; False when
         ADC data is unavailable."""
-        return self._pu_cycle_ready
+        return bool(self._pu_cycle_ready)
 
-    def read(self):
+    def read(self) -> float:
         """Reads the 24-bit ADC data. Returns a signed integer value with
         24-bit resolution. Assumes that the ADC data-ready bit was checked
         to be True."""
-        adc = self._adc_out_2 << 24  # [31:24] << MSByte
-        adc = adc | (self._adc_out_1 << 16)  # [23:16] << MidSByte
-        adc = adc | (self._adc_out_0 << 8)  # [15: 8] << LSByte
-        adc = adc.to_bytes(4, "big")  # Pack to 4-byte (32-bit) structure
-        value = struct.unpack(">i", adc)[0]  # Unpack as 4-byte signed integer
-        self._adc_out = value / 128  # Restore to 24-bit signed integer value
+        #adc = self._adc_out_2 << 24  # [31:24] << MSByte
+        #adc = adc | (self._adc_out_1 << 16)  # [23:16] << MidSByte
+        #adc = adc | (self._adc_out_0 << 8)  # [15: 8] << LSByte
+        #adc = adc.to_bytes(4, "big")  # Pack to 4-byte (32-bit) structure
+        #value = struct.unpack(">i", adc)[0]  # Unpack as 4-byte signed integer
+        self._adc_out = 128  # Restore to 24-bit signed integer value
         return self._adc_out
 
-    def reset(self):
+    def reset(self) -> int:
         """Resets all device registers and enables digital system power.
         Returns the power ready status bit value: True when system is ready;
         False when system not ready for use."""
@@ -320,10 +321,10 @@ class NAU7802:
         time.sleep(0.750)  # Wait 750ms; 400ms minimum
         return self._pu_ready
 
-    def calibrate(self, mode: str = "INTERNAL"):
+    def calibrate(self, mode: str = "INTERNAL") -> bool:
         """Perform the calibration procedure. Valid calibration modes
         are 'INTERNAL', 'OFFSET', and 'GAIN'. True if successful."""
-        if not mode in dir(CalibrationMode):
+        if mode not in dir(CalibrationMode):
             raise ValueError("Invalid Calibration Mode")
         self._calib_mode = mode
         if self._calib_mode == "INTERNAL":  # Internal PGA offset (zero setting)

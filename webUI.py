@@ -5,8 +5,8 @@ import sys
 from testStand import log, communication, IO, svg
 from datetime import datetime, UTC
 import tomllib
-from typing import Any
 from testStand.utils import maxList
+from testStand import dataClass
 
 
 
@@ -14,11 +14,9 @@ config = tomllib.load(open("config.toml", "rb"))
 comm = communication.Client(config.get("server", {}).get("addr", ""), config.get("server", {}).get("port", 0))
 
 io = IO.Control(config.get("switch", {}), config.get("leds", {}))
-log = log.LogFile(config.get("data", {}).get("format"), f"control-{config.get("log", {}).get("name")}{datetime.now(UTC).strftime("%y-%m-%d-%H-%M")}.csv", config.get("log", {}).get("path"))
+logFile = log.LogFile(config.get("data", {}).get("format"), f"control-{config.get("log", {}).get("name")}{datetime.now(UTC).strftime("%y-%m-%d-%H-%M")}.toml", config.get("log", {}).get("path"))
 
 pidImage = svg.svgEdit("CF2_PID.svg")
-
-strToBool = {"True": True, "False": False, "true": True, "false": False}
 
 #echart = ui.echart({'xAxis': {'type': 'value'},'yAxis': {'type': 'category', 'data': ['A', 'B'], 'inverse': True}, 'legend': {'textStyle': {'color': 'gray'}},'series': [{'type': 'bar', 'name': 'Alpha', 'data': [0, 0.5]}, {'type': 'bar', 'name': 'Beta', 'data': [0, 2]},],})
 
@@ -55,11 +53,11 @@ configSent: bool = False
 connected: bool = False
 lastCommTime: float = 0
 
-data: dict[str, dict[str, Any]] = dict()
-
 noValves = ['xv3', 'xv4']
 
 ncValves = ['xv1', 'xv2']
+
+data: dataClass.data = dataClass.data()
 
 # Callback function to update the UI
 async def dataUpdate() -> None:
@@ -82,58 +80,56 @@ async def dataUpdate() -> None:
 
     connected_state = False
 
-    sendData: dict[str, dict[str, Any] | str] = dict()
+    sendData = dataClass.data()
     # Get the data from the server
 
     if not configSent:
-        sendData["type"] = "control"
-        sendData["content"] = config
+        sendData.type = "config"
+        sendData.content = config
 
-    recvData = await comm.sendData(sendData)
+    recvData = await comm.sendData(sendData.model_dump_json())
 
-    if type(recvData) == str:
+    if type(recvData) is Exception:
         print(recvData)
         connected_state = False
         connected = False
         configSent = False
-        data = dict()
-    elif type(recvData) == dict:
+    elif type(recvData) is str:
         connected_state = True
         connected = True
         configSent = True
         lastCommTime = datetime.timestamp(datetime.now(UTC))
-        data = recvData
+        data.load(recvData)
     else:
         connected_state = False
         connected = False
         configSent = False
-        data = dict()
     
     connection_icon.name = {True: 'link_off', False: 'link'}.get(connected, 'link_off')
     connection_icon.update()
 
     if connected:
         # Update the elapsed time
-        time.append(round(float(data.get("time", {}).get("elapsedTime", 0.0)), 3))
+        time.append(round(data.content.time.elapsedTime, 3))
 
         # Update the temp data
-        t1.append(float(data.get("temps", {}).get("T1", 0)))
+        t1.append(data.content.temps.t1)
 
         # Update the pressure data
-        p1.append(float(data.get("pressures", {}).get("P1", 0)))
+        p1.append(data.content.pressures.pi1)
 
-        p2.append(float(data.get("pressures", {}).get("P2", 0)))
+        p2.append(data.content.pressures.pi2)
 
         # Update the load cell data
-        l1.append(float(data.get("loads", {}).get("L1", 0)))
+        l1.append(data.content.loads.tankMass)
             
         # Update the graphs
-        tempGraph.options['series'][0]['data'] = list(zip(time, t1)) #type: ignore
-        tempGraph.options['series'][1]['data'] = list(zip(time, t2)) #type: ignore
-        pressureGraph.options['series'][0]['data'] = list(zip(time, p1)) #type: ignore
-        pressureGraph.options['series'][1]['data'] = list(zip(time, p2)) #type: ignore
-        loadCellGraph.options['series'][0]['data'] = list(zip(time, l1)) #type: ignore
-        thrustGraph.options['series'][0]['data'] = list(zip(time, l2)) #type: ignore
+        tempGraph.options['series'][0]['data'] = list(zip(time, t1)) 
+        tempGraph.options['series'][1]['data'] = list(zip(time, t2))
+        pressureGraph.options['series'][0]['data'] = list(zip(time, p1))
+        pressureGraph.options['series'][1]['data'] = list(zip(time, p2))
+        loadCellGraph.options['series'][0]['data'] = list(zip(time, l1))
+        thrustGraph.options['series'][0]['data'] = list(zip(time, l2))
 
         tempGraph.update()
         pressureGraph.update()
@@ -141,10 +137,9 @@ async def dataUpdate() -> None:
         thrustGraph.update()
         
         # Update the time widgets
-        serverUTC = datetime.fromtimestamp(float(data.get('time', {}).get('serverTime', 0)), UTC)
-        print(serverUTC)
+        serverUTC = datetime.fromtimestamp(data.content.time.currentTime, UTC)
         serverTime.text = (f"Last Comm Time: {serverUTC.strftime('%H:%M:%S.%f')[:-3]}")
-        elapsedTime.text = (f"Elapsed Time: {round(data.get('time', {}).get('elapsedTime', 0), 3)}")
+        elapsedTime.text = (f"Elapsed Time: {round(data.content.time.elapsedTime, 3)}")
 
 
     # Update Connected Status
@@ -157,9 +152,8 @@ async def dataUpdate() -> None:
         connection_icon.update()
 
     # Update the valve state widgets
-    if connected_state == True:
-        state_xv1 = strToBool.get(data.get('relays', {}).get('xv1', False), False)
-        if state_xv1:
+    if connected_state:
+        if data.content.valves.xv1:
             xv1_state_icon.name = 'toggle_on'
             xv1_state_icon.style(replace='color: Green')
             xv1_state_icon.update()
@@ -168,8 +162,7 @@ async def dataUpdate() -> None:
             xv1_state_icon.style(replace='color: Red')
             xv1_state_icon.update()
         
-        state_xv2 = strToBool.get(data.get('relays', {}).get('xv2', False), False)
-        if state_xv2:
+        if data.content.valves.xv2:
             xv2_state_icon.name = 'toggle_on'
             xv2_state_icon.style(replace='color: Green')
             xv2_state_icon.update()
@@ -178,8 +171,7 @@ async def dataUpdate() -> None:
             xv2_state_icon.style(replace='color: Red')
             xv2_state_icon.update()
         
-        state_xv3 = strToBool.get(data.get('relays', {}).get('xv3', False), False)
-        if state_xv3:
+        if data.content.valves.xv3:
             xv3_state_icon.name = 'toggle_on'
             xv3_state_icon.style(replace='color: Green')
             xv3_state_icon.update()
@@ -188,8 +180,7 @@ async def dataUpdate() -> None:
             xv3_state_icon.style(replace='color: Red')
             xv3_state_icon.update()
 
-        state_xv4 = strToBool.get(data.get('relays', {}).get('xv4', False), False)
-        if state_xv4:
+        if data.content.valves.xv4:
             xv4_state_icon.name = 'toggle_on'
             xv4_state_icon.style(replace='color: Green')
             xv4_state_icon.update()
@@ -198,8 +189,7 @@ async def dataUpdate() -> None:
             xv4_state_icon.style(replace='color: Red')
             xv4_state_icon.update()
 
-        state_xv5 = strToBool.get(data.get('relays', {}).get('xv5', False), False)
-        if state_xv5:
+        if data.content.valves.xv5:
             xv5_state_icon.name = 'toggle_on'
             xv5_state_icon.style(replace='color: Green')
             xv5_state_icon.update()
@@ -208,8 +198,7 @@ async def dataUpdate() -> None:
             xv5_state_icon.style(replace='color: Red')
             xv5_state_icon.update()
 
-        state_xv6 = strToBool.get(data.get('relays', {}).get('xv6', False), False)
-        if state_xv6:
+        if data.content.valves.xv6:
             xv6_state_icon.name = 'toggle_on'
             xv6_state_icon.style(replace='color: Green')
             xv6_state_icon.update()
@@ -220,11 +209,11 @@ async def dataUpdate() -> None:
 
     if connected: 
         # Update the dial widgets
-        p1_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P1', 0)) #type: ignore
+        p1_dial.options['series'][0]['data'][0]['value'] = data.content.pressures.pi1
         p1_dial.update()
-        p2_dial.options['series'][0]['data'][0]['value'] = float(data.get('pressures', {}).get('P2', 0)) #type: ignore
+        p2_dial.options['series'][0]['data'][0]['value'] = data.content.pressures.pi2
         p2_dial.update()
-        t1_dial.options['series'][0]['data'][0]['value'] = float(data.get('temps', {}).get('T1', 0)) #type: ignore
+        t1_dial.options['series'][0]['data'][0]['value'] = data.content.temps.t1
         t1_dial.update()
     return
 
@@ -289,47 +278,40 @@ async def warnUpdate() -> None:
     return
 
 async def pidUpdate() -> None:
-    """_summary_
-
-    Returns:
-        _type_: _description_
+    """Function to update the P&ID diagram with the current valve states
     """
     global noValves
     global ncValves
     openValves: list[str] = []
     closedValves: list[str] = []
 
-    for valve in noValves:
-        print(valve)
-        if strToBool.get(data.get('relays', {}).get(valve, False), False):
-            closedValves.append(valve)
-        else:
-            openValves.append(valve)
-    for valve in ncValves:
-        print(valve)
-        #print(type(data.get('relays', {}).get(valve, False)))
-        if strToBool.get(data.get('relays', {}).get(valve, False), False):
-            openValves.append(valve)
-        else:
-            closedValves.append(valve)
+    if data.content.valves.xv1:
+        openValves.append('xv1')
+    else:
+        closedValves.append('xv1')
     
-    print(openValves)
-    print(closedValves)
+    if data.content.valves.xv2:
+        openValves.append('xv2')
+    else:
+        closedValves.append('xv2')
+
+    if data.content.valves.xv3:
+        closedValves.append('xv3')
+    else:
+        openValves.append('xv3')
+
+    if data.content.valves.xv4:
+        closedValves.append('xv4')
+    else:
+        openValves.append('xv4')
+
     
     pidImage.changeColor(openValves, 'red')
-    #closedValves.append('xv1')
-    #openValves.append('xv2')
-    #openValves.append('xv3')
-    #openValves.append('xv4')
     pidImage.changeColor(closedValves, 'green')
 
-    #print(pidImage.changeColor(openValves, 'red'))
 
-    pidImageHTML.content = pidImage.returnStr().decode() #type: ignore
-    #pidImageHTML.content = pidImage.changeColor(closedValves, 'green').decode()
+    pidImageHTML.content = pidImage.returnStr().decode()
     pidImageHTML.update()
-    #pidImageWidget.set_source('UI_PID.svg')
-    #pidImageWidget.update()
 
 # Set up the page layout and widgets
 with ui.column(): # Full Page Layout

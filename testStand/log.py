@@ -1,9 +1,9 @@
-"""Contains the class to write data to a log file
+"""Contains the class to write data to a log TOML file
 """
 import datetime
 import sys
-from typing import Any
-
+from testStand import dataClass
+import tomli_w
 
 class LogFile():
     def __init__(self, config: dict[str, list[str]], logName: str, logPath: str = "") -> None:
@@ -11,7 +11,7 @@ class LogFile():
 
         Args:
             config (dict[list]): Configuration for the logfile
-            logName (str): Name of the log file
+            logName (str): Name of the log file, with toml extension
             logPath (str, optional): Path to the log file relative to the main script location (Directory must exist). Defaults to "".
         """
         if "-v" in sys.argv:
@@ -23,35 +23,21 @@ class LogFile():
         else:
             self.debug = False
         
-        self.logPath: str = f"{logPath}{logName}"
-        logFile = open(self.logPath, "w")
-        self.config = config
-        headerStr: str = "time.WriteTime"
-        for key in self.config.keys():
-            #key = config[key].split(".")
-            for subkey in self.config[key]:
-                header: str = f",{key}.{subkey}"
-                headerStr += header
-        print(headerStr)
-        logFile.write(f"{headerStr}\n")
-        logFile.close()
+        self.logPath: str = f"{logPath}/{logName}"
+        dataDict = {"name": f"{logName}", "data": list()}
+        with open(self.logPath, "wb") as logFile:
+            tomli_w.dump(dataDict, logFile)
         return
 
-    def updateLog(self, status: dict[str, dict[str, Any]]) -> None:
+    def updateLog(self, status: dataClass.data) -> None:
         """Updates the log file with the status of the system
 
         Args:
             status (dict[dict]): dictionary with the current state of the system
         """
-        logFile = open(self.logPath, "a")
-        dataWrite: str = f"{datetime.datetime.now(datetime.UTC)}"
-        for key in self.config.keys():
-            for subKey in self.config[key]:
-                dataWrite += f",{status.get(key, {}).get(subKey, "No Data")}"
-        if self.verbose:
-            print(dataWrite)
-        logFile.write(f"{dataWrite}\n")
-        logFile.close()
+        status.content.time.writeTime = datetime.datetime.timestamp(datetime.datetime.now(datetime.UTC))
+        with open(self.logPath, "wb") as logFile:
+            tomli_w.dump(status.model_dump(), logFile)
         return
 
     def readLog(self) -> None:
@@ -65,10 +51,10 @@ if __name__ == "__main__":
     import datetime
 
     config = tomllib.load(open("config.toml", "rb"))
-    log = LogFile(config["data"]["format"], f"{config["log"]["name"]}-test.csv", config["log"]["path"])
+    log = LogFile(config["data"]["format"], f"{config["log"]["name"]}-test.toml", config["log"]["path"])
 
-    log.updateLog({
-        "time": {
+    #log.updateLog({
+""""time": {
             "elapsedTime": 0.25, #  = 0.25, # Elapsed time in seconds with decimal seconds allowed
             "currentTime": 0.35 # Time on the server, as a unix time stamp with decimal seconds allowed
             },
@@ -92,5 +78,5 @@ if __name__ == "__main__":
             "tankMass": 65.4, # Reading from strain gauge
             "thrust": 74 # Reading from load cell
             }
-        })
+        })"""
 

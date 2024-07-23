@@ -1,0 +1,6501 @@
+name = "testData"
+
+[[content]]
+
+[content.time]
+elapsedTime = "0"
+currentTime = "1715721390.238"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 752.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 6.302
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.127"
+currentTime = "1715721390.365"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 752.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 6.303
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.197"
+currentTime = "1715721390.435"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 752.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 6.303
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.31"
+currentTime = "1715721390.548"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 752.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 6.303
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.39"
+currentTime = "1715721390.628"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 752.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 6.303
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.518"
+currentTime = "1715721390.756"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 692.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -63.03
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.586"
+currentTime = "1715721390.824"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 680.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.705"
+currentTime = "1715721390.943"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 662.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.774"
+currentTime = "1715721391.012"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 648.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "0.89"
+currentTime = "1715721391.128"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 638.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.021"
+currentTime = "1715721391.259"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 632.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.083"
+currentTime = "1715721391.321"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 625.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.206"
+currentTime = "1715721391.444"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 616.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.335"
+currentTime = "1715721391.573"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 609.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.0
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.4"
+currentTime = "1715721391.638"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 601.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 59.13
+thrust = 5.913
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.514"
+currentTime = "1715721391.752"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 594.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.22
+thrust = 5.891
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.579"
+currentTime = "1715721391.817"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 588.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.2
+thrust = 5.871
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.709"
+currentTime = "1715721391.947"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 584.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.07
+thrust = 5.864
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.772"
+currentTime = "1715721392.010"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 582.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.27
+thrust = 5.891
+
+[[content]]
+
+[content.time]
+elapsedTime = "1.896"
+currentTime = "1715721392.134"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 560.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.96
+thrust = 5.987
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.022"
+currentTime = "1715721392.260"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 541.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 1.18
+thrust = 6.105
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.084"
+currentTime = "1715721392.322"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 536.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.55
+thrust = 6.16
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.205"
+currentTime = "1715721392.443"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 529.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.99
+thrust = 6.259
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.273"
+currentTime = "1715721392.511"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 537.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.89
+thrust = 6.07
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.388"
+currentTime = "1715721392.626"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 536.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.09
+thrust = 5.961
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.517"
+currentTime = "1715721392.755"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 539.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.47
+thrust = 5.814
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.579"
+currentTime = "1715721392.817"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 545.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.64
+thrust = 5.75
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.702"
+currentTime = "1715721392.940"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 550.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.03
+thrust = 5.747
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.832"
+currentTime = "1715721393.070"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 551.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.0
+thrust = 5.647
+
+[[content]]
+
+[content.time]
+elapsedTime = "2.895"
+currentTime = "1715721393.133"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 548.0
+
+[content.temps]
+t1 = 35.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.75
+thrust = 5.572
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.023"
+currentTime = "1715721393.261"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 545.0
+
+[content.temps]
+t1 = 35.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.73
+thrust = 5.499
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.088"
+currentTime = "1715721393.326"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 541.0
+
+[content.temps]
+t1 = 35.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.68
+thrust = 5.431
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.215"
+currentTime = "1715721393.453"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 541.0
+
+[content.temps]
+t1 = 35.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.75
+thrust = 5.356
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.279"
+currentTime = "1715721393.517"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 538.0
+
+[content.temps]
+t1 = 35.0
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.69
+thrust = 5.287
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.406"
+currentTime = "1715721393.644"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 535.0
+
+[content.temps]
+t1 = 35.0
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.83
+thrust = 5.204
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.531"
+currentTime = "1715721393.769"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 532.0
+
+[content.temps]
+t1 = 35.0
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.55
+thrust = 5.149
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.603"
+currentTime = "1715721393.841"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 527.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.6
+thrust = 5.089
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.718"
+currentTime = "1715721393.956"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 524.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 5.032
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.779"
+currentTime = "1715721394.017"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 521.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.66
+thrust = 4.966
+
+[[content]]
+
+[content.time]
+elapsedTime = "3.91"
+currentTime = "1715721394.148"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 517.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.54
+thrust = 4.912
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.029"
+currentTime = "1715721394.267"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 513.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.67
+thrust = 4.845
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.094"
+currentTime = "1715721394.332"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 510.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.24
+thrust = 4.721
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.217"
+currentTime = "1715721394.455"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 506.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.69
+thrust = 4.652
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.283"
+currentTime = "1715721394.521"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 503.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.64
+thrust = 4.588
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.406"
+currentTime = "1715721394.644"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 499.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.65
+thrust = 4.523
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.538"
+currentTime = "1715721394.776"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 495.0
+
+[content.temps]
+t1 = 34.938
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.7
+thrust = 4.453
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.605"
+currentTime = "1715721394.843"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 492.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.66
+thrust = 4.387
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.716"
+currentTime = "1715721394.954"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 488.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.6
+thrust = 4.327
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.779"
+currentTime = "1715721395.017"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 485.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.67
+thrust = 4.26
+
+[[content]]
+
+[content.time]
+elapsedTime = "4.906"
+currentTime = "1715721395.144"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 481.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.65
+thrust = 4.195
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.031"
+currentTime = "1715721395.269"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 476.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.68
+thrust = 4.127
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.096"
+currentTime = "1715721395.334"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 473.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.65
+thrust = 4.062
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.221"
+currentTime = "1715721395.459"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 470.0
+
+[content.temps]
+t1 = 34.875
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.68
+thrust = 3.994
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.285"
+currentTime = "1715721395.523"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 466.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.75
+thrust = 3.919
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.414"
+currentTime = "1715721395.652"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 462.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.78
+thrust = 3.841
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.534"
+currentTime = "1715721395.772"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 458.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.75
+thrust = 3.766
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.595"
+currentTime = "1715721395.833"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 454.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.68
+thrust = 3.698
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.716"
+currentTime = "1715721395.954"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 451.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.31
+thrust = 3.567
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.779"
+currentTime = "1715721396.017"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 447.0
+
+[content.temps]
+t1 = 34.813
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.64
+thrust = 3.503
+
+[[content]]
+
+[content.time]
+elapsedTime = "5.911"
+currentTime = "1715721396.149"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 443.0
+
+[content.temps]
+t1 = 34.688
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.63
+thrust = 3.44
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.04"
+currentTime = "1715721396.278"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = true
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 440.0
+
+[content.temps]
+t1 = 34.688
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.65
+thrust = 3.375
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.1"
+currentTime = "1715721396.338"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 437.0
+
+[content.temps]
+t1 = 34.688
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.67
+thrust = 3.308
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.219"
+currentTime = "1715721396.457"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 432.0
+
+[content.temps]
+t1 = 34.688
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 3.25
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.282"
+currentTime = "1715721396.520"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 428.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.61
+thrust = 3.189
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.406"
+currentTime = "1715721396.644"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 425.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.68
+thrust = 3.121
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.538"
+currentTime = "1715721396.776"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = true
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 421.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.67
+thrust = 3.054
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.603"
+currentTime = "1715721396.841"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 417.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.67
+thrust = 2.987
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.73"
+currentTime = "1715721396.968"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 413.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.63
+thrust = 2.924
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.779"
+currentTime = "1715721397.017"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 410.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 2.866
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.921"
+currentTime = "1715721397.159"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 406.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 2.808
+
+[[content]]
+
+[content.time]
+elapsedTime = "6.985"
+currentTime = "1715721397.223"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 401.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 2.751
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.119"
+currentTime = "1715721397.357"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 398.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 2.693
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.233"
+currentTime = "1715721397.471"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 393.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 2.634
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.297"
+currentTime = "1715721397.535"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 389.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.36
+thrust = 2.498
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.431"
+currentTime = "1715721397.669"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 386.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 2.441
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.496"
+currentTime = "1715721397.734"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 382.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.54
+thrust = 2.387
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.609"
+currentTime = "1715721397.847"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 378.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.56
+thrust = 2.331
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.732"
+currentTime = "1715721397.970"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 374.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.55
+thrust = 2.276
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.795"
+currentTime = "1715721398.033"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 370.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 2.217
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.921"
+currentTime = "1715721398.159"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 366.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.6
+thrust = 2.157
+
+[[content]]
+
+[content.time]
+elapsedTime = "7.994"
+currentTime = "1715721398.232"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 362.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 2.1
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.121"
+currentTime = "1715721398.359"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 357.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.5
+thrust = 2.05
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.232"
+currentTime = "1715721398.470"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 353.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.55
+thrust = 1.995
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.295"
+currentTime = "1715721398.533"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 350.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.66
+thrust = 1.929
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.42"
+currentTime = "1715721398.658"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 345.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.7
+thrust = 1.859
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.485"
+currentTime = "1715721398.723"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 341.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.6
+thrust = 1.799
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.615"
+currentTime = "1715721398.853"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 337.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 1.74
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.679"
+currentTime = "1715721398.917"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 332.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.5
+thrust = 1.69
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.796"
+currentTime = "1715721399.034"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 328.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.08
+thrust = 1.582
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.922"
+currentTime = "1715721399.160"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 323.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.53
+thrust = 1.529
+
+[[content]]
+
+[content.time]
+elapsedTime = "8.985"
+currentTime = "1715721399.223"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 318.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.69
+thrust = 1.46
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.116"
+currentTime = "1715721399.354"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 311.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.64
+thrust = 1.396
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.178"
+currentTime = "1715721399.416"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 305.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 1.337
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.294"
+currentTime = "1715721399.532"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 296.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.55
+thrust = 1.282
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.423"
+currentTime = "1715721399.661"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 289.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 1.225
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.485"
+currentTime = "1715721399.723"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 280.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.62
+thrust = 1.163
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.616"
+currentTime = "1715721399.854"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 271.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 1.106
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.681"
+currentTime = "1715721399.919"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 262.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.57
+thrust = 1.049
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.797"
+currentTime = "1715721400.035"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 252.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 0.99
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.933"
+currentTime = "1715721400.171"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 242.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.56
+thrust = 0.934
+
+[[content]]
+
+[content.time]
+elapsedTime = "9.982"
+currentTime = "1715721400.220"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 233.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.59
+thrust = 0.875
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.111"
+currentTime = "1715721400.349"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 223.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 0.817
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.172"
+currentTime = "1715721400.410"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 213.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.58
+thrust = 0.759
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.304"
+currentTime = "1715721400.542"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 205.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.56
+thrust = 0.703
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.432"
+currentTime = "1715721400.670"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 195.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -1.1
+thrust = 0.593
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.481"
+currentTime = "1715721400.719"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 186.0
+
+[content.temps]
+t1 = 34.75
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.51
+thrust = 0.542
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.606"
+currentTime = "1715721400.844"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 178.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.48
+thrust = 0.494
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.677"
+currentTime = "1715721400.915"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 169.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.46
+thrust = 0.448
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.803"
+currentTime = "1715721401.041"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 161.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.45
+thrust = 0.403
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.923"
+currentTime = "1715721401.161"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 153.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.41
+thrust = 0.362
+
+[[content]]
+
+[content.time]
+elapsedTime = "10.985"
+currentTime = "1715721401.223"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 146.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.34
+thrust = 0.328
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.12"
+currentTime = "1715721401.358"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 139.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.32
+thrust = 0.296
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.183"
+currentTime = "1715721401.421"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 132.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.29
+thrust = 0.267
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.297"
+currentTime = "1715721401.535"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 125.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.27
+thrust = 0.24
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.422"
+currentTime = "1715721401.660"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 119.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.26
+thrust = 0.214
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.489"
+currentTime = "1715721401.727"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 112.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.22
+thrust = 0.192
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.62"
+currentTime = "1715721401.858"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 106.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.2
+thrust = 0.172
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.686"
+currentTime = "1715721401.924"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 101.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.18
+thrust = 0.154
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.82"
+currentTime = "1715721402.058"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 96.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.14
+thrust = 0.14
+
+[[content]]
+
+[content.time]
+elapsedTime = "11.882"
+currentTime = "1715721402.120"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 91.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.12
+thrust = 0.128
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.013"
+currentTime = "1715721402.251"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 86.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.27
+thrust = 0.101
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.077"
+currentTime = "1715721402.315"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 81.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.09
+thrust = 0.092
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.2"
+currentTime = "1715721402.438"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 77.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.1
+thrust = 0.082
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.277"
+currentTime = "1715721402.515"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 72.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.1
+thrust = 0.072
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.388"
+currentTime = "1715721402.626"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 68.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.06
+thrust = 0.066
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.515"
+currentTime = "1715721402.753"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 64.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.07
+thrust = 0.059
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.584"
+currentTime = "1715721402.822"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 60.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.07
+thrust = 0.052
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.704"
+currentTime = "1715721402.942"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 56.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.06
+thrust = 0.046
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.837"
+currentTime = "1715721403.075"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 52.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.05
+thrust = 0.041
+
+[[content]]
+
+[content.time]
+elapsedTime = "12.899"
+currentTime = "1715721403.137"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 49.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.04
+thrust = 0.037
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.023"
+currentTime = "1715721403.261"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 46.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.05
+thrust = 0.032
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.083"
+currentTime = "1715721403.321"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 43.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.03
+thrust = 0.029
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.207"
+currentTime = "1715721403.445"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 40.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.04
+thrust = 0.025
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.333"
+currentTime = "1715721403.571"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 37.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.03
+thrust = 0.022
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.399"
+currentTime = "1715721403.637"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 35.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.022
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.513"
+currentTime = "1715721403.751"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 32.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.024
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.577"
+currentTime = "1715721403.815"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 29.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.025
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.714"
+currentTime = "1715721403.952"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 27.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.029
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.832"
+currentTime = "1715721404.070"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 25.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.032
+
+[[content]]
+
+[content.time]
+elapsedTime = "13.89"
+currentTime = "1715721404.128"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 23.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.036
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.021"
+currentTime = "1715721404.259"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 21.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.042
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.084"
+currentTime = "1715721404.322"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 19.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.047
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.201"
+currentTime = "1715721404.439"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 17.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.053
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.337"
+currentTime = "1715721404.575"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 16.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.08
+thrust = 0.061
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.404"
+currentTime = "1715721404.642"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 14.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.068
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.537"
+currentTime = "1715721404.775"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 13.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.073
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.598"
+currentTime = "1715721404.836"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 11.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.08
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.729"
+currentTime = "1715721404.967"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 11.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.086
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.787"
+currentTime = "1715721405.025"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 10.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.091
+
+[[content]]
+
+[content.time]
+elapsedTime = "14.906"
+currentTime = "1715721405.144"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 8.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.097
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.029"
+currentTime = "1715721405.267"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 8.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.103
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.093"
+currentTime = "1715721405.331"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 6.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.109
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.219"
+currentTime = "1715721405.457"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 5.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.13
+thrust = 0.122
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.284"
+currentTime = "1715721405.522"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 5.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.128
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.404"
+currentTime = "1715721405.642"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 4.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.133
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.477"
+currentTime = "1715721405.715"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 4.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.138
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.601"
+currentTime = "1715721405.839"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 3.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.144
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.72"
+currentTime = "1715721405.958"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 3.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.15
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.781"
+currentTime = "1715721406.019"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.157
+
+[[content]]
+
+[content.time]
+elapsedTime = "15.905"
+currentTime = "1715721406.143"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.164
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.034"
+currentTime = "1715721406.272"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.171
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.101"
+currentTime = "1715721406.339"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.176
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.218"
+currentTime = "1715721406.456"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.181
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.287"
+currentTime = "1715721406.525"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.188
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.404"
+currentTime = "1715721406.642"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.194
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.476"
+currentTime = "1715721406.714"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.07
+thrust = 0.201
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.604"
+currentTime = "1715721406.842"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.206
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.731"
+currentTime = "1715721406.969"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.212
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.781"
+currentTime = "1715721407.019"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.1
+thrust = 0.222
+
+[[content]]
+
+[content.time]
+elapsedTime = "16.905"
+currentTime = "1715721407.143"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.08
+thrust = 0.23
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.037"
+currentTime = "1715721407.275"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.236
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.099"
+currentTime = "1715721407.337"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.242
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.217"
+currentTime = "1715721407.455"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.438
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.248
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.28"
+currentTime = "1715721407.518"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.253
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.405"
+currentTime = "1715721407.643"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.258
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.531"
+currentTime = "1715721407.769"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.625
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.263
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.592"
+currentTime = "1715721407.830"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.269
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.72"
+currentTime = "1715721407.958"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.275
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.784"
+currentTime = "1715721408.022"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.279
+
+[[content]]
+
+[content.time]
+elapsedTime = "17.908"
+currentTime = "1715721408.146"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.284
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.033"
+currentTime = "1715721408.271"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.29
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.098"
+currentTime = "1715721408.336"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.293
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.23"
+currentTime = "1715721408.468"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.299
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.292"
+currentTime = "1715721408.530"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.08
+thrust = 0.307
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.403"
+currentTime = "1715721408.641"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.312
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.529"
+currentTime = "1715721408.767"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.316
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.593"
+currentTime = "1715721408.831"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.322
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.72"
+currentTime = "1715721408.958"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.327
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.784"
+currentTime = "1715721409.022"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.329
+
+[[content]]
+
+[content.time]
+elapsedTime = "18.912"
+currentTime = "1715721409.150"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.333
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.037"
+currentTime = "1715721409.275"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.338
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.102"
+currentTime = "1715721409.340"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.342
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.221"
+currentTime = "1715721409.459"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.346
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.294"
+currentTime = "1715721409.532"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.349
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.421"
+currentTime = "1715721409.659"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.353
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.488"
+currentTime = "1715721409.726"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.05
+thrust = 0.358
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.619"
+currentTime = "1715721409.857"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.361
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.681"
+currentTime = "1715721409.919"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.364
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.803"
+currentTime = "1715721410.041"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.368
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.924"
+currentTime = "1715721410.162"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.06
+thrust = 0.374
+
+[[content]]
+
+[content.time]
+elapsedTime = "19.986"
+currentTime = "1715721410.224"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.378
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.117"
+currentTime = "1715721410.355"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.38
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.236"
+currentTime = "1715721410.474"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.563
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.383
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.297"
+currentTime = "1715721410.535"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.386
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.436"
+currentTime = "1715721410.674"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.388
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.501"
+currentTime = "1715721410.739"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.391
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.625"
+currentTime = "1715721410.863"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.04
+thrust = 0.395
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.69"
+currentTime = "1715721410.928"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.396
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.819"
+currentTime = "1715721411.057"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.399
+
+[[content]]
+
+[content.time]
+elapsedTime = "20.886"
+currentTime = "1715721411.124"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.401
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.004"
+currentTime = "1715721411.242"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.403
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.131"
+currentTime = "1715721411.369"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.406
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.195"
+currentTime = "1715721411.433"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.408
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.309"
+currentTime = "1715721411.547"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.411
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.385"
+currentTime = "1715721411.623"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.413
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.497"
+currentTime = "1715721411.735"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.03
+thrust = 0.416
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.636"
+currentTime = "1715721411.874"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.417
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.698"
+currentTime = "1715721411.936"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.419
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.814"
+currentTime = "1715721412.052"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.421
+
+[[content]]
+
+[content.time]
+elapsedTime = "21.878"
+currentTime = "1715721412.116"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.423
+
+[[content]]
+
+[content.time]
+elapsedTime = "22"
+currentTime = "1715721412.238"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.425
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.135"
+currentTime = "1715721412.373"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.425
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.2"
+currentTime = "1715721412.438"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.426
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.32"
+currentTime = "1715721412.558"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.428
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.38"
+currentTime = "1715721412.618"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.43
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.503"
+currentTime = "1715721412.741"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.43
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.624"
+currentTime = "1715721412.862"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.431
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.685"
+currentTime = "1715721412.923"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.432
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.816"
+currentTime = "1715721413.054"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.434
+
+[[content]]
+
+[content.time]
+elapsedTime = "22.877"
+currentTime = "1715721413.115"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.435
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.004"
+currentTime = "1715721413.242"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.435
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.128"
+currentTime = "1715721413.366"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.437
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.192"
+currentTime = "1715721413.430"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.439
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.317"
+currentTime = "1715721413.555"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.01
+thrust = 0.438
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.383"
+currentTime = "1715721413.621"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.439
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.504"
+currentTime = "1715721413.742"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.44
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.623"
+currentTime = "1715721413.861"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.442
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.687"
+currentTime = "1715721413.925"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.442
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.814"
+currentTime = "1715721414.052"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.444
+
+[[content]]
+
+[content.time]
+elapsedTime = "23.881"
+currentTime = "1715721414.119"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.445
+
+[[content]]
+
+[content.time]
+elapsedTime = "24"
+currentTime = "1715721414.238"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = -0.02
+thrust = 0.443
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.129"
+currentTime = "1715721414.367"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.445
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.196"
+currentTime = "1715721414.434"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.5
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.447
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.321"
+currentTime = "1715721414.559"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.313
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.447
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.382"
+currentTime = "1715721414.620"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.313
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.447
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.511"
+currentTime = "1715721414.749"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.313
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.01
+thrust = 0.448
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.637"
+currentTime = "1715721414.875"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.375
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.448
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.686"
+currentTime = "1715721414.924"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.375
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.02
+thrust = 0.45
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.812"
+currentTime = "1715721415.050"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.375
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.45
+
+[[content]]
+
+[content.time]
+elapsedTime = "24.876"
+currentTime = "1715721415.114"
+
+[content.valves]
+xv1 = true
+xv2 = false
+xv3 = false
+xv4 = false
+xv5 = true
+xv6 = false
+
+[content.pressures]
+pi1 = 2.0
+pi2 = 2.0
+
+[content.temps]
+t1 = 34.25
+t2 = 0.0
+
+[content.loads]
+tankMass = 0.0
+thrust = 0.45

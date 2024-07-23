@@ -196,7 +196,7 @@ def wait_for_edge(channel: int, edge: int, bouncetime: int = -666, timeout: int 
     int | None
         The edge's channel number or None on timeout.
     """
-    return
+    return 1
 
 def gpio_function(channel: int, /) -> int:
     """Return the current GPIO function (IN, OUT, PWM, SERIAL, I2C, SPI).

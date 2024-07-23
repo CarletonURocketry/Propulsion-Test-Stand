@@ -1,9 +1,7 @@
 """Module containing the communication interfaces for the test stand and control system. Designed to work over a network connection using TCP sockets and python dicinaries serialized to JSON for transmission.
 """
 import socket
-import json
 import sys
-from typing import Any
 import asyncio
 
 class Client:
@@ -33,18 +31,18 @@ class Client:
         else:
             self.debug = False
         return
-    async def sendData(self, sendData: dict[str, dict[str, Any] | str]) -> dict[str, dict[str, Any]] | str:
+    async def sendData(self, sendData: str) -> str | Exception:
         try:
             reader, writer = await asyncio.open_connection(self.addr, self.port)
-            writer.write(json.dumps(sendData).encode())
+            writer.write(sendData.encode())
             await writer.drain()
-            recvData = await reader.read(10240)
-            recvData = json.loads(recvData.decode())
+            recvDataBytes: bytes = await reader.read(10240)
+            recvData: str = recvDataBytes.decode()
 
             return recvData
         except Exception as e:
             print("Connection Error")
-            return f"{e}"
+            return e
 
 class Server:
     def __init__(self, addr: str = "127.0.0.1", port: int = 65431):
@@ -74,7 +72,7 @@ class Server:
             self.debug = False
         return
     
-    def recieveData(self, sendData: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    def recieveData(self, sendData: str) -> str:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((self.addr, self.port))
             sock.listen()
@@ -86,8 +84,8 @@ class Server:
                 #print(f"Recieved {json.loads(recvData.decode())}")
                 if not recvData:
                     print("No data recieved")
-                    return dict()
+                    return ""
                 #print(f"sending {sendData} back to client")
-                conn.sendall(json.dumps(sendData).encode())
+                conn.sendall(sendData.encode())
                 conn.close()
-                return json.loads(recvData.decode())
+                return recvData.decode()

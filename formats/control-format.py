@@ -17,4 +17,4 @@ Data format example for commands sent from the control side to the teststand.
     "disconnect": bool # Hose disconnect servo
     }
 }
-} # type: ignore
+}

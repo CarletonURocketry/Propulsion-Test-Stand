@@ -3,25 +3,35 @@ This module contains the functions and classes to interface with the IO and sens
 """
 
 
-from typing import Any, Callable
+from typing import Any
+import sys
+
+if "-v" in sys.argv:
+    verbose = True
+else:
+    verbose = False
+
+if "-debug" in sys.argv:
+    debug = True
+else:
+    debug = False
 
 
-try:
+if not debug:
     import RPi.GPIO as GPIO # type: ignore
-    import cedargrove_nau7802 as NAU7802
+    import cedargrove_nau7802 as NAU7802 # type: ignore
     import adafruit_ads1x15.ads1115 as ADS
     from adafruit_ads1x15.analog_in import AnalogIn
-    import board
-    import busio
-except ImportError:
+    import board # type: ignore
+    import busio # type: ignore
+else:
     print("RPi.GPIO not found, using mock GPIO")
     from testModules import fake_GPIO as GPIO
-    #from testModules import fake_nau7802 as NAU7802
-    #from testModules import fake_ads1x15 as ADS
-    #from testModules.fake_analog_in import AnalogIn
+    from testModules import fake_nau7802 as NAU7802
+    import testModules.fake_ads1115 as ADS # type: ignore
+    from testModules.fake_analog_in import AnalogIn # type: ignore
     #from testModules.fake_adafruit_blinka import board
-    #from testModules.fake_adafruit_blinka import busio
-
+    import testModules.fake_busio as busio
 class Control():
     def __init__(self, inputMap: dict[str, str], ledMap: dict[str, int] | None) -> None:
         """Class to manage the IO of the control side of the system
@@ -70,14 +80,14 @@ class Test():
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
 
-        #self.strainGauge = NAU7802.NAU7802(board.I2C())
-        #self.strainGauge.channel = 1
+        self.strainGauge = NAU7802.NAU7802(board.I2C())
+        self.strainGauge.channel = 1
 
-        #i2c = busio.I2C(board.SCL, board.SDA)
-        #ads = ADS.ADS1115(i2c)
+        i2c = busio.I2C(board.SCL, board.SDA)
+        ads = ADS.ADS1115(i2c)
 
-        #self.loadCell = AnalogIn(ads, ADS.P0)
-        #self.continuity = AnalogIn(ads, ADS.P3)
+        self.loadCell = AnalogIn(ads, ADS.P0)
+        self.continuity = AnalogIn(ads, ADS.P3)
 
         self.ignitorFired = False
 
@@ -122,7 +132,7 @@ class Test():
 
         return sensorData
 
-    def zeroStrainGauge(self):
+    def zeroStrainGauge(self) -> None:
         """Initiate internal calibration for current channel.Use when scale is started,
         a new channel is selected, or to adjust for measurement drift. Remove weight
         and tare from load cell before executing."""
